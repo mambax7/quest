@@ -1,0 +1,12 @@
+<div class="statecats">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr colspan="2><th>Plan du questionnaire</th></tr>
+<{foreach item=une_categorie from=$block.categories}>
+<tr rowspan="2">
+	<td width="30px"><img class="imgstate" src="<{$xoops_url}>/modules/quest/images/etat<{$une_categorie.etat}>.gif"><{$une_categorie.IdCategorie}></td>
+	<td valign="top"><a class="titrecats" href="<{$xoops_url}>/modules/quest/category.php?categoryid=<{$une_categorie.IdCategorie}>" title="<{$smarty.const._MB_QUEST_QUESTIONNAIRE_LIEN}>"><{$une_categorie.LibelleCategorie}></a><br /><span class="libcats"><{$une_categorie.LibelleCompltCategorie}></span></td>
+</tr>
+<{/foreach}>
+<tr><td colspan="2 class="milieu"><img src="<{$xoops_url}>/modules/quest/images/legende.gif"></td></tr>
+</table>
+</div>

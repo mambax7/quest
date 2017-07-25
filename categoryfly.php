@@ -5,7 +5,7 @@
 //                     <http://www.instant-zero.com/>                        //
 // ------------------------------------------------------------------------- //
 //  This program is NOT free software; you can NOT redistribute it and/or    //
-//  modify without my assent.   										     //
+//  modify without my assent.                                                //
 //                                                                           //
 //  You may not change or alter any portion of this comment or credits       //
 //  of supporting developers from this source code or any supporting         //
@@ -16,109 +16,107 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-
 /**
- * Enregistrement des CAC à la volée pour une CAC donnée dans une réponse, pour une catégorie dans un questionnaire et pour une personne
+ * Enregistrement des CAC ï¿½ la volï¿½e pour une CAC donnï¿½e dans une rï¿½ponse, pour une catï¿½gorie dans un questionnaire et pour une personne
  */
-include_once '../../mainfile.php';
-include_once XOOPS_ROOT_PATH.'/modules/quest/include/functions.php';
+include_once __DIR__ . '/../../mainfile.php';
+include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 
 $uid = 0;
-if(is_object($xoopsUser)) {
-	$uid = $xoopsUser->getVar('uid');
-} else {	// Accès réservé aux utilisateurs enregistrés
-    redirect_header(XOOPS_URL.'/index.php',2,_ERRORS);
+if (is_object($xoopsUser)) {
+    $uid = $xoopsUser->getVar('uid');
+} else {    // Accï¿½s rï¿½servï¿½ aux utilisateurs enregistrï¿½s
+    redirect_header(XOOPS_URL . '/index.php', 2, _ERRORS);
     exit();
 }
 
-// Paramètres recus
-$IdCategorie = intval($_POST['IdCategorie']);
-$IdQuestionnaire = intval($_POST['IdQuestionnaire']);
-$IdCAC = intval($_POST['IdCAC']);
-$IdQuestion = intval($_POST['IdQuestion']);
-$DG = intval($_POST['DG']); // 1=Droite, 2=Gauche
-$IP = Quest_IP();
+// Paramï¿½tres recus
+$IdCategorie     = (int)$_POST['IdCategorie'];
+$IdQuestionnaire = (int)$_POST['IdQuestionnaire'];
+$IdCAC           = (int)$_POST['IdCAC'];
+$IdQuestion      = (int)$_POST['IdQuestion'];
+$DG              = (int)$_POST['DG']; // 1=Droite, 2=Gauche
+$IP              = Quest_IP();
 
 // Initialisation des handlers
-$categories_handler = & xoops_getmodulehandler('categories', 'quest');
-$questionnaires_handler = & xoops_getmodulehandler('questionnaires', 'quest');
-$reponses_handler = & xoops_getmodulehandler('reponses', 'quest');
+$categories_handler     = &xoops_getModuleHandler('categories', 'quest');
+$questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
+$reponses_handler       = &xoops_getModuleHandler('reponses', 'quest');
 
-// On commence par les vérifications
-// Chargement de la catégorie et du questionnaire
-$save_categ  = $categories_handler->get($IdCategorie);
-if(!is_object($save_categ)) {	// Catégorie introuvable
-    redirect_header(XOOPS_URL.'/index.php',2,_QUEST_ERROR2);
+// On commence par les vï¿½rifications
+// Chargement de la catï¿½gorie et du questionnaire
+$save_categ = $categories_handler->get($IdCategorie);
+if (!is_object($save_categ)) {    // Catï¿½gorie introuvable
+    redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR2);
     exit();
 }
 
 $save_quest = $questionnaires_handler->get($save_categ->getVar('IdQuestionnaire'));
-if(!is_object($save_quest)) {
-    redirect_header(XOOPS_URL.'/index.php',2,_QUEST_ERROR6);
+if (!is_object($save_quest)) {
+    redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR6);
     exit();
 }
 
-// Ensuite on vérifie que l'utilisateur a le droit de répondre à ce questionnaire et donc à cette catégorie
-if(!$questionnaires_handler->isVisible($save_quest, $uid)) {
-    redirect_header(XOOPS_URL.'/index.php',2,_QUEST_ERROR3);	// Pas le droit, on dégage.
+// Ensuite on vï¿½rifie que l'utilisateur a le droit de rï¿½pondre ï¿½ ce questionnaire et donc ï¿½ cette catï¿½gorie
+if (!$questionnaires_handler->isVisible($save_quest, $uid)) {
+    redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR3);    // Pas le droit, on dï¿½gage.
     exit();
 }
 
-// On peut passer à la sauvegarde des données *************************************************************************
+// On peut passer ï¿½ la sauvegarde des donnï¿½es *************************************************************************
 $criteria = new CriteriaCompo();
-$criteria->add(new Criteria('IdQuestionnaire', $save_quest->getVar('IdQuestionnaire') ,'='));
-$criteria->add(new Criteria('IdCategorie', $save_categ->getVar('IdCategorie') ,'='));
-$criteria->add(new Criteria('IdQuestion', $IdQuestion ,'='));
-$criteria->add(new Criteria('IdRespondant', $uid ,'='));
+$criteria->add(new Criteria('IdQuestionnaire', $save_quest->getVar('IdQuestionnaire'), '='));
+$criteria->add(new Criteria('IdCategorie', $save_categ->getVar('IdCategorie'), '='));
+$criteria->add(new Criteria('IdQuestion', $IdQuestion, '='));
+$criteria->add(new Criteria('IdRespondant', $uid, '='));
 $tbl_reponse = $reponses_handler->getObjects($criteria);
 
-if(count($tbl_reponse) == 1) {	// Réponse déjà enregistrée, il faut mettre à jour
-	$reponse = $tbl_reponse[0];
-  	if($DG == 1) {
-  		$reponse->setVar('Id_CAC1', $IdCAC);
-  	} else {
-  		$reponse->setVar('Id_CAC2', $IdCAC);
-  	}
-  	$reponse->setVar('DateReponse', time());
-  	$reponse->setVar('IP', $IP);
-  	$reponses_handler->insert($reponse, true);
-} else {	// Nouvelle réponse, il faut ajouter ******************************
-	$reponse = $reponses_handler->create(true);
-	$reponse->setVar('IdQuestionnaire', $IdQuestionnaire);
-  	$reponse->setVar('IdCategorie', $IdCategorie);
-  	$reponse->setVar('IdRespondant', $uid);
-  	$reponse->setVar('IdQuestion', $IdQuestion);
-  	if($DG==1) {
-  		$reponse->setVar('Id_CAC1', $IdCAC);
-  	} else {
-  		$reponse->setVar('Id_CAC2', $IdCAC);
-  	}
-  	$reponse->setVar('DateReponse', time());
-  	$reponse->setVar('IP', $IP);
-  	$reponses_handler->insert($reponse, true);
+if (count($tbl_reponse) == 1) {    // Rï¿½ponse dï¿½jï¿½ enregistrï¿½e, il faut mettre ï¿½ jour
+    $reponse = $tbl_reponse[0];
+    if ($DG == 1) {
+        $reponse->setVar('Id_CAC1', $IdCAC);
+    } else {
+        $reponse->setVar('Id_CAC2', $IdCAC);
+    }
+    $reponse->setVar('DateReponse', time());
+    $reponse->setVar('IP', $IP);
+    $reponses_handler->insert($reponse, true);
+} else {    // Nouvelle rï¿½ponse, il faut ajouter ******************************
+    $reponse = $reponses_handler->create(true);
+    $reponse->setVar('IdQuestionnaire', $IdQuestionnaire);
+    $reponse->setVar('IdCategorie', $IdCategorie);
+    $reponse->setVar('IdRespondant', $uid);
+    $reponse->setVar('IdQuestion', $IdQuestion);
+    if ($DG == 1) {
+        $reponse->setVar('Id_CAC1', $IdCAC);
+    } else {
+        $reponse->setVar('Id_CAC2', $IdCAC);
+    }
+    $reponse->setVar('DateReponse', time());
+    $reponse->setVar('IP', $IP);
+    $reponses_handler->insert($reponse, true);
 }
 
-// Et au final, on réaffichage des données ****************************************************************************
+// Et au final, on rï¿½affichage des donnï¿½es ****************************************************************************
 // $tbl_sesCAC[$one_cac_category->getVar('IdCAC')] = array('LibelleCourt' => xoops_trim($libelle_court), '' => xoops_trim($libelle_long));
 $lr = '';
-if($DG == 1) { // 1=Droite, 2=Gauche
-	$tbl_cac = $_SESSION['tbl_sesCAC_D'];
-	$lr = 'd';
-	$lr2 = 'r';
+if ($DG == 1) { // 1=Droite, 2=Gauche
+    $tbl_cac = $_SESSION['tbl_sesCAC_D'];
+    $lr      = 'd';
+    $lr2     = 'r';
 } else {
-	$lr = 'g';
-	$lr2 = 'l';
-	$tbl_cac = $_SESSION['tbl_sesCAC_G'];
+    $lr      = 'g';
+    $lr2     = 'l';
+    $tbl_cac = $_SESSION['tbl_sesCAC_G'];
 }
 $resultat = '';
 foreach ($tbl_cac as $cac_id => $cac_datas) {
-	$suffixe = 'n';
-	if($cac_id == $IdCAC) {
-		$suffixe = 's';
-	}
-	$LibelleLong = $cac_datas['LibelleLong'];
-	$resultat .= '<img src="'.XOOPS_URL.'/modules/quest/images/cac/'.$lr2.$cac_id.$suffixe.'.png" alt="'.$LibelleLong.'" border="0" onclick="changeme(\'q'.$IdQuestion.$lr.'\','.$cac_id.','.$IdQuestion.','.$DG.')" /> ';
-	//file_put_contents('verif.txt',$resultat);
+    $suffixe = 'n';
+    if ($cac_id == $IdCAC) {
+        $suffixe = 's';
+    }
+    $LibelleLong = $cac_datas['LibelleLong'];
+    $resultat .= '<img src="' . XOOPS_URL . '/modules/quest/images/cac/' . $lr2 . $cac_id . $suffixe . '.png" alt="' . $LibelleLong . '" border="0" onclick="changeme(\'q' . $IdQuestion . $lr . '\',' . $cac_id . ',' . $IdQuestion . ',' . $DG . ')" /> ';
+    //file_put_contents('verif.txt',$resultat);
 }
 echo $resultat;
-?>

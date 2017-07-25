@@ -5,7 +5,7 @@
 //                     <http://www.instant-zero.com/>                        //
 // ------------------------------------------------------------------------- //
 //  This program is NOT free software; you can NOT redistribute it and/or    //
-//  modify without my assent.   										     //
+//  modify without my assent.                                                //
 //                                                                           //
 //  You may not change or alter any portion of this comment or credits       //
 //  of supporting developers from this source code or any supporting         //
@@ -16,7 +16,6 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-define('_MI_QUEST_BNAME1','Liste des questionnaires non rÈpondus');
-define('_MI_QUEST_BNAME2','Liste des catÈgories non rÈpondues');
-define('_MI_QUEST_BNAME3',"Etat d'avancement");
-?>
+define('_MI_QUEST_BNAME1', 'Liste des questionnaires non r√©pondus');
+define('_MI_QUEST_BNAME2', 'Liste des cat√©gories non r√©pondues');
+define('_MI_QUEST_BNAME3', "Etat d'avancement");

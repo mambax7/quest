@@ -5,7 +5,7 @@
 //                     <http://www.instant-zero.com/>                        //
 // ------------------------------------------------------------------------- //
 //  This program is NOT free software; you can NOT redistribute it and/or    //
-//  modify without my assent.   										     //
+//  modify without my assent.                                                //
 //                                                                           //
 //  You may not change or alter any portion of this comment or credits       //
 //  of supporting developers from this source code or any supporting         //
@@ -16,31 +16,29 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-	die("XOOPS root path not defined");
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH.'/class/xoopsobject.php';
-if (!class_exists('XoopsPersistableObjectHandler')) {
-	include_once XOOPS_ROOT_PATH.'/modules/quest/class/PersistableObjectHandler.php';
-}
+include_once XOOPS_ROOT_PATH . '/kernel/object.php';
+//if (!class_exists('XoopsPersistableObjectHandler')) {
+//    include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
+//}
+
+include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
 
 class cac extends MyObject
 {
-	function cac()
-	{
-		$this->initVar('IdCAC',XOBJ_DTYPE_INT,null,false);
-		$this->initVar('LibelleCAC',XOBJ_DTYPE_TXTBOX, null, false,50);
-		$this->initVar('LibelleCourtCac',XOBJ_DTYPE_TXTBOX, null, false,3);
-	}
+    public function __construct()
+    {
+        $this->initVar('IdCAC', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('LibelleCAC', XOBJ_DTYPE_TXTBOX, null, false, 50);
+        $this->initVar('LibelleCourtCac', XOBJ_DTYPE_TXTBOX, null, false, 3);
+    }
 }
 
 class QuestCacHandler extends MyXoopsPersistableObjectHandler
 {
-	function QuestCacHandler($db)
-	{	//											Table		Classe	Id
-		$this->XoopsPersistableObjectHandler($db, 'quest_cac', 'cac', 'IdCAC');
-	}
-
+    public function __construct($db)
+    {    //                         Table       Classe  Id
+        parent::__construct($db, 'quest_cac', 'cac', 'IdCAC');
+    }
 }
-?>

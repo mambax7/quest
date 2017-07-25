@@ -1,0 +1,34 @@
+<table border="0" align="center">
+<tr>
+	<th>Id Category</th>
+	<th>Id Questionaire</th>
+	<th>Libelle Catégorie</th>
+	<th>Libellé complémentaire catégorie</th>
+	<th>Ordre Catégorie</th>
+	<th>Afficher à droite ?</th>
+	<th>Afficher à gauche ?</th>
+	<th>Commentaire 1</th>
+	<th>Commentaire 2</th>
+	<th>Commentaire 3</th>
+	<th>Etat (0=pas répondu, 1=Tout répondu, 2=En partie)</th>
+	<th>Image pour l'état</th>
+	<th>Lien pour répondre</th>
+</tr>
+<{foreach item=une_categorie from=$block.categories}>
+<tr class="<{cycle values="even,odd"}>">
+	<td><{$une_categorie.IdCategorie}></td>
+	<td><{$une_categorie.IdQuestionnaire}></td>
+	<td><{$une_categorie.LibelleCategorie}></td>
+	<td><{$une_categorie.LibelleCompltCategorie}></td>
+	<td><{$une_categorie.OrdreCategorie}></td>
+	<td><{$une_categorie.AfficherDroite}></td>
+	<td><{$une_categorie.AfficherGauche}></td>
+	<td><{$une_categorie.comment1}></td>
+	<td><{$une_categorie.comment2}></td>
+	<td><{$une_categorie.comment3}></td>
+	<td><{$une_categorie.etat}></td>
+	<td><img src="<{$xoops_url}>/modules/quest/images/etat<{$une_categorie.etat}>.gif" alt="" border="0"></td>
+	<td><a href="<{$xoops_url}>/modules/quest/category.php?categoryid=<{$une_categorie.IdCategorie}>" title="<{$smarty.const._MB_QUEST_QUESTIONNAIRE_LIEN}>"><{$smarty.const._MB_QUEST_QUESTIONNAIRE_LIEN}></a></td>
+</tr>
+<{/foreach}>
+</table>

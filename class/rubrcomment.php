@@ -5,7 +5,7 @@
 //                     <http://www.instant-zero.com/>                        //
 // ------------------------------------------------------------------------- //
 //  This program is NOT free software; you can NOT redistribute it and/or    //
-//  modify without my assent.   										     //
+//  modify without my assent.                                                //
 //                                                                           //
 //  You may not change or alter any portion of this comment or credits       //
 //  of supporting developers from this source code or any supporting         //
@@ -16,38 +16,36 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-	die("XOOPS root path not defined");
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH.'/class/xoopsobject.php';
-if (!class_exists('XoopsPersistableObjectHandler')) {
-	include_once XOOPS_ROOT_PATH.'/modules/quest/class/PersistableObjectHandler.php';
-}
+include_once XOOPS_ROOT_PATH . '/kernel/object.php';
+//if (!class_exists('XoopsPersistableObjectHandler')) {
+//    include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
+//}
+
+include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
+
 
 class rubrcomment extends MyObject
 {
-	function rubrcomment()
-	{
-		$this->initVar('IdRubrComment',XOBJ_DTYPE_INT,null,false);
-		$this->initVar('IdRespondant',XOBJ_DTYPE_INT,null,false);
-		$this->initVar('IdQuestionnaire',XOBJ_DTYPE_INT,null,false);
-		$this->initVar('IdCategorie',XOBJ_DTYPE_INT,null,false);
-		$this->initVar('Comment1',XOBJ_DTYPE_TXTAREA, null, false);
-		$this->initVar('Comment2',XOBJ_DTYPE_TXTAREA, null, false);
-		$this->initVar('Comment3',XOBJ_DTYPE_TXTAREA, null, false);
-		$this->initVar('DateReponse',XOBJ_DTYPE_INT,null,false);
-		$this->initVar('IP',XOBJ_DTYPE_TXTBOX, null, false,32);
-	}
+    public function __construct()
+    {
+        $this->initVar('IdRubrComment', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('IdRespondant', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('IdQuestionnaire', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('IdCategorie', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('Comment1', XOBJ_DTYPE_TXTAREA, null, false);
+        $this->initVar('Comment2', XOBJ_DTYPE_TXTAREA, null, false);
+        $this->initVar('Comment3', XOBJ_DTYPE_TXTAREA, null, false);
+        $this->initVar('DateReponse', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('IP', XOBJ_DTYPE_TXTBOX, null, false, 32);
+    }
 }
-
 
 class QuestRubrcommentHandler extends MyXoopsPersistableObjectHandler
 {
-	function QuestRubrcommentHandler($db)
-	{	//											Table				Classe			Id
-		$this->XoopsPersistableObjectHandler($db, 'quest_rubrcomment', 'rubrcomment', 'IdRubrComment');
-	}
-
+    public function __construct($db)
+    {    //                             Table               Classe          Id
+        parent::__construct($db, 'quest_rubrcomment', 'rubrcomment', 'IdRubrComment');
+    }
 }
-?>
