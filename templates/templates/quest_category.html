@@ -1,125 +1,128 @@
-<h1>Enquêté : <{$questionnaire.LibelleQuestionnaire}></h1>
-<hr />
+<h1>Enquï¿½tï¿½ : <{$questionnaire.LibelleQuestionnaire}></h1>
+<hr/>
 <form method="post" action="<{$xoops_url}>/modules/quest/category.php" id="frm_category" name="frm_category">
-<h2><{$category.LibelleCategorie}></h2> <p><{$category.LibelleCompltCategorie}></p>
-<fieldset>
-<legend>Légende</legend>
-<ul id="legende">
-	<{foreach item=une_legende from=$LegendeDroite}>
-		<li><img src="<{$xoops_url}>/modules/quest/images/<{$une_legende.LibelleCourt}>.gif" /> => <{$une_legende.LibelleLong}></li>
-	<{/foreach}>
-</fieldset>
-</ul>
-<h2>Légende</h2>
-<hr />
-<table>
-<tr>
-<{if $LegendeGauche}>
-	<td>
-	<b>Gauche</b>
-	<ul>
-	<{foreach item=une_legende from=$LegendeGauche}>
-		<li><{$une_legende.LibelleCourt}> - <{$une_legende.LibelleLong}></li>
-	<{/foreach}>
-	</ul>
-	</td>
-<{/if}>
-<{if $LegendeDroite}>
-	<td>
-	<b>Droite</b>
-	<ul>
-	<{foreach item=une_legende from=$LegendeDroite}>
-		<li><{$une_legende.LibelleCourt}> => <{$une_legende.LibelleLong}></li>
-	<{/foreach}>
-	</ul>
-	</td>
-<{/if}>
-</tr>
-</table>
+    <h2><{$category.LibelleCategorie}></h2>
+    <p><{$category.LibelleCompltCategorie}></p>
+    <fieldset>
+        <legend>Lï¿½gende</legend>
+        <ul id="legende">
+            <{foreach item=une_legende from=$LegendeDroite}>
+            <li><img src="<{$xoops_url}>/modules/quest/images/<{$une_legende.LibelleCourt}>.gif"/> => <{$une_legende.LibelleLong}></li>
+            <{/foreach}>
+    </fieldset>
+    </ul>
+    <h2>Lï¿½gende</h2>
+    <hr/>
+    <table>
+        <tr>
+            <{if $LegendeGauche}>
+            <td>
+                <b>Gauche</b>
+                <ul>
+                    <{foreach item=une_legende from=$LegendeGauche}>
+                    <li><{$une_legende.LibelleCourt}> - <{$une_legende.LibelleLong}></li>
+                    <{/foreach}>
+                </ul>
+            </td>
+            <{/if}>
+            <{if $LegendeDroite}>
+            <td>
+                <b>Droite</b>
+                <ul>
+                    <{foreach item=une_legende from=$LegendeDroite}>
+                    <li><{$une_legende.LibelleCourt}> => <{$une_legende.LibelleLong}></li>
+                    <{/foreach}>
+                </ul>
+            </td>
+            <{/if}>
+        </tr>
+    </table>
 
-<h1>Questions</h1>
-<{if $questions_reponses}>
-<table border="0" width="100%" align="center">
-	<{foreach item=une_question_reponse from=$questions_reponses}>
-		<tr class="<{cycle values="even,odd"}>">
-			<{if $CAC_Gauche}>
-				<td>
-					<{foreach item=une_CAC from=$CAC_Gauche}>
-						<input type="radio" <{if $une_question_reponse.Id_CAC2 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>g" value="<{$une_CAC.IdCAC}>" /> <{$une_CAC.LibelleCourt}>
-					<{/foreach}>
-				</td>
-			<{/if}>
-			<td><{$une_question_reponse.TexteQuestion}><{if $une_question_reponse.ComplementQuestion}><br /><{$une_question_reponse.ComplementQuestion}><{/if}></td>
-			<{if $CAC_Droite}>
-				<td>
-					<{foreach item=une_CAC from=$CAC_Droite}>
-						<input type="radio" <{if $une_question_reponse.Id_CAC1 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>d" value="<{$une_CAC.IdCAC}>" /> <{$une_CAC.LibelleCourt}>
-					<{/foreach}>
-				</td>
-			<{/if}>
-		</tr>
-	<{/foreach}>
-</table>
-<{/if}>
+    <h1>Questions</h1>
+    <{if $questions_reponses}>
+    <table border="0" width="100%" align="center">
+        <{foreach item=une_question_reponse from=$questions_reponses}>
+        <tr class="<{cycle values=" even,odd
+        "}>">
+        <{if $CAC_Gauche}>
+        <td>
+            <{foreach item=une_CAC from=$CAC_Gauche}>
+            <input type="radio" <{if $une_question_reponse.Id_CAC2 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>g" value="<{$une_CAC.IdCAC}>" /> <{$une_CAC.LibelleCourt}>
+            <{/foreach}>
+        </td>
+        <{/if}>
+        <td><{$une_question_reponse.TexteQuestion}><{if $une_question_reponse.ComplementQuestion}><br/><{$une_question_reponse.ComplementQuestion}><{/if}></td>
+        <{if $CAC_Droite}>
+        <td>
+            <{foreach item=une_CAC from=$CAC_Droite}>
+            <input type="radio" <{if $une_question_reponse.Id_CAC1 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>d" value="<{$une_CAC.IdCAC}>" /> <{$une_CAC.LibelleCourt}>
+            <{/foreach}>
+        </td>
+        <{/if}>
+        </tr>
+        <{/foreach}>
+    </table>
+    <{/if}>
 
-<hr />
-<h2>Questions</h2>
-<{if $questions_reponses}>
-<table border="0" width="100%" align="center" id="questions">
-<tr>
-	<{if $LegendeGauche}>
-		<{foreach item=une_legende from=$LegendeGauche}>
-			<th><{$une_legende.LibelleCourt}></th>
-		<{/foreach}>
-	<{/if}>
-	<th>Questions</th>
-	<{if $LegendeDroite}>
-		<{foreach item=une_legende from=$LegendeDroite}>
-			<th><{$une_legende.LibelleCourt}></th>
-		<{/foreach}>
-	<{/if}>
-</tr>
-	<{foreach item=une_question_reponse from=$questions_reponses}>
-		<tr class="<{cycle values="even,odd"}>">
-			<{if $CAC_Gauche}>
-				<td>
-					<{foreach item=une_CAC from=$CAC_Gauche}>
-						<input type="radio" <{if $une_question_reponse.Id_CAC2 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>g" value="<{$une_CAC.IdCAC}>" /> <{$une_CAC.LibelleCourt}>
-					<{/foreach}>
-				</td>
-			<{/if}>
-			<td><{$une_question_reponse.TexteQuestion}><{if $une_question_reponse.ComplementQuestion}><br /><{$une_question_reponse.ComplementQuestion}><{/if}></td>
-			<{if $CAC_Droite}>
-				<{foreach item=une_CAC from=$CAC_Droite}>
-						<td class="cac"><input type="radio" <{if $une_question_reponse.Id_CAC1 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>d" value="<{$une_CAC.IdCAC}>" />
-					<{/foreach}>
-				</td>
-			<{/if}>
-		</tr>
-	<{/foreach}>
-</table>
-<{/if}>
+    <hr/>
+    <h2>Questions</h2>
+    <{if $questions_reponses}>
+    <table border="0" width="100%" align="center" id="questions">
+        <tr>
+            <{if $LegendeGauche}>
+            <{foreach item=une_legende from=$LegendeGauche}>
+            <th><{$une_legende.LibelleCourt}></th>
+            <{/foreach}>
+            <{/if}>
+            <th>Questions</th>
+            <{if $LegendeDroite}>
+            <{foreach item=une_legende from=$LegendeDroite}>
+            <th><{$une_legende.LibelleCourt}></th>
+            <{/foreach}>
+            <{/if}>
+        </tr>
+        <{foreach item=une_question_reponse from=$questions_reponses}>
+        <tr class="<{cycle values=" even,odd
+        "}>">
+        <{if $CAC_Gauche}>
+        <td>
+            <{foreach item=une_CAC from=$CAC_Gauche}>
+            <input type="radio" <{if $une_question_reponse.Id_CAC2 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>g" value="<{$une_CAC.IdCAC}>" /> <{$une_CAC.LibelleCourt}>
+            <{/foreach}>
+        </td>
+        <{/if}>
+        <td><{$une_question_reponse.TexteQuestion}><{if $une_question_reponse.ComplementQuestion}><br/><{$une_question_reponse.ComplementQuestion}><{/if}></td>
+        <{if $CAC_Droite}>
+        <{foreach item=une_CAC from=$CAC_Droite}>
+        <td class="cac"><input type="radio" <{if $une_question_reponse.Id_CAC1 == $une_CAC.IdCAC}>checked='checked'<{/if}> name="q<{$une_question_reponse.IdQuestion}>d" value="<{$une_CAC.IdCAC}>" />
+            <{/foreach}>
+        </td>
+        <{/if}>
+        </tr>
+        <{/foreach}>
+    </table>
+    <{/if}>
 
 
-<hr />
+    <hr/>
 
-<h2>Commentaire(s)</h2>
-<{if $category.comment1}>
-	<h3><{$category.comment1}></h3>
-	<textarea name="comment1" cols="60" rows="<{$comment_lines}>"><{$commentaire1}></textarea>
-<{/if}>
-<{if $category.comment2}>
-	<h3><{$category.comment2}></h>
-	<textarea name="comment2" cols="60" rows="<{$comment_lines}>"><{$commentaire2}></textarea>
-<{/if}>
-<{if $category.comment3}>
-	<h3><{$category.comment3}></h3>
-	<textarea name="comment3" cols="60" rows="<{$comment_lines}>"><{$commentaire3}></textarea>
-<{/if}>
-<input type="hidden" name="category" value="<{$category.IdCategorie}>" />
-<input type="hidden" name="quest" value="<{$questionnaire.IdQuestionnaire}>" />
-<input type="hidden" name="action" value="save" />
-<br /><br />
-<div align="center"><input type="reset" name="btnraz" value="<{$smarty.const._QUEST_RESET}>" /> <input type="submit" name="btnsubmit" value="<{$smarty.const._QUEST_SUBMIT}>" /></div>
+    <h2>Commentaire(s)</h2>
+    <{if $category.comment1}>
+    <h3><{$category.comment1}></h3>
+    <textarea name="comment1" cols="60" rows="<{$comment_lines}>"><{$commentaire1}></textarea>
+    <{/if}>
+    <{if $category.comment2}>
+    <h3><{$category.comment2}></h>
+        <textarea name="comment2" cols="60" rows="<{$comment_lines}>"><{$commentaire2}></textarea>
+        <{/if}>
+        <{if $category.comment3}>
+        <h3><{$category.comment3}></h3>
+        <textarea name="comment3" cols="60" rows="<{$comment_lines}>"><{$commentaire3}></textarea>
+        <{/if}>
+        <input type="hidden" name="category" value="<{$category.IdCategorie}>"/>
+        <input type="hidden" name="quest" value="<{$questionnaire.IdQuestionnaire}>"/>
+        <input type="hidden" name="action" value="save"/>
+        <br/><br/>
+        <div align="center"><input type="reset" name="btnraz" value="<{$smarty.const._QUEST_RESET}>"/> <input type="submit" name="btnsubmit" value="<{$smarty.const._QUEST_SUBMIT}>"/></div>
 </form>
-<br />
+<br/>

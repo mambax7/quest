@@ -15,7 +15,7 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-include('../../mainfile.php');
+include '../../mainfile.php';
 $xoopsOption['template_main'] = 'quest_index.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 $uid = 0;
@@ -69,5 +69,4 @@ if ($quest_non_answered_count == 0) {    // Tous les questionnaires ont été r�
     }
 }
 $xoopsTpl->assign('xoops_pagetitle', $xoopsModule->getVar('name') . ' - ' . _QUEST_INDEX);
-include_once(XOOPS_ROOT_PATH . '/footer.php');
-
+include_once XOOPS_ROOT_PATH . '/footer.php';

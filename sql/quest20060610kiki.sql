@@ -1,4 +1,3 @@
-
 INSERT INTO `xoops_quest_cac` VALUES (1, 'G1 long', 'G1');
 INSERT INTO `xoops_quest_cac` VALUES (2, 'G2 long', 'G2');
 INSERT INTO `xoops_quest_cac` VALUES (3, 'G3 long', 'G3');
@@ -110,8 +109,8 @@ INSERT INTO `xoops_quest_categories` VALUES (8, 2, '3. Problem solving leadershi
 INSERT INTO `xoops_quest_categories` VALUES (9, 2, '4. People leadership', 'To what extend does this person ....', 4, 1, 0, 'This person is especially helpful in', 'This person could help more by', 'Other comments', 1, 1, 1);
 INSERT INTO `xoops_quest_categories` VALUES (10, 2, '5. Study management', 'To what extent does this person.....', 5, 1, 0, 'This person is especially helpful in', 'This person could help more by', 'Other comments', 1, 1, 1);
 INSERT INTO `xoops_quest_categories` VALUES (11, 2, '6. Personal impact', 'To what does this person....', 6, 1, 0, 'comments', '', '', 1, 1, 1);
-INSERT INTO `xoops_quest_categories` VALUES (12, 2, '7. General comment', 'To what extent.....', 7, 1, 0, 'Please describe the three best consulting skills employed by this person :', 'Please describe the key consulting skills this person could work on and develop :', 'Additional comments :', 1, 1, 1);
-
+INSERT INTO `xoops_quest_categories`
+VALUES (12, 2, '7. General comment', 'To what extent.....', 7, 1, 0, 'Please describe the three best consulting skills employed by this person :', 'Please describe the key consulting skills this person could work on and develop :', 'Additional comments :', 1, 1, 1);
 
 
 INSERT INTO `xoops_quest_enquetes` VALUES (1, 'Blanc Mont', '(Asc)', 1, 'hthouzard', '4efc486b1380fbfcfafa7930f64e1d83');
@@ -119,10 +118,13 @@ INSERT INTO `xoops_quest_enquetes` VALUES (2, 'Grasshopper', 'Zurich', 1, 'hthou
 INSERT INTO `xoops_quest_enquetes` VALUES (3, 'Nom enquêté', 'Prénom enquêté', 1, '', '');
 
 
-
-INSERT INTO `xoops_quest_questionnaires` VALUES (1, 'Mont Blanc (ASC)', 1, 1146921837, 1179183661, 1, 1, 0, 'Vous n''avez pas répondu', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\r\n\r\n', 'L''analyse nutritionnelle de Nutella réserve bien des surprises ! ...', 'Il fut longtemps difficile de croire que le délicieux mélange de beurre de cacao, de sucre et de lait, qui fond dans la bouche et stimule tellement nos sens, puisse également nous être bénéfique.\r\nEt pourtant, de récentes recherches démontrent que, contrairement à l’opinion trop longtemps répandue selon laquelle tout ce qui a bon goût doit forcément être mauvais pour la santé, le chocolat est un cocktail de substances potentiellement protectrices pour l’organisme.\r\nLes scientifiques ont, par exemple, démontré le rôle positif des nombreux antioxydants présents dans le cacao.\r\nCeux-ci contribuent à protéger contre l’oxydation du cholestérol\r\nOn a décelé un groupe de “polyphénols” (antioxydants) dans le chocolat noir comme dans le chocolat au lait.\r\nIl apparaît qu’ils joueraient un rôle dans la prévention des maladies cardio-vasculaires, amélioreraient le système immunitaire, voire participeraient à la diminution des risques de certaines maladies. Affaire à suivre.', 5, 1146921837, 'herve@herve-thouzard.com', 1);
-INSERT INTO `xoops_quest_questionnaires` VALUES (2, 'Grasshopper Zurich', 2, 1149072469, 1179183661, 3, 0, 0, 'sujet relance questionnaire', 'Merci de bien vouloir répondre dans les délais au questionnaire .......', 'Est-il meilleur qu''en France', 'Il semblerait que ......lorem ipsum et consorts', 0, 0, '', 2);
-
+INSERT INTO `xoops_quest_questionnaires` VALUES (1, 'Mont Blanc (ASC)', 1, 1146921837, 1179183661, 1, 1, 0, 'Vous n''avez pas répondu',
+                                                    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\r\n\r\n',
+                                                    'L''analyse nutritionnelle de Nutella réserve bien des surprises ! ...',
+                                                 'Il fut longtemps difficile de croire que le délicieux mélange de beurre de cacao, de sucre et de lait, qui fond dans la bouche et stimule tellement nos sens, puisse également nous être bénéfique.\r\nEt pourtant, de récentes recherches démontrent que, contrairement à l’opinion trop longtemps répandue selon laquelle tout ce qui a bon goût doit forcément être mauvais pour la santé, le chocolat est un cocktail de substances potentiellement protectrices pour l’organisme.\r\nLes scientifiques ont, par exemple, démontré le rôle positif des nombreux antioxydants présents dans le cacao.\r\nCeux-ci contribuent à protéger contre l’oxydation du cholestérol\r\nOn a décelé un groupe de “polyphénols” (antioxydants) dans le chocolat noir comme dans le chocolat au lait.\r\nIl apparaît qu’ils joueraient un rôle dans la prévention des maladies cardio-vasculaires, amélioreraient le système immunitaire, voire participeraient à la diminution des risques de certaines maladies. Affaire à suivre.',
+                                                 5, 1146921837, 'herve@herve-thouzard.com', 1);
+INSERT INTO `xoops_quest_questionnaires`
+VALUES (2, 'Grasshopper Zurich', 2, 1149072469, 1179183661, 3, 0, 0, 'sujet relance questionnaire', 'Merci de bien vouloir répondre dans les délais au questionnaire .......', 'Est-il meilleur qu''en France', 'Il semblerait que ......lorem ipsum et consorts', 0, 0, '', 2);
 
 
 INSERT INTO `xoops_quest_questions` VALUES (1, 1, 1, 'Strive to bring maximum value to the Client', 1, 'Show deep personal commitment to achieving Client impact');
@@ -188,14 +190,12 @@ INSERT INTO `xoops_quest_questions` VALUES (60, 2, 5, 'Effectively leverage Firm
 INSERT INTO `xoops_quest_questions` VALUES (61, 2, 5, 'Effectively manage Client team members', 36, '');
 
 
-
 INSERT INTO `xoops_quest_reponses` VALUES (10, 1, 1, 1, 5, 13, 0, 1149765389, '127.0.0.1');
 INSERT INTO `xoops_quest_reponses` VALUES (9, 1, 1, 1, 4, 13, 0, 1149765389, '127.0.0.1');
 INSERT INTO `xoops_quest_reponses` VALUES (8, 1, 1, 1, 3, 12, 0, 1149765389, '127.0.0.1');
 INSERT INTO `xoops_quest_reponses` VALUES (7, 1, 1, 1, 2, 15, 0, 1149765389, '127.0.0.1');
 INSERT INTO `xoops_quest_reponses` VALUES (6, 1, 1, 1, 1, 11, 0, 1149765389, '127.0.0.1');
 INSERT INTO `xoops_quest_reponses` VALUES (11, 1, 1, 1, 6, 14, 0, 1149765389, '127.0.0.1');
-
 
 
 INSERT INTO `xoops_quest_rubrcomment` VALUES (2, 1, 1, 1, 'je réponds au premier commentaire', 'je réponds au second commentaire', 'réponse pour le troisième', 1149765389, '127.0.0.1');

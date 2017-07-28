@@ -15,7 +15,7 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-include('../../mainfile.php');
+include '../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 
 $next_categoryid = 0;
@@ -123,7 +123,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
         $affichergauche = $save_categ->getVar('AfficherGauche');
 
         // Boucle sur les réponses pour les enregistrer
-        foreach ($tbl_questions as $id_question => $one_question) {
+        foreach($tbl_questions as $id_question => $one_question) {
             $idcac_droite = 0;
             $idcac_gauche = 0;
             $date_sais = time();
@@ -429,4 +429,4 @@ if ($pos != 0) {
 $xoopsTpl->assign('btn_suiv', $btn_suiv);
 $xoopsTpl->assign('btn_prev', $btn_prev);
 
-include_once(XOOPS_ROOT_PATH . '/footer.php');
+include_once XOOPS_ROOT_PATH . '/footer.php';

@@ -139,6 +139,7 @@ function $() {
 
     return elements;
 }
+
 Object.extend(String.prototype, {
     stripTags: function () {
         return this.replace(/<\/?[^>]+>/gi, '');
@@ -505,8 +506,8 @@ var Hash = {
 
     inspect: function () {
         return '#<Hash:{' + this.map(function (pair) {
-                return pair.map(Object.inspect).join(': ');
-            }).join(', ') + '}>';
+            return pair.map(Object.inspect).join(': ');
+        }).join(', ') + '}>';
     }
 }
 
@@ -516,6 +517,7 @@ function $H(object) {
     Object.extend(hash, Hash);
     return hash;
 }
+
 ObjectRange = Class.create();
 Object.extend(ObjectRange.prototype, Enumerable);
 Object.extend(ObjectRange.prototype, {
@@ -549,16 +551,16 @@ var $R = function (start, end, exclusive) {
 var Ajax = {
     getTransport: function () {
         return Try.these(
-                function () {
-                    return new ActiveXObject('Msxml2.XMLHTTP')
-                },
-                function () {
-                    return new ActiveXObject('Microsoft.XMLHTTP')
-                },
-                function () {
-                    return new XMLHttpRequest()
-                }
-            ) || false;
+            function () {
+                return new ActiveXObject('Msxml2.XMLHTTP')
+            },
+            function () {
+                return new ActiveXObject('Microsoft.XMLHTTP')
+            },
+            function () {
+                return new XMLHttpRequest()
+            }
+        ) || false;
     },
 
     activeRequestCount: 0
@@ -728,8 +730,8 @@ Ajax.Request.prototype = Object.extend(new Ajax.Base(), {
         if (event == 'Complete') {
             try {
                 (this.options['on' + this.transport.status]
-                || this.options['on' + (this.responseIsSuccess() ? 'Success' : 'Failure')]
-                || Prototype.emptyFunction)(transport, json);
+                    || this.options['on' + (this.responseIsSuccess() ? 'Success' : 'Failure')]
+                    || Prototype.emptyFunction)(transport, json);
             } catch (e) {
                 this.dispatchException(e);
             }
@@ -831,7 +833,7 @@ Ajax.PeriodicalUpdater.prototype = Object.extend(new Ajax.Base(), {
     updateComplete: function (request) {
         if (this.options.decay) {
             this.decay = (request.responseText == this.lastText ?
-            this.decay * this.options.decay : 1);
+                this.decay * this.options.decay : 1);
 
             this.lastText = request.responseText;
         }
@@ -1484,7 +1486,7 @@ Object.extend(Event, {
 
     isLeftClick: function (event) {
         return (((event.which) && (event.which == 1)) ||
-        ((event.button) && (event.button == 1)));
+            ((event.button) && (event.button == 1)));
     },
 
     pointerX: function (event) {
@@ -1512,7 +1514,7 @@ Object.extend(Event, {
     findElement: function (event, tagName) {
         var element = Event.element(event);
         while (element.parentNode && (!element.tagName ||
-        (element.tagName.toUpperCase() != tagName.toUpperCase())))
+            (element.tagName.toUpperCase() != tagName.toUpperCase())))
             element = element.parentNode;
         return element;
     },
@@ -1545,7 +1547,7 @@ Object.extend(Event, {
 
         if (name == 'keypress' &&
             (navigator.appVersion.match(/Konqueror|Safari|KHTML/)
-            || element.attachEvent))
+                || element.attachEvent))
             name = 'keydown';
 
         this._observeAndCache(element, name, observer, useCapture);
@@ -1557,7 +1559,7 @@ Object.extend(Event, {
 
         if (name == 'keypress' &&
             (navigator.appVersion.match(/Konqueror|Safari|KHTML/)
-            || element.detachEvent))
+                || element.detachEvent))
             name = 'keydown';
 
         if (element.removeEventListener) {
@@ -1643,9 +1645,9 @@ var Position = {
         this.offset = this.cumulativeOffset(element);
 
         return (y >= this.offset[1] &&
-        y < this.offset[1] + element.offsetHeight &&
-        x >= this.offset[0] &&
-        x < this.offset[0] + element.offsetWidth);
+            y < this.offset[1] + element.offsetHeight &&
+            x >= this.offset[0] &&
+            x < this.offset[0] + element.offsetWidth);
     },
 
     withinIncludingScrolloffsets: function (element, x, y) {
@@ -1656,9 +1658,9 @@ var Position = {
         this.offset = this.cumulativeOffset(element);
 
         return (this.ycomp >= this.offset[1] &&
-        this.ycomp < this.offset[1] + element.offsetHeight &&
-        this.xcomp >= this.offset[0] &&
-        this.xcomp < this.offset[0] + element.offsetWidth);
+            this.ycomp < this.offset[1] + element.offsetHeight &&
+            this.xcomp >= this.offset[0] &&
+            this.xcomp < this.offset[0] + element.offsetWidth);
     },
 
     // within must be called directly before
@@ -1738,9 +1740,9 @@ var Position = {
         }
 
         // set position
-        if (options.setLeft)   target.style.left = (p[0] - delta[0] + options.offsetLeft) + 'px';
-        if (options.setTop)    target.style.top = (p[1] - delta[1] + options.offsetTop) + 'px';
-        if (options.setWidth)  target.style.width = source.offsetWidth + 'px';
+        if (options.setLeft) target.style.left = (p[0] - delta[0] + options.offsetLeft) + 'px';
+        if (options.setTop) target.style.top = (p[1] - delta[1] + options.offsetTop) + 'px';
+        if (options.setWidth) target.style.width = source.offsetWidth + 'px';
         if (options.setHeight) target.style.height = source.offsetHeight + 'px';
     },
 

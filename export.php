@@ -19,7 +19,7 @@
 /**
  * Page charg�e de r�aliser l'export des donn�es pour le client
  */
-include('../../mainfile.php');
+include '../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 include_once XOOPS_ROOT_PATH . '/header.php';
 $xoopsTpl->assign('xoops_pagetitle', _QUEST_EXPORT_WELCOME);
@@ -47,6 +47,9 @@ $rubrcomment_handler    = &xoops_getModuleHandler('rubrcomment', 'quest');
 /*
  * Affichage du formulaire de connexion
  *
+ */
+/**
+ * @param string $message
  */
 function questform($message = '')
 {
@@ -278,4 +281,4 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
     questform();
 }
 
-include_once(XOOPS_ROOT_PATH . '/footer.php');
+include_once XOOPS_ROOT_PATH . '/footer.php';

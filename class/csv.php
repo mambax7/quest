@@ -22,6 +22,9 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
  *
  */
 
+/**
+ * Class csv
+ */
 class csv
 {
     public $escapetrings;            // Booléen, faut il échapper les chaines de caractères ?
@@ -33,6 +36,14 @@ class csv
     public $filename;                // Nom du fichier
     public $fp;                    // Pointeur de fichier
 
+    /**
+     * csv constructor.
+     * @param string $filename
+     * @param string $fieldseparator
+     * @param string $lineseparator
+     * @param bool   $escapestring
+     * @param string $stringseparator
+     */
     public function __construct($filename = '', $fieldseparator = '|', $lineseparator = "\n", $escapestring = false, $stringseparator = '')
     {
         $this->filename         = $filename;
@@ -54,6 +65,9 @@ class csv
         fclose($this->fp);
     }
 
+    /**
+     * @param $field
+     */
     public function addHeader($field)
     {
         $this->header[] = $field;
@@ -64,6 +78,9 @@ class csv
         fwrite($this->fp, implode($this->fieldseparator, $this->header) . $this->lineseparator);
     }
 
+    /**
+     * @param $data
+     */
     public function addData($data)
     {
         if ($this->escapetrings && is_string($data)) {

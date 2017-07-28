@@ -16,32 +16,25 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-$modversion['name']           = 'quest';
-$modversion['version']        = 2.0;
-$modversion['description']    = 'Gestion de questionnaires';
-$modversion['credits']        = '';
-$modversion['author']         = 'Devconcept (Hervé Thouzard, Christian Edom)';
-$modversion['help']           = 'page=help';
-$modversion['license']        = 'GNU GPL 2.0 or later';
-$modversion['license_url']    = 'www.gnu.org/licenses/gpl-2.0.html';
-$modversion['official']       = 0;
-$modversion['image']       = 'assets/images/logoModule.png';
-$modversion['dirname']        = basename(__DIR__);
-$modversion['dirmoduleadmin'] = 'Frameworks/moduleclasses/moduleadmin';
-$modversion['sysicons16']     = 'Frameworks/moduleclasses/icons/16';
-$modversion['sysicons32']     = 'Frameworks/moduleclasses/icons/32';
-//about
+$modversion['version']             = 2.0;
 $modversion['module_status']       = 'Beta 1';
 $modversion['release_date']        = '2016/07/05';
+$modversion['name']                = 'quest';
+$modversion['description']         = 'Gestion de questionnaires';
+$modversion['credits']             = '';
+$modversion['author']              = 'Devconcept (Hervé Thouzard, Christian Edom)';
+$modversion['help']                = 'page=help';
+$modversion['license']             = 'GNU GPL 2.0 or later';
+$modversion['license_url']         = 'www.gnu.org/licenses/gpl-2.0.html';
+$modversion['official']            = 0;
+$modversion['image']               = 'assets/images/logoModule.png';
+$modversion['dirname']             = basename(__DIR__);
 $modversion['module_website_url']  = 'www.xoops.org';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
-$modversion['min_xoops']           = '2.5.8';
+$modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = array(
-    'mysql'  => '5.0.7',
-    'mysqli' => '5.0.7'
-);
+$modversion['min_db']              = array('mysql' => '5.5');
 
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 

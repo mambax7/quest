@@ -46,6 +46,9 @@ function b_quest_questionnaires_list_show($options)
     return $block;
 }
 
+/**
+ * @param $options
+ */
 function b_quest_questionnaires_list_edit($options)
 {
 }

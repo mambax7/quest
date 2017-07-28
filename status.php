@@ -20,7 +20,7 @@
  * Affichage du statut de chaque questionnaire duquel l'utilisateur courant est commanditaire
  */
 
-include('../../mainfile.php');
+include '../../mainfile.php';
 $xoopsOption['template_main'] = 'quest_status.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
@@ -245,7 +245,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         $tbl2['answers_count'] = $answers_count;
 
         $tbl_total['questions'] .= $questions_count;
-        $tbl_total['reponses'] .= $answers_count;
+        $tbl_total['reponses']  .= $answers_count;
 
         $tbl['categories'][] = $tbl2;
     }
@@ -256,4 +256,4 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
 }
 
 $xoopsTpl->assign('xoops_pagetitle', $xoopsModule->getVar('name') . ' - ' . _QUEST_STATUS_INDEX);
-include_once(XOOPS_ROOT_PATH . '/footer.php');
+include_once XOOPS_ROOT_PATH . '/footer.php';

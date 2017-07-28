@@ -82,6 +82,9 @@ function b_quest_categories_list_show($options)
     return $block;
 }
 
+/**
+ * @param $options
+ */
 function b_quest_categories_list_edit($options)
 {
 }

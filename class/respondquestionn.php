@@ -25,9 +25,14 @@ include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 
 include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
 
-
+/**
+ * Class respondquestionn
+ */
 class respondquestionn extends MyObject
 {
+    /**
+     * respondquestionn constructor.
+     */
     public function __construct()
     {
         $this->initVar('IdRespondQuestion', XOBJ_DTYPE_INT, null, false);
@@ -39,8 +44,15 @@ class respondquestionn extends MyObject
     }
 }
 
+/**
+ * Class QuestRespondquestionnHandler
+ */
 class QuestRespondquestionnHandler extends MyXoopsPersistableObjectHandler
 {
+    /**
+     * QuestRespondquestionnHandler constructor.
+     * @param \XoopsDatabase $db
+     */
     public function __construct($db)
     {    //                             Table                   Classe              Id
         parent::__construct($db, 'quest_respondquestionn', 'respondquestionn', 'IdRespondQuestion');

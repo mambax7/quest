@@ -25,9 +25,14 @@ include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 
 include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
 
-
+/**
+ * Class reponses
+ */
 class reponses extends MyObject
 {
+    /**
+     * reponses constructor.
+     */
     public function __construct()
     {
         $this->initVar('IdReponse', XOBJ_DTYPE_INT, null, false);
@@ -42,8 +47,15 @@ class reponses extends MyObject
     }
 }
 
+/**
+ * Class QuestReponsesHandler
+ */
 class QuestReponsesHandler extends MyXoopsPersistableObjectHandler
 {
+    /**
+     * QuestReponsesHandler constructor.
+     * @param \XoopsDatabase $db
+     */
     public function __construct($db)
     {    //                        Table               Classe          Id
         parent::__construct($db, 'quest_reponses', 'reponses', 'IdReponse');
@@ -58,7 +70,7 @@ class QuestReponsesHandler extends MyXoopsPersistableObjectHandler
     public function getUsersIdPerQuestionnaire($IdQuestionnaire)
     {
         $ret    = array();
-        $sql    = 'SELECT distinct(IdRespondant) FROM ' . $this->table . ' WHERE IdQuestionnaire=' . (int)$IdQuestionnaire;
+        $sql    = 'SELECT DISTINCT(IdRespondant) FROM ' . $this->table . ' WHERE IdQuestionnaire=' . (int)$IdQuestionnaire;
         $result = $this->db->query($sql);
         if (!$result) {
             return $ret;

@@ -15,7 +15,7 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-include('../../mainfile.php');
+include '../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 
 /**

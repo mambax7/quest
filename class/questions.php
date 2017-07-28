@@ -25,9 +25,14 @@ include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 
 include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
 
-
+/**
+ * Class questions
+ */
 class questions extends MyObject
 {
+    /**
+     * questions constructor.
+     */
     public function __construct()
     {
         $this->initVar('IdQuestion', XOBJ_DTYPE_INT, null, false);
@@ -39,8 +44,15 @@ class questions extends MyObject
     }
 }
 
+/**
+ * Class QuestQuestionsHandler
+ */
 class QuestQuestionsHandler extends MyXoopsPersistableObjectHandler
 {
+    /**
+     * QuestQuestionsHandler constructor.
+     * @param \XoopsDatabase $db
+     */
     public function __construct($db)
     {    //                                         Table               Classe      Id
         parent::__construct($db, 'quest_questions', 'questions', 'IdQuestion');
@@ -55,7 +67,7 @@ class QuestQuestionsHandler extends MyXoopsPersistableObjectHandler
     public function QuestionsCountPerQuestionnaire($IdQuestionnaire)
     {
         $ret    = array();
-        $sql    = 'SELECT count(*) as cpt, IdCategorie FROM ' . $this->table . ' WHERE IdQuestionnaire=' . (int)$IdQuestionnaire . ' GROUP BY IdCategorie ORDER BY IdCategorie';
+        $sql    = 'SELECT count(*) AS cpt, IdCategorie FROM ' . $this->table . ' WHERE IdQuestionnaire=' . (int)$IdQuestionnaire . ' GROUP BY IdCategorie ORDER BY IdCategorie';
         $result = $this->db->query($sql);
         if (!$result) {
             return $ret;

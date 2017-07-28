@@ -1,8 +1,15 @@
 <?php
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
+/**
+ * Class MyObject
+ */
 class MyObject extends XoopsObject
 {
+    /**
+     * @param string $format
+     * @return array
+     */
     public function toArray($format = 's')
     {
         $ret = array();
@@ -62,7 +69,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
      *
      * @param bool $isNew Flag the new objects as "new"?
      *
-     * @return object
+     * @return XoopsObject
      */
     public function create($isNew = true)
     {
@@ -138,12 +145,12 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     /**
      * retrieve objects from the database
      *
-     * @param object      $criteria  {@link CriteriaElement} conditions to be met
-     * @param bool|string $id_key    name of the field to use as key
-     * @param bool        $as_object return an array of objects?
+     * @param CriteriaElement $criteria  {@link CriteriaElement} conditions to be met
+     * @param bool|string     $id_key    name of the field to use as key
+     * @param bool            $as_object return an array of objects?
      * @return array
      */
-    public function &getObjects2($criteria = null, $id_key = '', $as_object = true)
+    public function &getObjects2(CriteriaElement $criteria = null, $id_key = '', $as_object = true)
     {
         $ret   = array();
         $limit = $start = 0;
@@ -197,9 +204,9 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     /**
      * Convert a database resultset to a returnable array
      *
-     * @param object $result    database resultset
-     * @param bool   $id_as_key - should NOT be used with joint keys
-     * @param bool   $as_object
+     * @param mixed $result    database resultset
+     * @param bool  $id_as_key - should NOT be used with joint keys
+     * @param bool  $as_object
      *
      * @return array
      */
@@ -243,10 +250,10 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     /**
      * get IDs of objects matching a condition
      *
-     * @param  object $criteria {@link CriteriaElement} to match
+     * @param  CriteriaElement $criteria {@link CriteriaElement} to match
      * @return array  of object IDs
      */
-    public function getIds($criteria = null)
+    public function getIds(CriteriaElement $criteria = null)
     {
         $sql = 'SELECT ' . $this->keyName . ' FROM ' . $this->table;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
@@ -264,13 +271,13 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     /**
      * Retrieve a list of objects as arrays - DON'T USE WITH JOINT KEYS
      *
-     * @param object $criteria {@link CriteriaElement} conditions to be met
-     * @param int    $limit    Max number of objects to fetch
-     * @param int    $start    Which record to start at
+     * @param CriteriaElement $criteria {@link CriteriaElement} conditions to be met
+     * @param int             $limit    Max number of objects to fetch
+     * @param int             $start    Which record to start at
      *
      * @return array
      */
-    public function getList($criteria = null, $limit = 0, $start = 0)
+    public function getList(CriteriaElement $criteria = null, $limit = 0, $start = 0)
     {
         $ret = array();
         if ($criteria == null) {
@@ -311,10 +318,10 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     /**
      * count objects matching a condition
      *
-     * @param  object $criteria {@link CriteriaElement} to match
+     * @param  CriteriaElement $criteria {@link CriteriaElement} to match
      * @return int|array    count of objects
      */
-    public function getCount($criteria = null)
+    public function getCount(CriteriaElement $criteria = null)
     {
         $field   = '';
         $groupby = false;
@@ -464,7 +471,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
                 if (isset($notfirst)) {
                     $sql .= ',';
                 }
-                $sql .= ' ' . $key . ' = ' . $value;
+                $sql      .= ' ' . $key . ' = ' . $value;
                 $notfirst = true;
             }
             if (is_array($this->keyName)) {
@@ -499,14 +506,14 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     /**
      * Change a value for objects with a certain criteria
      *
-     * @param string $fieldname  Name of the field
-     * @param string $fieldvalue Value to write
-     * @param object $criteria   {@link CriteriaElement}
+     * @param string          $fieldname  Name of the field
+     * @param string          $fieldvalue Value to write
+     * @param CriteriaElement $criteria   {@link CriteriaElement}
      *
-     * @param bool   $force
+     * @param bool            $force
      * @return bool
      */
-    public function updateAll($fieldname, $fieldvalue, $criteria = null, $force = false)
+    public function updateAll($fieldname, $fieldvalue, CriteriaElement $criteria = null, $force = false)
     {
         $set_clause = $fieldname . ' = ';
         if (is_numeric($fieldvalue)) {
@@ -535,11 +542,11 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     /**
      * delete all objects meeting the conditions
      *
-     * @param  object $criteria {@link CriteriaElement} with conditions to meet
+     * @param  CriteriaElement $criteria {@link CriteriaElement} with conditions to meet
      * @return bool
      */
 
-    public function deleteAll($criteria = null)
+    public function deleteAll(CriteriaElement $criteria = null)
     {
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
             $sql = 'DELETE FROM ' . $this->table;

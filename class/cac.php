@@ -25,8 +25,14 @@ include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 
 include_once XOOPS_ROOT_PATH . '/modules/quest/class/PersistableObjectHandler.php';
 
+/**
+ * Class cac
+ */
 class cac extends MyObject
 {
+    /**
+     * cac constructor.
+     */
     public function __construct()
     {
         $this->initVar('IdCAC', XOBJ_DTYPE_INT, null, false);
@@ -35,8 +41,15 @@ class cac extends MyObject
     }
 }
 
+/**
+ * Class QuestCacHandler
+ */
 class QuestCacHandler extends MyXoopsPersistableObjectHandler
 {
+    /**
+     * QuestCacHandler constructor.
+     * @param \XoopsDatabase $db
+     */
     public function __construct($db)
     {    //                         Table       Classe  Id
         parent::__construct($db, 'quest_cac', 'cac', 'IdCAC');

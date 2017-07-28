@@ -20,11 +20,11 @@
  * Génération automatique des relances de tous les questionnaires
  */
 
-include('../../../mainfile.php');
+include '../../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 include XOOPS_ROOT_PATH . '/class/xoopsmailer.php';
 
-echo "<br>Initialisation des handlers\n";
+echo "<br>Initialisation of Handlers\n";
 // Initialisation des handlers
 $cac_categories_handler = xoops_getModuleHandler('cac_categories', 'quest');
 $categories_handler     = xoops_getModuleHandler('categories', 'quest');
@@ -37,14 +37,14 @@ $rubrcomment_handler    = xoops_getModuleHandler('rubrcomment', 'quest');
 $member_handler = xoops_getHandler('member');
 
 if (function_exists('xoops_getMailer')) {
-    $xoopsMailer =& xoops_getMailer();
+    $xoopsMailer = xoops_getMailer();
 } else {
     $xoopsMailer =& getMailer();
 }
 
 $xoopsMailer->useMail();
 
-echo "<br>Récupération de la liste des questionnaires\n";
+echo "<br>Retrieving the list of questionnaires\n"; //Récupération de la liste des questionnaires
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('DateFermeture', time(), '>='));
 $criteria->add(new Criteria('DateOuverture', time(), '<='));
@@ -159,4 +159,4 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         }
     }
 }
-echo "<br><b>Action terminée</b>\n";
+echo "<br><b>Action terminated</b>\n"; //Action terminée

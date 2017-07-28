@@ -116,7 +116,7 @@ foreach ($tbl_cac as $cac_id => $cac_datas) {
         $suffixe = 's';
     }
     $LibelleLong = $cac_datas['LibelleLong'];
-    $resultat .= '<img src="' . XOOPS_URL . '/modules/quest/images/cac/' . $lr2 . $cac_id . $suffixe . '.png" alt="' . $LibelleLong . '" border="0" onclick="changeme(\'q' . $IdQuestion . $lr . '\',' . $cac_id . ',' . $IdQuestion . ',' . $DG . ')" /> ';
+    $resultat    .= '<img src="' . XOOPS_URL . '/modules/quest/images/cac/' . $lr2 . $cac_id . $suffixe . '.png" alt="' . $LibelleLong . '" border="0" onclick="changeme(\'q' . $IdQuestion . $lr . '\',' . $cac_id . ',' . $IdQuestion . ',' . $DG . ')" /> ';
     //file_put_contents('verif.txt',$resultat);
 }
 echo $resultat;

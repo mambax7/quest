@@ -17,21 +17,21 @@
  */
 defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
 
-//$path = dirname(dirname(dirname(__DIR__)));
-//include_once $path . '/mainfile.php';
-
 $moduleDirName = basename(dirname(__DIR__));
 
-$moduleHandler = xoops_getHandler('module');
-$module        = $moduleHandler->getByDirname($moduleDirName);
-$pathIcon32    = '../../' . $module->getInfo('sysicons32');
-xoops_loadLanguage('modinfo', $module->dirname());
-
-$xoopsModuleAdminPath = XOOPS_ROOT_PATH . '/' . $module->getInfo('dirmoduleadmin');
-if (!file_exists($fileinc = $xoopsModuleAdminPath . '/language/' . $GLOBALS['xoopsConfig']['language'] . '/' . 'main.php')) {
-    $fileinc = $xoopsModuleAdminPath . '/language/english/main.php';
+if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
+} else {
+    $moduleHelper = Xmf\Module\Helper::getHelper('system');
 }
-include_once $fileinc;
+$adminObject = \Xmf\Module\Admin::getInstance();
+
+$pathIcon32    = \Xmf\Module\Admin::menuIconPath('');
+//$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
+
+// Load language files
+$moduleHelper->loadLanguage('admin');
+$moduleHelper->loadLanguage('modinfo');
+$moduleHelper->loadLanguage('main');
 
 $adminmenu[] = array(
     'title' => _AM_MODULEADMIN_HOME,
@@ -40,13 +40,13 @@ $adminmenu[] = array(
 );
 
 $adminmenu[] = array(
-    'title' => _MI_MARQUEE_MENU_01,
+    'title' => _MI_QUEST_MENU_01,
     'link'  => 'admin/gencac.php',
     'icon'  => $pathIcon32 . '/manage.png'
 );
 
 $adminmenu[] = array(
-    'title' => _MI_MARQUEE_MENU_01,
+    'title' => _MI_QUEST_MENU_02,
     'link'  => 'admin/relances.php',
     'icon'  => $pathIcon32 . '/manage.png'
 );
