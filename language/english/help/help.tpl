@@ -1,5 +1,5 @@
 <div id="help-template" class="outer">
-    <{include file=$smarty.const._MI_XXXX_HELP_HEADER}>
+    <{include file=$smarty.const._MI_QUEST_HELP_HEADER}>
 
     <h4 class="odd">Description</h4>
 
