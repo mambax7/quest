@@ -28,14 +28,14 @@
 function b_quest_categories_list_show($options)
 {
     global $xoopsUser;
-    $block = array();
+    $block = [];
     if (is_object($xoopsUser)) {
         $uid = $xoopsUser->getVar('uid');
     } else {
         return null;
     }
 
-    $questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
+    $questionnairesHandler =  xoops_getModuleHandler('questionnaires', 'quest');
     // Les blocs �tant appel�s avant les pages, sans ces 3 lignes le bloc n'affiche pas les cat�gories du bon questionnaire
     if (isset($_GET['IdQuestionnaire'])) {
         $_SESSION['IdQuestionnaire'] = (int)$_GET['IdQuestionnaire'];
@@ -43,17 +43,17 @@ function b_quest_categories_list_show($options)
 
     if (isset($_SESSION['IdQuestionnaire'])) {
         $IdQuestionnaire = (int)$_SESSION['IdQuestionnaire'];
-        $tmp_quest       = $questionnaires_handler->get($IdQuestionnaire);
-        if (!$questionnaires_handler->isVisible($tmp_quest, $uid)) {    // Questionnaire "accessible" ?
+        $tmp_quest       = $questionnairesHandler->get($IdQuestionnaire);
+        if (!$questionnairesHandler->isVisible($tmp_quest, $uid)) {    // Questionnaire "accessible" ?
 
             return null;
         }
     } else {    // S'il n'y a pas de questionnaire de s�lectionn� par d�faut, on regarde s'il n'y en aurait pas qu'un seul dans la base (auquel cas on va le prendre)
-        if ($questionnaires_handler->getCount() == 1) {
-            $tbl_quest       = $questionnaires_handler->getObjects();
+        if ($questionnairesHandler->getCount() == 1) {
+            $tbl_quest       = $questionnairesHandler->getObjects();
             $tmp_quest       = $tbl_quest[0];
             $IdQuestionnaire = $tmp_quest->getVar('IdQuestionnaire');
-            if ($questionnaires_handler->isVisible($tmp_quest, $uid)) {
+            if ($questionnairesHandler->isVisible($tmp_quest, $uid)) {
                 $_SESSION['IdQuestionnaire'] = $IdQuestionnaire;
             } else {
                 return null;
@@ -63,10 +63,10 @@ function b_quest_categories_list_show($options)
         }
     }
 
-    $categories_handler = &xoops_getModuleHandler('categories', 'quest');
+    $categoriesHandler =  xoops_getModuleHandler('categories', 'quest');
     $tout_repondu       = false;
-    $tbl_categories     = array();
-    $tbl_categories     = $categories_handler->getCategoriesAndState($IdQuestionnaire, $uid, $tout_repondu);
+    $tbl_categories     = [];
+    $tbl_categories     = $categoriesHandler->getCategoriesAndState($IdQuestionnaire, $uid, $tout_repondu);
 
     if (!$tout_repondu) {
         foreach ($tbl_categories as $cle_category => $one_category) {

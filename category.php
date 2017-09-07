@@ -15,7 +15,7 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-include '../../mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 
 $next_categoryid = 0;
@@ -24,27 +24,25 @@ if (is_object($xoopsUser)) {
     $uid = $xoopsUser->getVar('uid');
 } else {    // Accès réservé aux utilisateurs enregistrés
     redirect_header(XOOPS_URL . '/index.php', 2, _ERRORS);
-    exit();
 }
 
 // TODO: Gérer le champ GoOnAfterEnd
 // Initialisation des handlers
-$cac_handler            = &xoops_getModuleHandler('cac', 'quest');
-$cac_categories_handler = &xoops_getModuleHandler('cac_categories', 'quest');
-$categories_handler     = &xoops_getModuleHandler('categories', 'quest');
-$enquetes_handler       = &xoops_getModuleHandler('enquetes', 'quest');
-$questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
-$questions_handler      = &xoops_getModuleHandler('questions', 'quest');
-$reponses_handler       = &xoops_getModuleHandler('reponses', 'quest');
-$rubrcomment_handler    = &xoops_getModuleHandler('rubrcomment', 'quest');
+$cacHandler            =  xoops_getModuleHandler('cac', 'quest');
+$cac_categoriesHandler =  xoops_getModuleHandler('cac_categories', 'quest');
+$categoriesHandler     =  xoops_getModuleHandler('categories', 'quest');
+$enquetesHandler       =  xoops_getModuleHandler('enquetes', 'quest');
+$questionnairesHandler =  xoops_getModuleHandler('questionnaires', 'quest');
+$questionsHandler      =  xoops_getModuleHandler('questions', 'quest');
+$reponsesHandler       =  xoops_getModuleHandler('reponses', 'quest');
+$rubrcommentHandler    =  xoops_getModuleHandler('rubrcomment', 'quest');
 
-$tbl_questionnaires       = $questionnaires_handler->GetNonAnsweredQuestionnaires($uid);
+$tbl_questionnaires       = $questionnairesHandler->GetNonAnsweredQuestionnaires($uid);
 $quest_non_answered_count = 0;
 $quest_non_answered_count = count($tbl_questionnaires);
 
 if ($quest_non_answered_count == 0) {    // Tous les questionnaires ont été répondus, merci et au revoir
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ALL_REPLYED);
-    exit();
 }
 
 // ********************************************************************************************************************
@@ -54,22 +52,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     $categoryid      = (int)$_POST['category'];    // On compare la catégorie provenant du formulaire avec celle enregistrée en session
     $questionnaireid = (int)$_POST['quest'];
     // Chargement de la catégorie et du questionnaire
-    $save_categ = $categories_handler->get($categoryid);
+    $save_categ = $categoriesHandler->get($categoryid);
     if (!is_object($save_categ)) {    // Catégorie introuvable
         redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR2);
-        exit();
     }
 
-    $save_quest = $questionnaires_handler->get($save_categ->getVar('IdQuestionnaire'));
+    $save_quest = $questionnairesHandler->get($save_categ->getVar('IdQuestionnaire'));
     if (!is_object($save_quest)) {
         redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR6);
-        exit();
     }
 
     // Ensuite on vérifie que l'utilisateur a le droit de répondre à ce questionnaire et donc à cette catégorie
-    if (!$questionnaires_handler->isVisible($save_quest, $uid)) {
+    if (!$questionnairesHandler->isVisible($save_quest, $uid)) {
         redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR3);    // Pas le droit, on dégage.
-        exit();
     }
 
     // Toute la partie suivante a été mise en commentaire "à cause" de l'utilisation d'ajax.
@@ -82,7 +77,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
         $criteria->add(new Criteria('IdQuestionnaire', $save_quest->getVar('IdQuestionnaire') ,'='));
         $criteria->add(new Criteria('IdCategorie', $save_categ->getVar('IdCategorie') ,'='));
         $criteria->setSort('OrdreQuestion');
-        $tbl_questions = $questions_handler->getObjects($criteria, true);   // Avec les ID de questions
+        $tbl_questions = $questionsHandler->getObjects($criteria, true);   // Avec les ID de questions
         $ch_id_questions = join(',',array_keys($tbl_questions));    // Création d'un liste sous la forme id1,id2,id3 ...
         $ip = Quest_IP();
 
@@ -92,12 +87,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
         $criteria->add(new Criteria('IdQuestionnaire', $save_quest->getVar('IdQuestionnaire') ,'='));
         $criteria->add(new Criteria('IdCategorie', $save_categ->getVar('IdCategorie') ,'='));
         $criteria->add(new Criteria('IdRespondant', $uid ,'='));
-        $rubrcomment_handler->deleteAll($criteria);
+        $rubrcommentHandler->deleteAll($criteria);
         // Et on enregistre les nouvelles
         $commentaire1 = isset($_POST['comment1']) ? $_POST['comment1'] : '';
         $commentaire2 = isset($_POST['comment2']) ? $_POST['comment2'] : '';
         $commentaire3 = isset($_POST['comment3']) ? $_POST['comment3'] : '';
-        $res = $rubrcomment_handler->quickInsert(array('IdRespondant' => $uid,
+        $res = $rubrcommentHandler->quickInsert(array('IdRespondant' => $uid,
                                                 'IdQuestionnaire' => $save_quest->getVar('IdQuestionnaire'),
                                                 'IdCategorie' => $save_categ->getVar('IdCategorie'),
                                                 'Comment1' => $commentaire1,
@@ -108,7 +103,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
                                                 ));
         if (!$res) {
             redirect_header(XOOPS_URL.'/index.php',2,_QUEST_ERROR7);
-            exit();
         }
 
         // Les réponses en elle même
@@ -118,7 +112,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
         $criteria->add(new Criteria('IdCategorie', $save_categ->getVar('IdCategorie') ,'='));
         $criteria->add(new Criteria('IdRespondant', $uid ,'='));
         $criteria->add(new Criteria('IdQuestion','('.$ch_id_questions.')','IN'));
-        $reponses_handler->deleteAll($criteria);
+        $reponsesHandler->deleteAll($criteria);
         $afficherdroite = $save_categ->getVar('AfficherDroite');
         $affichergauche = $save_categ->getVar('AfficherGauche');
 
@@ -152,7 +146,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
                 $save = false;
             }
             if ($save) {
-                $res=$reponses_handler->quickInsert(array('IdQuestionnaire' => $save_quest->getVar('IdQuestionnaire'),
+                $res=$reponsesHandler->quickInsert(array('IdQuestionnaire' => $save_quest->getVar('IdQuestionnaire'),
                                                         'IdCategorie' => $save_categ->getVar('IdCategorie'),
                                                         'IdRespondant' => $uid,
                                                         'IdQuestion' => $id_question,
@@ -162,7 +156,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
                                                         'IP' => $ip));
                 if (!$res) {
                     redirect_header(XOOPS_URL.'/index.php',2,_QUEST_ERROR8);
-                    exit();
                 }
             }
         }
@@ -170,7 +163,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
     // Passage à la prochaine catégorie
     $crit_categ = new Criteria('IdQuestionnaire', $questionnaireid, '=');
     $crit_categ->setSort('OrdreCategorie');
-    $tbl_categories = $categories_handler->getIds($crit_categ);
+    $tbl_categories = $categoriesHandler->getIds($crit_categ);
     $at_the_end     = false;
     $pos            = array_search($categoryid, $tbl_categories);
     if ($pos + 1 == count($tbl_categories)) {
@@ -185,7 +178,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 
 // Ce code est placé là *VOLONTAIREMENT* car il permet de retarder l'apparition des blocs
 // Il ne faut pas le déplacer de là
-$xoopsOption['template_main'] = 'quest_category.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'quest_category.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 
 // ********************************************************************************************************************
@@ -200,32 +193,28 @@ if (isset($_GET['categoryid'])) {
 } else {    // Rien n'a été spécifié
     if ($next_categoryid == 0) {
         redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR1);
-        exit();
     } else {
         if ($next_categoryid != -1) {
             $categoryid = $next_categoryid;
         } else {    // On est arrivé à la dernière catégorie.
             redirect_header(XOOPS_URL . '/index.php', 4, _QUEST_THANK_YOU2);
-            exit();
         }
     }
 }
 
 // Recherche du questionnaire correspondant
 // On commence par chercher sa catégorie
-$current_categ = $categories_handler->get($categoryid);
+$current_categ = $categoriesHandler->get($categoryid);
 if (!is_object($current_categ)) {    // Catégorie introuvable
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR2);
-    exit();
 }
 $_SESSION['IdQuestionnaire'] = $current_categ->getVar('IdQuestionnaire');
 // Maintenant qu'on connait l'identifiant du questionnaire, on va aller le chercher
-$current_quest = $questionnaires_handler->get($current_categ->getVar('IdQuestionnaire'));
+$current_quest = $questionnairesHandler->get($current_categ->getVar('IdQuestionnaire'));
 
 // Ensuite on vérifie que l'utilisateur a le droit de répondre à ce questionnaire et donc à cette catégorie
-if (!$questionnaires_handler->isVisible($current_quest, $uid)) {
+if (!$questionnairesHandler->isVisible($current_quest, $uid)) {
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR3);    // Pas le droit, on dégage.
-    exit();
 }
 
 $_SESSION['IdCategory'] = $current_categ->getVar('IdCategorie');
@@ -247,10 +236,10 @@ if (xoops_trim($current_quest->getVar('ResetButton')) != '') {
 $xoopsTpl->assign('category', $current_categ->toArray());
 
 // Etat de la catégorie (0=Aucune réponse, 1=Tout répondu, 2= Partiellement répondu)
-$xoopsTpl->assign('category_state', $categories_handler->getCategoryState($current_categ, $uid));
+$xoopsTpl->assign('category_state', $categoriesHandler->getCategoryState($current_categ, $uid));
 
 // Récupération des informations sur l'enquêté ************************************************************************
-$current_enquete = $enquetes_handler->get($current_quest->getVar('IdEnquete'));
+$current_enquete = $enquetesHandler->get($current_quest->getVar('IdEnquete'));
 $xoopsTpl->assign('enquete', $current_enquete->toArray());
 
 // Récupération des questions de la catégorie *************************************************************************
@@ -258,7 +247,7 @@ $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('IdQuestionnaire', $current_quest->getVar('IdQuestionnaire'), '='));
 $criteria->add(new Criteria('IdCategorie', $current_categ->getVar('IdCategorie'), '='));
 $criteria->setSort('OrdreQuestion');
-$tbl_questions   = $questions_handler->getObjects($criteria, true);    // Avec les ID de questions
+$tbl_questions   = $questionsHandler->getObjects($criteria, true);    // Avec les ID de questions
 $ch_id_questions = '';
 $ch_id_questions = implode(',', array_keys($tbl_questions));    // Création d'un liste sous la forme id1,id2,id3 ...
 
@@ -266,9 +255,9 @@ $ch_id_questions = implode(',', array_keys($tbl_questions));    // Création d'u
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('IdCategorie', $current_categ->getVar('IdCategorie'), '='));
 $criteria->setSort('DroiteGauche, Ordre');
-$tbl_cac_categories = $cac_categories_handler->getObjects($criteria);
+$tbl_cac_categories = $cac_categoriesHandler->getObjects($criteria);
 if (count($tbl_cac_categories) > 0) {        // S'il y a des questions
-    $tbl_id_cac = array();
+    $tbl_id_cac = [];
     foreach ($tbl_cac_categories as $one_cac_category) {
         $tbl_id_cac[] = $one_cac_category->getVar('IdCAC');
     }
@@ -278,7 +267,7 @@ if (count($tbl_cac_categories) > 0) {        // S'il y a des questions
     // Récupération des libellés associés *********************************************************************************
     $criteria = new Criteria('IdCAC', '(' . $ch_id_categ . ')', 'IN');
     $criteria->setSort('IdCAC');
-    $tbl_libelles_cac = $cac_handler->getObjects($criteria, true);    // Avec comme clé, l'ID de CAC
+    $tbl_libelles_cac = $cacHandler->getObjects($criteria, true);    // Avec comme clé, l'ID de CAC
 
     // Récupération des réponses ******************************************************************************************
     $criteria = new CriteriaCompo();
@@ -286,7 +275,7 @@ if (count($tbl_cac_categories) > 0) {        // S'il y a des questions
     $criteria->add(new Criteria('IdCategorie', $current_categ->getVar('IdCategorie'), '='));
     $criteria->add(new Criteria('IdRespondant', $uid, '='));
     $criteria->add(new Criteria('IdQuestion', '(' . $ch_id_questions . ')', 'IN'));
-    $tbl_reponses = $reponses_handler->getObjects($criteria);
+    $tbl_reponses = $reponsesHandler->getObjects($criteria);
 }
 
 // Récupération des commentaires **************************************************************************************
@@ -294,8 +283,8 @@ $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('IdRespondant', $uid, '='));
 $criteria->add(new Criteria('IdQuestionnaire', $current_quest->getVar('IdQuestionnaire'), '='));
 $criteria->add(new Criteria('IdCategorie', $current_categ->getVar('IdCategorie'), '='));
-$tbl_commentaires = array();
-$tbl_commentaires = $rubrcomment_handler->getObjects($criteria);
+$tbl_commentaires = [];
+$tbl_commentaires = $rubrcommentHandler->getObjects($criteria);
 if (count($tbl_commentaires) > 0) {
     $one_commentaire = $tbl_commentaires[0];
     $xoopsTpl->assign('commentaire1', $one_commentaire->getVar('Comment1', 'e'));
@@ -308,12 +297,12 @@ if (count($tbl_commentaires) > 0) {
 }
 
 // Construction des CAC de droite et de la légende de droite **********************************************************
-$tbl_sesCAC_D    = array();
-$tbl_sesCAC_G    = array();
-$tbl_all_cac_ids = array();
+$tbl_sesCAC_D    = [];
+$tbl_sesCAC_G    = [];
+$tbl_all_cac_ids = [];
 
-$tbl_cac_droite     = array();
-$tbl_legende_droite = array();
+$tbl_cac_droite     = [];
+$tbl_legende_droite = [];
 if ($current_categ->getVar('AfficherDroite')) {
     foreach ($tbl_cac_categories as $one_cac_category) {    // Boucle sur toutes les cac_categories
         if ($one_cac_category->getVar('DroiteGauche') == 1) {
@@ -321,9 +310,9 @@ if ($current_categ->getVar('AfficherDroite')) {
             $cac_courante                                     = $tbl_libelles_cac[$id];        // Renvoie un objet de type quest_cac
             $libelle_long                                     = $cac_courante->getVar('LibelleCAC');
             $libelle_court                                    = $cac_courante->getVar('LibelleCourtCac');
-            $tbl_cac_droite[]                                 = array('IdCAC' => $one_cac_category->getVar('IdCAC'), 'LibelleCourt' => xoops_trim($libelle_court));
-            $tbl_sesCAC_D[$one_cac_category->getVar('IdCAC')] = array('LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long));
-            $tbl_legende_droite[]                             = array('LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long));
+            $tbl_cac_droite[]                                 = ['IdCAC' => $one_cac_category->getVar('IdCAC'), 'LibelleCourt' => xoops_trim($libelle_court)];
+            $tbl_sesCAC_D[$one_cac_category->getVar('IdCAC')] = ['LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long)];
+            $tbl_legende_droite[]                             = ['LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long)];
             $tbl_all_cac_ids[]                                = 'r' . $id . 's.png';
         }
     }
@@ -335,8 +324,8 @@ if ($current_categ->getVar('AfficherDroite')) {
 }
 
 // Construction des CAC de gauche et de la légende de gauche **********************************************************
-$tbl_cac_gauche     = array();
-$tbl_legende_gauche = array();
+$tbl_cac_gauche     = [];
+$tbl_legende_gauche = [];
 if ($current_categ->getVar('AfficherGauche')) {
     foreach ($tbl_cac_categories as $one_cac_category) {    // Boucle sur toutes les cac_categories
         if ($one_cac_category->getVar('DroiteGauche') == 2) {
@@ -344,9 +333,9 @@ if ($current_categ->getVar('AfficherGauche')) {
             $cac_courante                                     = $tbl_libelles_cac[$id];        // Renvoie un objet de type quest_cac
             $libelle_long                                     = $cac_courante->getVar('LibelleCAC');
             $libelle_court                                    = $cac_courante->getVar('LibelleCourtCac');
-            $tbl_cac_gauche[]                                 = array('IdCAC' => $one_cac_category->getVar('IdCAC'), 'LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long));
-            $tbl_sesCAC_G[$one_cac_category->getVar('IdCAC')] = array('LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long));
-            $tbl_legende_gauche[]                             = array('LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long));
+            $tbl_cac_gauche[]                                 = ['IdCAC' => $one_cac_category->getVar('IdCAC'), 'LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long)];
+            $tbl_sesCAC_G[$one_cac_category->getVar('IdCAC')] = ['LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long)];
+            $tbl_legende_gauche[]                             = ['LibelleCourt' => xoops_trim($libelle_court), 'LibelleLong' => xoops_trim($libelle_long)];
             $tbl_all_cac_ids[]                                = 'l' . $id . 's.png';
         }
     }
@@ -364,7 +353,7 @@ $_SESSION['tbl_sesCAC_G'] = $tbl_sesCAC_G;
 // Synthèse du tout ***************************************************************************************************
 // Construction d'un tableau qui contient toutes les questions avec les réponses
 $cptquestion            = 0;
-$tbl_questions_reponses = array();
+$tbl_questions_reponses = [];
 foreach ($tbl_questions as $id_question => $one_question) {
     $Id_CAC1 = $Id_CAC2 = 0;
     ++$cptquestion;
@@ -376,7 +365,7 @@ foreach ($tbl_questions as $id_question => $one_question) {
         }
     }
 
-    $tbl_questions_reponses[] = array(
+    $tbl_questions_reponses[] = [
         'IdQuestion'         => $one_question->getVar('IdQuestion'),
         'NumeroQuestion'     => $cptquestion,
         'OrdreQuestion'      => $one_question->getVar('OrdreQuestion'),
@@ -384,7 +373,7 @@ foreach ($tbl_questions as $id_question => $one_question) {
         'ComplementQuestion' => $one_question->getVar('ComplementQuestion'),
         'Id_CAC1'            => $Id_CAC1,                // Droite
         'Id_CAC2'            => $Id_CAC2                // Gauche
-    );
+    ];
 }
 $xoopsTpl->assign('questions_reponses', $tbl_questions_reponses);
 
@@ -412,7 +401,7 @@ $btn_suiv = $btn_prev = '';
 if (!isset($tbl_categories)) {
     $crit_categ = new Criteria('IdQuestionnaire', $current_quest->getVar('IdQuestionnaire'), '=');
     $crit_categ->setSort('OrdreCategorie');
-    $tbl_categories = $categories_handler->getIds($crit_categ);
+    $tbl_categories = $categoriesHandler->getIds($crit_categ);
 }
 
 $pos = array_search($current_categ->getVar('IdCategorie'), $tbl_categories);

@@ -19,7 +19,7 @@
 /*
  * Création automatique des images des CAC
  */
-include_once '../../../include/cp_header.php';
+include_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
 
 /**
@@ -28,7 +28,7 @@ xoops_cp_header();
  */
 function color_form($color)
 {
-    $ret = array();
+    $ret = [];
     $ret = explode(',', $color);
     array_map('trim', $ret);
 
@@ -99,8 +99,8 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $rbackgrounds = color_form($_POST['rbackgrounds']);        // Colonne de droite, image sélectionnée, couleur de fond
         $rforegrounds = color_form($_POST['rforegrounds']);        // Colonne de droite, image sélectionnée, couleur du texte
 
-        $cac_handler = xoops_getModuleHandler('cac', 'quest');
-        $tbl_cac     = $cac_handler->getObjects();
+        $cacHandler = xoops_getModuleHandler('cac', 'quest');
+        $tbl_cac     = $cacHandler->getObjects();
         $images_path = XOOPS_ROOT_PATH . '/modules/quest/images/cac/';
         foreach ($tbl_cac as $one_cac) {
             $name1 = $images_path . 'l' . $one_cac->getVar('IdCAC') . 'n';

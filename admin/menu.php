@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @author       XOOPS Development Team
@@ -23,7 +23,7 @@ if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
 } else {
     $moduleHelper = Xmf\Module\Helper::getHelper('system');
 }
-$adminObject = \Xmf\Module\Admin::getInstance();
+
 
 $pathIcon32    = \Xmf\Module\Admin::menuIconPath('');
 //$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
@@ -33,26 +33,26 @@ $moduleHelper->loadLanguage('admin');
 $moduleHelper->loadLanguage('modinfo');
 $moduleHelper->loadLanguage('main');
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _AM_MODULEADMIN_HOME,
     'link'  => 'admin/index.php',
     'icon'  => $pathIcon32 . '/home.png'
-);
+];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _MI_QUEST_MENU_01,
     'link'  => 'admin/gencac.php',
     'icon'  => $pathIcon32 . '/manage.png'
-);
+];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _MI_QUEST_MENU_02,
     'link'  => 'admin/relances.php',
     'icon'  => $pathIcon32 . '/manage.png'
-);
+];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _AM_MODULEADMIN_ABOUT,
     'link'  => 'admin/about.php',
     'icon'  => $pathIcon32 . '/about.png'
-);
+];

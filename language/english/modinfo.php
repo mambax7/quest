@@ -21,4 +21,3 @@ define('_MI_QUEST_BNAME2', 'Categories list unanswered');
 define('_MI_QUEST_BNAME3', 'Progress Report');
 define('_MI_QUEST_MENU_01', 'Pictures');
 define('_MI_QUEST_MENU_02', 'Questions');
-

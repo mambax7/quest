@@ -20,8 +20,8 @@
  * Affichage du statut de chaque questionnaire duquel l'utilisateur courant est commanditaire
  */
 
-include '../../mainfile.php';
-$xoopsOption['template_main'] = 'quest_status.tpl';
+include __DIR__ . '/../../mainfile.php';
+$GLOBALS['xoopsOption']['template_main'] = 'quest_status.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 
@@ -30,45 +30,44 @@ if (is_object($xoopsUser)) {
     $uid = $xoopsUser->getVar('uid');
 } else {    // Accès réservé aux utilisateurs enregistrés
     redirect_header(XOOPS_URL . '/index.php', 2, _ERRORS);
-    exit();
 }
 
 // Initialisation des handlers
-$cac_categories_handler = &xoops_getModuleHandler('cac_categories', 'quest');
-$categories_handler     = &xoops_getModuleHandler('categories', 'quest');
-$enquetes_handler       = &xoops_getModuleHandler('enquetes', 'quest');
-$questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
-$questions_handler      = &xoops_getModuleHandler('questions', 'quest');
-$reponses_handler       = &xoops_getModuleHandler('reponses', 'quest');
-$rubrcomment_handler    = &xoops_getModuleHandler('rubrcomment', 'quest');
+$cac_categoriesHandler =  xoops_getModuleHandler('cac_categories', 'quest');
+$categoriesHandler     =  xoops_getModuleHandler('categories', 'quest');
+$enquetesHandler       =  xoops_getModuleHandler('enquetes', 'quest');
+$questionnairesHandler =  xoops_getModuleHandler('questionnaires', 'quest');
+$questionsHandler      =  xoops_getModuleHandler('questions', 'quest');
+$reponsesHandler       =  xoops_getModuleHandler('reponses', 'quest');
+$rubrcommentHandler    =  xoops_getModuleHandler('rubrcomment', 'quest');
 // Handler Xoops
-$member_handler = xoops_getHandler('member');
+$memberHandler = xoops_getHandler('member');
 
 // Début des travaux
 // On commence par rechercher les questionnaires desquels l'utilisateur est commanditaire
 $groups             = quest_getUserGroups();
-$tbl_questionnaires = array();
-$tbl_questionnaires = $questionnaires_handler->getObjects($groups);
+$tbl_questionnaires = [];
+$tbl_questionnaires = $questionnairesHandler->getObjects($groups);
 foreach ($tbl_questionnaires as $one_questionnaire) {
-    $tbl           = array();
-    $tbl_solutions = array();
+    $tbl           = [];
+    $tbl_solutions = [];
     $tbl           = $one_questionnaire->toArray();
     // Récupération des informations sur l'enquêté
-    $enquete        = $enquetes_handler->get($one_questionnaire->getVar('IdEnquete'));
+    $enquete        = $enquetesHandler->get($one_questionnaire->getVar('IdEnquete'));
     $tbl['Enquete'] = $enquete->toArray();
 
-    $tbl_categories = array();
+    $tbl_categories = [];
     $critere        = new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '=');
     $critere->setSort('OrdreCategorie');
-    $tbl_categories = $categories_handler->GetObjects($critere);
+    $tbl_categories = $categoriesHandler->GetObjects($critere);
 
     // ****************************************************************************************************************
     // Statistiques globales
     // ****************************************************************************************************************
     // Récupération de la liste des utilisateurs
-    $list_users = $list_users2 = array();
-    $tbl_users  = array();
-    $tbl_users  = $member_handler->getUsersByGroup($one_questionnaire->getVar('Groupe'), true);    // En tant qu'objet
+    $list_users = $list_users2 = [];
+    $tbl_users  = [];
+    $tbl_users  = $memberHandler->getUsersByGroup($one_questionnaire->getVar('Groupe'), true);    // En tant qu'objet
 
     foreach ($tbl_users as $one_user) {
         $list_users[]  = xoops_trim($one_user->getVar('name')) != '' ? $one_user->getVar('name') : $one_user->getVar('uname');
@@ -84,7 +83,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
     // Recherche des personnes qui n'ont pas répondu
 
     // On commence par chercher la liste des personnes qui ont répondu
-    $tbl_repondu = $reponses_handler->getUsersIdPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
+    $tbl_repondu = $reponsesHandler->getUsersIdPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
     // Normalement la différence entre la liste des personnes qui doivent répondre et la liste des personnes qui ont répondu
     // est égale à la liste des personnes qui n'ont pas du tout répondu
     $tbl_non_repondus = array_diff($list_users2, $tbl_repondu);
@@ -97,11 +96,11 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
     // Recherche du nombre total de questions du questionnaire
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
-    $questionnaire_questions_count = $questions_handler->getCount($criteria);
+    $questionnaire_questions_count = $questionsHandler->getCount($criteria);
 
     // Recherche du nombre de questions par catégorie pour ce questionnaire
-    $tbl_questions_count_per_category = array();    // Clé=Id Catégorie, Valeur = Nb questions
-    $tbl_questions_count_per_category = $questions_handler->QuestionsCountPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
+    $tbl_questions_count_per_category = [];    // Clé=Id Catégorie, Valeur = Nb questions
+    $tbl_questions_count_per_category = $questionsHandler->QuestionsCountPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
 
     // Ensuite, on regarde pour chaque personne qui a répondu pour savoir si elle a répondu à tout ou partiellement
     foreach ($tbl_repondu as $one_uid) {
@@ -118,7 +117,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
                 if ($one_category->getVar('AfficherGauche')) {
                     $criteria->add(new Criteria('Id_CAC2', 0, '<>'));
                 }
-                $answers_count = $reponses_handler->getCount($criteria);    // Nombre de réponses de cette personne
+                $answers_count = $reponsesHandler->getCount($criteria);    // Nombre de réponses de cette personne
                 if ($answers_count != $tbl_questions_count_per_category[$one_category->getVar('IdCategorie')]) {
                     $tout_repondu = false;
                     break;    // Pas la peine de continuer, cette personne n'a pas répondu sur cette catégorie
@@ -139,7 +138,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
                 if (xoops_trim($one_category->getVar('comment3')) != '') {
                     $criteria->add(new Criteria('LENGTH(TRIM(Comment3))', 0, '>'));
                 }
-                $cnt = $rubrcomment_handler->getCount($criteria);
+                $cnt = $rubrcommentHandler->getCount($criteria);
                 if ($cnt == 0) {
                     $tout_repondu = false;
                 }
@@ -162,7 +161,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
     // ****************************************************************************************************************
     // Statistiques détaillée catégorie par catégorie
     // ****************************************************************************************************************
-    $tbl_total = array();
+    $tbl_total = [];
 
     foreach ($tbl_categories as $one_category) {        // Boucle sur les catégories
         // Recherche du nombre de personnes qui ont répondu à cette catégorie
@@ -175,9 +174,9 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         if ($one_category->getVar('AfficherGauche')) {
             $criteria->add(new Criteria('Id_CAC2', 0, '<>'));
         }
-        $answers_count = $reponses_handler->getCount($criteria);
+        $answers_count = $reponsesHandler->getCount($criteria);
 
-        $tbl2 = array();
+        $tbl2 = [];
         $tbl2 = $one_category->toArray();
         // Recherche du nombre de commentaires répondus
         if (xoops_trim($one_category->getVar('comment1')) != '') {
@@ -185,7 +184,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
             $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
             $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
             $criteria->add(new Criteria('LENGTH(TRIM(Comment1))', 0, '>'));
-            $cnt                   = $rubrcomment_handler->getCount($criteria);
+            $cnt                   = $rubrcommentHandler->getCount($criteria);
             $tbl2['Comment1Count'] = $cnt;
         } else {
             $tbl2['Comment1Count'] = 0;
@@ -196,7 +195,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
             $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
             $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
             $criteria->add(new Criteria('LENGTH(TRIM(Comment2))', 0, '>'));
-            $cnt                   = $rubrcomment_handler->getCount($criteria);
+            $cnt                   = $rubrcommentHandler->getCount($criteria);
             $tbl2['Comment2Count'] = $cnt;
         } else {
             $tbl2['Comment2Count'] = 0;
@@ -207,7 +206,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
             $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
             $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
             $criteria->add(new Criteria('LENGTH(TRIM(Comment3))', 0, '>'));
-            $cnt                   = $rubrcomment_handler->getCount($criteria);
+            $cnt                   = $rubrcommentHandler->getCount($criteria);
             $tbl2['Comment3Count'] = $cnt;
         } else {
             $tbl2['Comment3Count'] = 0;
@@ -217,13 +216,13 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
         $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
-        $questions_count         = $questions_handler->getCount($criteria);
+        $questions_count         = $questionsHandler->getCount($criteria);
         $tbl2['questions_count'] = $questions_count;
 
         // Recherche du nombre de réponses que l'on devrait avoir
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
-        $cac_count = $cac_categories_handler->getCount($criteria);
+        $cac_count = $cac_categoriesHandler->getCount($criteria);
 
         if ($one_category->getVar('AfficherDroite') && $one_category->getVar('AfficherGauche')) {
             $tbl2['cac_count'] = $questions_count * 2;
@@ -241,7 +240,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         if ($one_category->getVar('AfficherGauche')) {
             $criteria->add(new Criteria('Id_CAC2', 0, '<>'));
         }
-        $answers_count         = $reponses_handler->getCount($criteria);
+        $answers_count         = $reponsesHandler->getCount($criteria);
         $tbl2['answers_count'] = $answers_count;
 
         $tbl_total['questions'] .= $questions_count;

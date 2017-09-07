@@ -33,7 +33,7 @@ require_once __DIR__ . '/package.fig.php';
  */
 class DefaultFontImagePluggableSet extends GMIPluggableSet
 {
-    public $defaultVariables = array(
+    public $defaultVariables = [
         'text'      => null,
         'size'      => null,
         'font'      => null,
@@ -53,7 +53,7 @@ class DefaultFontImagePluggableSet extends GMIPluggableSet
         'palette'   => 256,
         'quality'   => 100,
         'file'      => null
-    );
+    ];
 
     /**
      * DefaultFontImagePluggableSet constructor.

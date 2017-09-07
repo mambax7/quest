@@ -1,5 +1,5 @@
 <?php
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class MyObject
@@ -12,7 +12,7 @@ class MyObject extends XoopsObject
      */
     public function toArray($format = 's')
     {
-        $ret = array();
+        $ret = [];
         foreach ($this->vars as $k => $v) {
             $ret[$k] = $this->getVar($k, $format);
         }
@@ -59,7 +59,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         $this->table     = $db->prefix($tablename);
         $this->keyName   = $keyname;
         $this->className = $classname;
-        if ($idenfierName != false) {
+        if ($idenfierName !== false) {
             $this->identifierName = $idenfierName;
         }
     }
@@ -121,7 +121,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
      */
     public function &getObjects(CriteriaElement $criteria = null, $id_as_key = false, $as_object = true)
     {
-        $ret   = array();
+        $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->table;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
@@ -152,7 +152,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
      */
     public function &getObjects2(CriteriaElement $criteria = null, $id_key = '', $as_object = true)
     {
-        $ret   = array();
+        $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT * FROM ' . $this->table;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
@@ -174,7 +174,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
                 if ($as_object) {
                     $ret[] =& $obj;
                 } else {
-                    $row     = array();
+                    $row     = [];
                     $vars    = $obj->getVars();
                     $tbl_tmp = array_keys($vars);
                     foreach ($tbl_tmp as $i) {
@@ -186,7 +186,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
                 if ($as_object) {
                     $ret[$myrow[$id_key]] =& $obj;
                 } else {
-                    $row     = array();
+                    $row     = [];
                     $vars    = $obj->getVars();
                     $tbl_tmp = array_keys($vars);
                     foreach ($tbl_tmp as $i) {
@@ -212,7 +212,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
      */
     public function convertResultSet($result, $id_as_key = false, $as_object = true)
     {
-        $ret = array();
+        $ret = [];
         while ($myrow = $this->db->fetchArray($result)) {
             $obj = $this->create(false);
             $obj->assignVars($myrow);
@@ -220,7 +220,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
                 if ($as_object) {
                     $ret[] =& $obj;
                 } else {
-                    $row     = array();
+                    $row     = [];
                     $vars    = $obj->getVars();
                     $tbl_tmp = array_keys($vars);
                     foreach ($tbl_tmp as $i) {
@@ -232,7 +232,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
                 if ($as_object) {
                     $ret[$myrow[$this->keyName]] =& $obj;
                 } else {
-                    $row     = array();
+                    $row     = [];
                     $vars    = $obj->getVars();
                     $tbl_tmp = array_keys($vars);
                     foreach ($tbl_tmp as $i) {
@@ -260,7 +260,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
             $sql .= ' ' . $criteria->renderWhere();
         }
         $result = $this->db->query($sql);
-        $ret    = array();
+        $ret    = [];
         while ($myrow = $this->db->fetchArray($result)) {
             $ret[] = $myrow[$this->keyName];
         }
@@ -279,7 +279,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
      */
     public function getList(CriteriaElement $criteria = null, $limit = 0, $start = 0)
     {
-        $ret = array();
+        $ret = [];
         if ($criteria == null) {
             $criteria = new CriteriaCompo();
         }
@@ -342,12 +342,12 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         if (!$result) {
             return 0;
         }
-        if ($groupby == false) {
+        if ($groupby === false) {
             list($count) = $this->db->fetchRow($result);
 
             return $count;
         } else {
-            $ret = array();
+            $ret = [];
             while (list($id, $count) = $this->db->fetchRow($result)) {
                 $ret[$id] = $count;
             }
@@ -366,7 +366,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     public function delete(XoopsObject $obj, $force = false)
     {
         if (is_array($this->keyName)) {
-            $clause = array();
+            $clause = [];
             $vnb    = count($this->keyName);
             for ($i = 0; $i < $vnb; ++$i) {
                 $clause[] = $this->keyName[$i] . ' = ' . $obj->getVar($this->keyName[$i]);
@@ -389,7 +389,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     }
 
     /**
-     * Quickly insert a record like this $myobject_handler->quickInsert('field1' => field1value, 'field2' => $field2value)
+     * Quickly insert a record like this $myobjectHandler->quickInsert('field1' => field1value, 'field2' => $field2value)
      *
      * @param  array $vars  Array containing the fields name and value
      * @param  bool  $force whether to force the query execution despite security settings
@@ -416,7 +416,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
 
     public function insert(XoopsObject $obj, $force = false, $checkObject = true)
     {
-        if ($checkObject != false) {
+        if ($checkObject !== false) {
             if (!is_object($obj)) {
                 echo '<br><h1>Error, not object</h1>';
 

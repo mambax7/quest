@@ -24,15 +24,15 @@
 function b_quest_questionnaires_list_show($options)
 {
     global $xoopsUser;
-    $block = array();
+    $block = [];
     if (is_object($xoopsUser)) {
         $uid = $xoopsUser->getVar('uid');
     } else {
         return null;
     }
-    $tbl_questionnaires     = array();
-    $questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
-    $tbl_questionnaires     = $questionnaires_handler->GetNonAnsweredQuestionnaires($uid);
+    $tbl_questionnaires     = [];
+    $questionnairesHandler =  xoops_getModuleHandler('questionnaires', 'quest');
+    $tbl_questionnaires     = $questionnairesHandler->GetNonAnsweredQuestionnaires($uid);
     if (count($tbl_questionnaires) > 0) {
         foreach ($tbl_questionnaires as $id_category => $one_questionnaire) {
             $donnees                   = $one_questionnaire->toArray();

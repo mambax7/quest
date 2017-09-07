@@ -49,8 +49,8 @@
 
 class GMIExecution
 {
-    public $nameTable    = array(); // array
-    public $commands     = array(); // array
+    public $nameTable    = []; // array
+    public $commands     = []; // array
     public $pluggableSet = null; // GMIPluggableSet
     public $isDebugMode  = false; // boolean
 
@@ -78,13 +78,13 @@ class GMIExecution
     /**
      * @param array $anArray
      */
-    public function prepareVariables($anArray = array())
+    public function prepareVariables($anArray = [])
     {
         //reset($anArray);
         //while (list($name, $exp) = each($anArray)) {
         foreach ($anArray as $name => $exp) {
             // split expression into variable name.
-            $matches = array();
+            $matches = [];
             preg_match_all('/^\s*([\w]+)\s*$/', $name, $matches);
 
             // stop if expression is not valid
@@ -206,7 +206,7 @@ class GMIExecution
      */
     public function extractArguments($startIndex, $endIndex, &$args)
     {
-        $newArgs = array();
+        $newArgs = [];
 
         for ($i = $startIndex; $i <= $endIndex; $i++) {
             $newArgs[$i - $startIndex] =& $args[$i];
@@ -338,23 +338,23 @@ class GMIExecution
             echo '</tr>';
             reset($this->commands[$i]->arguments);
             //while (list($n) = each($this->commands[$i]->arguments)) {
-            foreach($this->commands[$i]->arguments as $n) {
-                    echo '<tr>';
-                    echo '<td style="background:' . ($n % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ";padding:2px 10px;white-space:nowrap;vertical-align:top\">Argument $n</td>";
-                    echo '<td style="background:' . ($n % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;white-space:nowrap;text-align:center;vertical-align:top">' . $this->commands[$i]->arguments[$n]->getType() . '</td>';
-                    echo '<td style="background:' . ($n % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;color:gray;">';
-                    ob_start();
-                    var_dump($this->commands[$i]->arguments[$n]->getValue());
-                    echo preg_replace('/\s\s/m', '&nbsp;&nbsp;&nbsp;&nbsp;', nl2br(ob_get_clean()));
-                    echo '</td>';
-                    echo '<td style="background:' . ($n % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;">' . $this->commands[$i]->arguments[$n]->expression . '</td>';
-                    echo '</tr>';
-                }
+            foreach ($this->commands[$i]->arguments as $n) {
+                echo '<tr>';
+                echo '<td style="background:' . ($n % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ";padding:2px 10px;white-space:nowrap;vertical-align:top\">Argument $n</td>";
+                echo '<td style="background:' . ($n % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;white-space:nowrap;text-align:center;vertical-align:top">' . $this->commands[$i]->arguments[$n]->getType() . '</td>';
+                echo '<td style="background:' . ($n % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;color:gray;">';
+                ob_start();
+                var_dump($this->commands[$i]->arguments[$n]->getValue());
+                echo preg_replace('/\s\s/m', '&nbsp;&nbsp;&nbsp;&nbsp;', nl2br(ob_get_clean()));
+                echo '</td>';
+                echo '<td style="background:' . ($n % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;">' . $this->commands[$i]->arguments[$n]->expression . '</td>';
                 echo '</tr>';
             }
-            echo '</table>';
-            echo '</body></html>';
+            echo '</tr>';
         }
+        echo '</table>';
+        echo '</body></html>';
+    }
 }
     /**
      * Class GMIDefaultPluggableSet
@@ -424,7 +424,7 @@ class GMIPluggableSet
      */
     public function getVariables()
     {
-        return array();
+        return [];
     }
 }
 
@@ -455,7 +455,7 @@ class GMIElement
 class GMICommand extends GMIElement
 {
     public $name      = ''; // string
-    public $arguments = array(); // array
+    public $arguments = []; // array
 
     // GMICommand(GMIExecution execution, string expression)
     /**
@@ -468,7 +468,7 @@ class GMICommand extends GMIElement
         parent::__construct($execution, $expression);
 
         // split expression into command name and arguments expression.
-        $matches = array();
+        $matches = [];
         preg_match_all('/^(\w+)(?:\s+(.*)$|$)/', $expression, $matches);
 
         // stop if expression is not valid
@@ -484,8 +484,11 @@ class GMICommand extends GMIElement
         }
 
         // add slash before "," in such quoted value as "...", '...' or {...}.
-        $matches[2][0] = preg_replace_callback('/(?<!\\\)\\\'(?:\\\\\'|[^\'])*(?:(?<!\\\)\\\')|' . '(?<!\\\)\"(?:\\\\"|[^"])*(?:(?<!\\\)\")|' . '(?<=\{)(?:[^{}]*(?:\{[^{}]*\})*[^{}]*)*(?=\})/', create_function('$matches', 'return preg_replace(\'/([,])/\', "\\\\\\\$1", $matches[0]);'),
-                                               $matches[2][0]);
+        $matches[2][0] = preg_replace_callback(
+            '/(?<!\\\)\\\'(?:\\\\\'|[^\'])*(?:(?<!\\\)\\\')|' . '(?<!\\\)\"(?:\\\\"|[^"])*(?:(?<!\\\)\")|' . '(?<=\{)(?:[^{}]*(?:\{[^{}]*\})*[^{}]*)*(?=\})/',
+            create_function('$matches', 'return preg_replace(\'/([,])/\', "\\\\\\\$1", $matches[0]);'),
+                                               $matches[2][0]
+        );
 
         // split arguments expression into an array by unexcaped ",".
         $this->arguments = preg_split('/\s*(?<!\\\)\,\s*/', $matches[2][0]);
@@ -494,8 +497,11 @@ class GMICommand extends GMIElement
         //        while (list($i) = each($this->arguments)) {
         foreach ($this->arguments as $i) {
             // remove slashes inserted above.
-            $this->arguments[$i] = preg_replace_callback('/(?<!\\\)\\\'(?:\\\\\'|[^\'])*(?:(?<!\\\)\\\')|' . '(?<!\\\)\"(?:\\\\"|[^"])*(?:(?<!\\\)\")|' . '(?<=\{)(?:[^{}]*(?:\{[^{}]*\})*[^{}]*)*(?=\})/', create_function('$matches', 'return preg_replace(\'/\\\\\([,])/\', "$1", $matches[0]);'),
-                                                         $this->arguments[$i]);
+            $this->arguments[$i] = preg_replace_callback(
+                '/(?<!\\\)\\\'(?:\\\\\'|[^\'])*(?:(?<!\\\)\\\')|' . '(?<!\\\)\"(?:\\\\"|[^"])*(?:(?<!\\\)\")|' . '(?<=\{)(?:[^{}]*(?:\{[^{}]*\})*[^{}]*)*(?=\})/',
+                create_function('$matches', 'return preg_replace(\'/\\\\\([,])/\', "$1", $matches[0]);'),
+                                                         $this->arguments[$i]
+            );
             // convert and store.
             $this->arguments[$i] = $this->execution->createValue($this->arguments[$i]);
         }
@@ -564,7 +570,7 @@ class GMIConstructor extends GMIValue
         parent::__construct($execution, $expression);
 
         // split expression into class name and arguments expression.
-        $matches = array();
+        $matches = [];
         preg_match_all('/^\{\s*(\w+)\s*\:(?:\s*(.*)|\s*)\}$/', $expression, $matches);
 
         // stop if expression is not valid
@@ -637,7 +643,7 @@ class GMIVariable extends GMIValue
         parent::__construct($execution, $expression);
 
         // split expression into variable name.
-        $matches = array();
+        $matches = [];
         preg_match_all('/^\{\s*((\w+)(?:\.(\w+))?)\s*\}$/', $expression, $matches);
 
         // stop if expression is not valid

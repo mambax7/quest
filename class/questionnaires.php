@@ -16,7 +16,7 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 //if (!class_exists('XoopsPersistableObjectHandler')) {
@@ -85,10 +85,10 @@ class QuestQuestionnairesHandler extends MyXoopsPersistableObjectHandler
     public function GetNonAnsweredQuestionnaires($uid)
     {
         include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
-        $ret                = array();
-        $tbl_questionnaires = array();
-        $tbl_categories     = array();
-        $categories_handler = xoops_getModuleHandler('categories', 'quest');
+        $ret                = [];
+        $tbl_questionnaires = [];
+        $tbl_categories     = [];
+        $categoriesHandler = xoops_getModuleHandler('categories', 'quest');
 
         // On commence par r�cup�rer la liste des questionnaires
         $criteria = new CriteriaCompo();
@@ -102,10 +102,10 @@ class QuestQuestionnairesHandler extends MyXoopsPersistableObjectHandler
             // Recherche de ses cat�gories
             $critere = new Criteria('IdQuestionnaire', $questionnaire->getVar('IdQuestionnaire'), '=');
             $critere->setSort('OrdreCategorie');
-            $tbl_categories = $categories_handler->GetObjects($critere);
+            $tbl_categories = $categoriesHandler->GetObjects($critere);
             foreach ($tbl_categories as $one_categorie) {    // Boucle sur les cat�gories
                 // Si le questionnaire n'est pas termin� :
-                $etat = $categories_handler->getCategoryState($one_categorie, $uid);
+                $etat = $categoriesHandler->getCategoryState($one_categorie, $uid);
                 if ($etat != 1) {
                     $ret[$one_categorie->getVar('IdCategorie')] = $questionnaire;
                     break;    // Pas la peine de boucler sur les cat�gories

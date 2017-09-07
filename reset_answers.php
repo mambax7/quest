@@ -15,7 +15,7 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-include '../../mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 
 /**
@@ -26,7 +26,6 @@ include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 $quest_id = 0;
 if (!isset($_GET['IdQuestionnaire']) && !isset($_POST['IdQuestionnaire'])) {
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR9);
-    exit();
 } else {
     $quest_id = (int)$_GET['IdQuestionnaire'];
 }
@@ -37,35 +36,30 @@ if (is_object($xoopsUser)) {
     $uid = $xoopsUser->getVar('uid');
 } else {    // Acc�s r�serv� aux utilisateurs enregistr�s
     redirect_header(XOOPS_URL . '/index.php', 2, _ERRORS);
-    exit();
 }
 
-$questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
-$questionnaire          = $questionnaires_handler->get($quest_id);
+$questionnairesHandler =  xoops_getModuleHandler('questionnaires', 'quest');
+$questionnaire          = $questionnairesHandler->get($quest_id);
 if (!is_object($questionnaire)) {
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR11);
-    exit();
 }
 // Ensuite on v�rifie que l'utilisateur a le droit de r�pondre � ce questionnaire
-if (!$questionnaires_handler->isVisible($questionnaire, $uid)) {
+if (!$questionnairesHandler->isVisible($questionnaire, $uid)) {
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR3);    // Pas le droit, on d�gage.
-    exit();
 }
 
 // On temine en v�rifiant que le param�trage du questionnaire autorise la suppression de toutes les r�ponses d'une personne
 if (xoops_trim($questionnaire->getVar('ResetButton')) != '') {
-    $reponses_handler    = &xoops_getModuleHandler('reponses', 'quest');
-    $rubrcomment_handler = &xoops_getModuleHandler('rubrcomment', 'quest');
+    $reponsesHandler    =  xoops_getModuleHandler('reponses', 'quest');
+    $rubrcommentHandler =  xoops_getModuleHandler('rubrcomment', 'quest');
     // Suppression des r�ponses
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('IdQuestionnaire', $quest_id, '='));
     $criteria->add(new Criteria('IdRespondant', $uid, '='));
-    $reponses_handler->deleteAll($criteria);
+    $reponsesHandler->deleteAll($criteria);
     // Suppression des commentaires
-    $rubrcomment_handler->deleteAll($criteria);
+    $rubrcommentHandler->deleteAll($criteria);
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ANSWERS_DELETED);    // Vos r�ponses ont �t� supprim�es
-    exit();
 } else {
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR12);    // Suppression non autoris�e.
-    exit();
 }

@@ -16,7 +16,7 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Renvoie, sous la forme d'un critère, la liste des groupes auxquels un utilisateur fait partie
@@ -31,8 +31,8 @@ function quest_getUserGroups($uid = 0, $asCriteria = true)
     if ($uid == 0) {
         $uid = $xoopsUser->getVar('uid');
     }
-    $member_handler = xoops_getHandler('member');
-    $tbl_groups     = $member_handler->getGroupsByUser($uid);
+    $memberHandler = xoops_getHandler('member');
+    $tbl_groups     = $memberHandler->getGroupsByUser($uid);
     if ($asCriteria) {
         $groups_string = implode(',', $tbl_groups);
         $criteria      = new Criteria('Groupe', '(' . $groups_string . ')', 'IN');
@@ -51,9 +51,9 @@ function quest_getUserGroups($uid = 0, $asCriteria = true)
  */
 function quest_getUsersFromGroup($group_id)
 {
-    $tbl_users      = array();
-    $member_handler = xoops_getHandler('member');
-    $tbl_users      = $member_handler->getUsersByGroup($group_id, true);
+    $tbl_users      = [];
+    $memberHandler = xoops_getHandler('member');
+    $tbl_users      = $memberHandler->getUsersByGroup($group_id, true);
 
     return $tbl_users;
 }
@@ -80,7 +80,7 @@ function Quest_IP()
     } elseif (!empty($_SERVER['HTTP_COMING_FROM'])) {
         $proxy_ip = $_SERVER['HTTP_COMING_FROM'];
     }
-    $regs = array();
+    $regs = [];
     if (!empty($proxy_ip) && $is_ip = preg_match('/^(\d{1,3}\.){3,3}\d{1,3}/', $proxy_ip, $regs) && count($regs) > 0) {
         $the_IP = $regs[0];
     } else {

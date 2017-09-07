@@ -15,7 +15,7 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 //if (!class_exists('XoopsPersistableObjectHandler')) {
@@ -74,8 +74,8 @@ class QuestCategoriesHandler extends MyXoopsPersistableObjectHandler
      */
     public function getCategoriesAndState($IdQuestionnaire, $uid, &$toutrepondu)
     {
-        $ret            = array();
-        $tbl_categories = array();
+        $ret            = [];
+        $tbl_categories = [];
         // 1) Il faut commencer par v�rifier si l'utilisateur n'a pas d�j� r�pondu � tout, auquel cas il ne faut rien lui afficher
         $tout_repondu = true;
         // On commence par r�cup�rer la liste compl�te de toutes les cat�gories de ce questionnaire
@@ -106,21 +106,21 @@ class QuestCategoriesHandler extends MyXoopsPersistableObjectHandler
     public function getCategoryState(&$one_category, $uid)
     {
         $etat                      = 0;
-        $quest_questions_handler   = &xoops_getModuleHandler('questions', 'quest');
-        $quest_reponses_handler    = &xoops_getModuleHandler('reponses', 'quest');
-        $quest_rubrcomment_handler = &xoops_getModuleHandler('rubrcomment', 'quest');
+        $quest_questionsHandler   =  xoops_getModuleHandler('questions', 'quest');
+        $quest_reponsesHandler    =  xoops_getModuleHandler('reponses', 'quest');
+        $quest_rubrcommentHandler =  xoops_getModuleHandler('rubrcomment', 'quest');
 
         // Recherche du nombre de questions pour cette cat�gorie
         $criteria2 = new CriteriaCompo();
         $criteria2->add(new Criteria('IdQuestionnaire', $one_category->getVar('IdQuestionnaire'), '='));
         $criteria2->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
-        $quest_count = $quest_questions_handler->getCount($criteria2);    // Nombre de questions de cette cat�gorie
+        $quest_count = $quest_questionsHandler->getCount($criteria2);    // Nombre de questions de cette cat�gorie
         // Nombre de r�ponses faites pour cette cat�gorie (de ce questionnaire) pour cet utilisateur
         $criteria3 = new CriteriaCompo();
         $criteria3->add(new Criteria('IdQuestionnaire', $one_category->getVar('IdQuestionnaire'), '='));
         $criteria3->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
         $criteria3->add(new Criteria('IdRespondant', $uid, '='));
-        $answers_count = $quest_reponses_handler->getCount($criteria3);
+        $answers_count = $quest_reponsesHandler->getCount($criteria3);
         if ($answers_count == 0 && $quest_count > 0) {    // Aucune r�ponse mais il y a des questions
             $etat = 0;
         } elseif ($answers_count == $quest_count) {    // Le nombre de r�ponses correspond au nombre de questions
@@ -135,17 +135,17 @@ class QuestCategoriesHandler extends MyXoopsPersistableObjectHandler
             if ($one_category->getVar('AfficherGauche') == 1) {
                 $criteria4->add(new Criteria('Id_CAC2', 0, '<>'));
             }
-            $answers_count2 = $quest_reponses_handler->getCount($criteria4);
+            $answers_count2 = $quest_reponsesHandler->getCount($criteria4);
             if ($answers_count2 == $quest_count) {    // Le nombre de r�ponses correspond au nombre de questions
                 // Reste � v�rifier les r�ponses aux commentaires
                 $etat             = 1;    // On part du postulat qu'effectivement tout est r�pondu
-                $tbl_rubr_comment = array();
+                $tbl_rubr_comment = [];
                 $criteria5        = new CriteriaCompo();
                 $criteria5->add(new Criteria('IdQuestionnaire', $one_category->getVar('IdQuestionnaire'), '='));
                 $criteria5->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
                 $criteria5->add(new Criteria('IdRespondant', $uid, '='));
                 $criteria5->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
-                $tbl_rubr_comment = $quest_rubrcomment_handler->getObjects($criteria5);
+                $tbl_rubr_comment = $quest_rubrcommentHandler->getObjects($criteria5);
                 //echo "<br>".$criteria5->render();
 
                 if (count($tbl_rubr_comment) > 0) {    // Ca se pr�sente bien, il y a un enregistrement

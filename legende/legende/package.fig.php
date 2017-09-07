@@ -151,7 +151,7 @@ class FontImageGenerator extends GMIExecution
         switch (strtolower($name)) {
             case 'autoresize':
                 // autoresize <constant>[none | width | height | both]
-                if ($this->validateArguments(array(array('none', 'width', 'height', 'both')), $args)) {
+                if ($this->validateArguments([['none', 'width', 'height', 'both']], $args)) {
                     $this->canvas->setAutoResizeMode($args[0]->getValue());
                     break;
                 }
@@ -159,7 +159,7 @@ class FontImageGenerator extends GMIExecution
 
             case 'padding':
                 // padding <insets>
-                if ($this->validateArguments(array('insets'), $args)) {
+                if ($this->validateArguments(['insets'], $args)) {
                     $this->canvas->setPadding($args[0]->getValue());
                     break;
                 }
@@ -179,12 +179,12 @@ class FontImageGenerator extends GMIExecution
 
             case 'size':
                 // size <dimension>
-                if ($this->validateArguments(array('dimension'), $args)) {
+                if ($this->validateArguments(['dimension'], $args)) {
                     $this->canvas->setSize($args[0]->getValue());
                     break;
                 }
                 // size <number> <number>
-                if ($this->validateArguments(array('number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number'], $args)) {
                     $this->canvas->setSize($args[0]->getValue(), $args[1]->getValue());
                     break;
                 }
@@ -192,7 +192,7 @@ class FontImageGenerator extends GMIExecution
 
             case 'antialias':
                 // antialias <number>
-                if ($this->validateArguments(array('number'), $args)) {
+                if ($this->validateArguments(['number'], $args)) {
                     $this->g->setTextAntialias($args[0]->getValue());
                     break;
                 }
@@ -200,7 +200,7 @@ class FontImageGenerator extends GMIExecution
 
             case 'color':
                 // color <color>
-                if ($this->validateArguments(array('color'), $args)) {
+                if ($this->validateArguments(['color'], $args)) {
                     $this->g->setColor($args[0]->getValue());
                     break;
                 }
@@ -220,7 +220,7 @@ class FontImageGenerator extends GMIExecution
 
             case 'font':
                 // font <font>
-                if ($this->validateArguments(array('font'), $args)) {
+                if ($this->validateArguments(['font'], $args)) {
                     $this->g->setFont($args[0]->getValue());
                     break;
                 }
@@ -236,7 +236,7 @@ class FontImageGenerator extends GMIExecution
 
             case 'translate':
                 // translate <number> <number>
-                if ($this->validateArguments(array('number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number'], $args)) {
                     $this->g->translate($args[0]->getValue(), $args[1]->getValue());
                     break;
                 }
@@ -249,12 +249,12 @@ class FontImageGenerator extends GMIExecution
 
             case 'pattern':
                 // pattern <image>
-                if ($this->validateArguments(array('image'), $args)) {
+                if ($this->validateArguments(['image'], $args)) {
                     $this->g->pattern($args[0]->getValue());
                     break;
                 }
                 // pattern <image> <constant>[repeat | repeat-x | repeat-y | no-repeat]
-                if ($this->validateArguments(array('image', array('repeat', 'repeat-x', 'repeat-y', 'no-repeat')), $args)) {
+                if ($this->validateArguments(['image', ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']], $args)) {
                     $this->g->pattern($args[0]->getValue(), $args[1]->getValue());
                     break;
                 }
@@ -263,12 +263,12 @@ class FontImageGenerator extends GMIExecution
 
                 if ($image != null) {
                     // pattern <string>
-                    if ($this->validateArguments(array(null), $args)) {
+                    if ($this->validateArguments([null], $args)) {
                         $this->g->pattern($image);
                         break;
                     }
                     // pattern <string> <constant>[repeat | repeat-x | repeat-y | no-repeat]
-                    if ($this->validateArguments(array(null, array('repeat', 'repeat-x', 'repeat-y', 'no-repeat')), $args)) {
+                    if ($this->validateArguments([null, ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']], $args)) {
                         $this->g->pattern($image, $args[1]->getValue());
                         break;
                     }
@@ -277,12 +277,12 @@ class FontImageGenerator extends GMIExecution
 
             case 'rect':
                 // rect <rectangle>
-                if ($this->validateArguments(array('rectangle'), $args)) {
+                if ($this->validateArguments(['rectangle'], $args)) {
                     $this->g->drawRect($args[0]->getValue());
                     break;
                 }
                 // rect <number> <number> <number> <number>
-                if ($this->validateArguments(array('number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number', 'number', 'number'], $args)) {
                     $this->g->drawRect($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue());
                     break;
                 }
@@ -290,12 +290,12 @@ class FontImageGenerator extends GMIExecution
 
             case 'fillrect':
                 // fillrect <rectangle>
-                if ($this->validateArguments(array('rectangle'), $args)) {
+                if ($this->validateArguments(['rectangle'], $args)) {
                     $this->g->fillRect($args[0]->getValue());
                     break;
                 }
                 // fillrect <number> <number> <number> <number>
-                if ($this->validateArguments(array('number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number', 'number', 'number'], $args)) {
                     $this->g->fillRect($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue());
                     break;
                 }
@@ -303,22 +303,22 @@ class FontImageGenerator extends GMIExecution
 
             case 'patternrect':
                 // patternrect <image> <rectangle>
-                if ($this->validateArguments(array('image', 'rectangle'), $args)) {
+                if ($this->validateArguments(['image', 'rectangle'], $args)) {
                     $this->g->patternRect($args[0]->getValue(), $args[1]->getValue());
                     break;
                 }
                 // patternrect <image> <number> <number> <number> <number>
-                if ($this->validateArguments(array('image', 'number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['image', 'number', 'number', 'number', 'number'], $args)) {
                     $this->g->patternRect($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue());
                     break;
                 }
                 // patternrect <image> <rectangle> <constant>[repeat | repeat-x | repeat-y | no-repeat]
-                if ($this->validateArguments(array('image', 'rectangle', array('repeat', 'repeat-x', 'repeat-y', 'no-repeat')), $args)) {
+                if ($this->validateArguments(['image', 'rectangle', ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']], $args)) {
                     $this->g->patternRect($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue());
                     break;
                 }
                 // patternrect <image> <number> <number> <number> <number> <constant>[repeat | repeat-x | repeat-y | no-repeat]
-                if ($this->validateArguments(array('image', 'number', 'number', 'number', 'number', array('repeat', 'repeat-x', 'repeat-y', 'no-repeat')), $args)) {
+                if ($this->validateArguments(['image', 'number', 'number', 'number', 'number', ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']], $args)) {
                     $this->g->patternRect($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue(), $args[5]->getValue());
                     break;
                 }
@@ -327,22 +327,22 @@ class FontImageGenerator extends GMIExecution
 
                 if ($image != null) {
                     // patternrect <string> <rectangle>
-                    if ($this->validateArguments(array(null, 'rectangle'), $args)) {
+                    if ($this->validateArguments([null, 'rectangle'], $args)) {
                         $this->g->patternRect($image, $args[1]->getValue());
                         break;
                     }
                     // patternrect <string> <number> <number> <number> <number>
-                    if ($this->validateArguments(array(null, 'number', 'number', 'number', 'number'), $args)) {
+                    if ($this->validateArguments([null, 'number', 'number', 'number', 'number'], $args)) {
                         $this->g->patternRect($image, $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue());
                         break;
                     }
                     // patternrect <string> <rectangle> <constant>[repeat | repeat-x | repeat-y | no-repeat]
-                    if ($this->validateArguments(array(null, 'rectangle', array('repeat', 'repeat-x', 'repeat-y', 'no-repeat')), $args)) {
+                    if ($this->validateArguments([null, 'rectangle', ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']], $args)) {
                         $this->g->patternRect($image, $args[1]->getValue(), $args[2]->getValue());
                         break;
                     }
                     // patternrect <string> <number> <number> <number> <number> <constant>[repeat | repeat-x | repeat-y | no-repeat]
-                    if ($this->validateArguments(array(null, 'number', 'number', 'number', 'number', array('repeat', 'repeat-x', 'repeat-y', 'no-repeat')), $args)) {
+                    if ($this->validateArguments([null, 'number', 'number', 'number', 'number', ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']], $args)) {
                         $this->g->patternRect($image, $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue(), $args[5]->getValue());
                         break;
                     }
@@ -351,17 +351,17 @@ class FontImageGenerator extends GMIExecution
 
             case 'image':
                 // image <image> <number> <number>
-                if ($this->validateArguments(array('image', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['image', 'number', 'number'], $args)) {
                     $this->g->drawImage($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue());
                     break;
                 }
                 // image <image> <number> <number> <number> <number>
-                if ($this->validateArguments(array('image', 'number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['image', 'number', 'number', 'number', 'number'], $args)) {
                     $this->g->drawImage($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue());
                     break;
                 }
                 // image <image> <number> <number> <number> <number> <number> <number> <number> <number>
-                if ($this->validateArguments(array('image', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['image', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number'], $args)) {
                     $this->g->drawImage($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue(), $args[5]->getValue(), $args[6]->getValue(), $args[7]->getValue(), $args[8]->getValue());
                     break;
                 }
@@ -370,16 +370,16 @@ class FontImageGenerator extends GMIExecution
 
                 if ($image != null) {
                     // image <string> <number> <number>
-                    if ($this->validateArguments(array(null, 'number', 'number'), $args)) {
+                    if ($this->validateArguments([null, 'number', 'number'], $args)) {
                         $this->g->drawImage($image, $args[1]->getValue(), $args[2]->getValue());
                         break;
                     }// image <image> <number> <number> <number> <number>
-                    if ($this->validateArguments(array(null, 'number', 'number', 'number', 'number'), $args)) {
+                    if ($this->validateArguments([null, 'number', 'number', 'number', 'number'], $args)) {
                         $this->g->drawImage($image, $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue());
                         break;
                     }
                     // image <image> <number> <number> <number> <number> <number> <number> <number> <number>
-                    if ($this->validateArguments(array(null, 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number'), $args)) {
+                    if ($this->validateArguments([null, 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number'], $args)) {
                         $this->g->drawImage($image, $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue(), $args[5]->getValue(), $args[6]->getValue(), $args[7]->getValue(), $args[8]->getValue());
                         break;
                     }
@@ -388,35 +388,35 @@ class FontImageGenerator extends GMIExecution
 
             case 'string':
                 // string <string>
-                if ($this->validateArguments(array('string'), $args)) {
+                if ($this->validateArguments(['string'], $args)) {
                     $this->g->drawString($args[0]->getValue());
                     break;
                 }
                 // string <string> <number> <number>
-                if ($this->validateArguments(array('string', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['string', 'number', 'number'], $args)) {
                     $this->g->drawString($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue());
                     break;
                 }
                 // string <string> <number> <number> <number>
-                if ($this->validateArguments(array('string', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['string', 'number', 'number', 'number'], $args)) {
                     $this->g->drawString($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), null);
                     break;
                 }
                 // string <string> <number> <number> <number>
                 //		  <constant>[left | center | right | left-adjust | center-adjust | right-adjust | adjust]
-                if ($this->validateArguments(array('string', 'number', 'number', 'number', array('left', 'center', 'right', 'left-adjust', 'center-adjust', 'right-adjust', 'adjust')), $args)) {
+                if ($this->validateArguments(['string', 'number', 'number', 'number', ['left', 'center', 'right', 'left-adjust', 'center-adjust', 'right-adjust', 'adjust']], $args)) {
                     $this->g->drawString($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), null, $args[4]->getValue(), 'top');
                     break;
                 }
                 // string <string> <number> <number> <number> <number>
-                if ($this->validateArguments(array('string', 'number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['string', 'number', 'number', 'number', 'number'], $args)) {
                     $this->g->drawString($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue());
                     break;
                 }
                 //string <string> <number> <number> <number> <number>
                 //		 <constant>[left | center | right | left-adjust | center-adjust | right-adjust | adjust]
                 //		 <constant>[top | middle | bottom]
-                if ($this->validateArguments(array('string', 'number', 'number', 'number', 'number', array('left', 'center', 'right', 'left-adjust', 'center-adjust', 'right-adjust', 'adjust'), array('top', 'middle', 'bottom')), $args)) {
+                if ($this->validateArguments(['string', 'number', 'number', 'number', 'number', ['left', 'center', 'right', 'left-adjust', 'center-adjust', 'right-adjust', 'adjust'], ['top', 'middle', 'bottom']], $args)) {
                     $this->g->drawString($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue(), $args[4]->getValue(), $args[5]->getValue(), $args[6]->getValue());
                     break;
                 }
@@ -424,22 +424,22 @@ class FontImageGenerator extends GMIExecution
 
             case 'type':
                 // type <constant>[jpeg | gif | png]
-                if ($this->validateArguments(array(array('jpeg', 'gif', 'png')), $args)) {
+                if ($this->validateArguments([['jpeg', 'gif', 'png']], $args)) {
                     $this->canvas->setOutputType($args[0]->getValue());
                     break;
                 }
                 // type <constant>[jpeg | gif | png] <number>
-                if ($this->validateArguments(array(array('jpeg', 'gif', 'png'), 'number'), $args)) {
+                if ($this->validateArguments([['jpeg', 'gif', 'png'], 'number'], $args)) {
                     $this->canvas->setOutputType($args[0]->getValue(), $args[1]->getValue());
                     break;
                 }
                 // type <constant>[jpeg | gif | png] <color>
-                if ($this->validateArguments(array(array('jpeg', 'gif', 'png'), 'color'), $args)) {
+                if ($this->validateArguments([['jpeg', 'gif', 'png'], 'color'], $args)) {
                     $this->canvas->setOutputType($args[0]->getValue(), null, $args[1]->getValue());
                     break;
                 }
                 // type <constant>[jpeg | gif | png] <number> <color>
-                if ($this->validateArguments(array(array('jpeg', 'gif', 'png'), 'number', 'color'), $args)) {
+                if ($this->validateArguments([['jpeg', 'gif', 'png'], 'number', 'color'], $args)) {
                     $this->canvas->setOutputType($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue());
                     break;
                 }
@@ -461,18 +461,18 @@ class FontImageGenerator extends GMIExecution
         switch (strtolower($class)) {
             case 'image':
                 // {image: <string>}
-                if ($this->validateArguments(array('string'), $args)) {
+                if ($this->validateArguments(['string'], $args)) {
                     return $this->canvas->getImage($args[0]->getValue());
                 }
                 break;
 
             case 'font':
                 // {font: <string> <number>}
-                if ($this->validateArguments(array('string', 'number'), $args)) {
+                if ($this->validateArguments(['string', 'number'], $args)) {
                     return new Font($args[0]->getValue(), $args[1]->getValue());
                 }
                 // {font: <string> <number> <number>}
-                if ($this->validateArguments(array('string', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['string', 'number', 'number'], $args)) {
                     $value = new Font($args[0]->getValue(), $args[1]->getValue());
                     $value->metrics->setLineHeight($args[2]->getValue());
 
@@ -482,67 +482,67 @@ class FontImageGenerator extends GMIExecution
 
             case 'color':
                 // {color: <number>}
-                if ($this->validateArguments(array('number'), $args)) {
+                if ($this->validateArguments(['number'], $args)) {
                     return new Color($args[0]->getValue());
                 }
                 // {color: <number> <number>}
-                if ($this->validateArguments(array('number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number'], $args)) {
                     return new Color($args[0]->getValue(), $args[1]->getValue());
                 }
                 // {color: <number> <number> <number>}
-                if ($this->validateArguments(array('number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number', 'number'], $args)) {
                     return new Color($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue());
                 }
                 // {color: <number> <number> <number> <number>}
-                if ($this->validateArguments(array('number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number', 'number', 'number'], $args)) {
                     return new Color($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue());
                 }
                 break;
 
             case 'rectangle':
                 // {rectangle: <number> <number> <number> <number>}
-                if ($this->validateArguments(array('number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number', 'number', 'number'], $args)) {
                     return new Rectangle($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue());
                 }
                 break;
 
             case 'insets':
                 // {insets: }
-                if ($this->validateArguments(array(), $args)) {
+                if ($this->validateArguments([], $args)) {
                     return new Insets();
                 }
                 // {insets: <number>}
-                if ($this->validateArguments(array('number'), $args)) {
+                if ($this->validateArguments(['number'], $args)) {
                     return new Insets($args[0]->getValue(), $args[0]->getValue(), $args[0]->getValue(), $args[0]->getValue());
                 }
                 // {insets: <number> <number>}
-                if ($this->validateArguments(array('number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number'], $args)) {
                     return new Insets($args[0]->getValue(), $args[1]->getValue(), $args[0]->getValue(), $args[1]->getValue());
                 }
                 // {insets: <number> <number> <number> <number>}
-                if ($this->validateArguments(array('number', 'number', 'number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number', 'number', 'number'], $args)) {
                     return new Insets($args[0]->getValue(), $args[1]->getValue(), $args[2]->getValue(), $args[3]->getValue());
                 }
                 break;
 
             case 'dimension':
                 // {dimension: }
-                if ($this->validateArguments(array(), $args)) {
+                if ($this->validateArguments([], $args)) {
                     return new Dimension();
                 }
                 // {dimension: <number> <number>}
-                if ($this->validateArguments(array('number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number'], $args)) {
                     return new Dimension($args[0]->getValue(), $args[1]->getValue());
                 }
                 break;
 
             case 'point':
                 // {point: }
-                if ($this->validateArguments(array(), $args)) {
+                if ($this->validateArguments([], $args)) {
                     return new Point();
                 }
                 // {point: <number> <number>}
-                if ($this->validateArguments(array('number', 'number'), $args)) {
+                if ($this->validateArguments(['number', 'number'], $args)) {
                     return new Point($args[0]->getValue(), $args[1]->getValue());
                 }
                 break;

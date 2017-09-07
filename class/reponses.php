@@ -16,7 +16,7 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 //if (!class_exists('XoopsPersistableObjectHandler')) {
@@ -69,7 +69,7 @@ class QuestReponsesHandler extends MyXoopsPersistableObjectHandler
      */
     public function getUsersIdPerQuestionnaire($IdQuestionnaire)
     {
-        $ret    = array();
+        $ret    = [];
         $sql    = 'SELECT DISTINCT(IdRespondant) FROM ' . $this->table . ' WHERE IdQuestionnaire=' . (int)$IdQuestionnaire;
         $result = $this->db->query($sql);
         if (!$result) {

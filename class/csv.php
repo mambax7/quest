@@ -15,7 +15,7 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /*
  * Fonction, incomplète, pour générer un fichier csv
@@ -51,8 +51,8 @@ class csv
         $this->lineseparator    = $lineseparator;
         $this->escapetrings     = $escapestring;
         $this->stringsseparator = $stringseparator;
-        $this->header           = array();
-        $this->line             = array();
+        $this->header           = [];
+        $this->line             = [];
     }
 
     public function openCSV()
@@ -92,7 +92,7 @@ class csv
 
     public function clearData()
     {
-        $this->line = array();
+        $this->line = [];
     }
 
     public function writeData()

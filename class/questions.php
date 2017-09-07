@@ -16,7 +16,7 @@
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 //if (!class_exists('XoopsPersistableObjectHandler')) {
@@ -66,7 +66,7 @@ class QuestQuestionsHandler extends MyXoopsPersistableObjectHandler
      */
     public function QuestionsCountPerQuestionnaire($IdQuestionnaire)
     {
-        $ret    = array();
+        $ret    = [];
         $sql    = 'SELECT count(*) AS cpt, IdCategorie FROM ' . $this->table . ' WHERE IdQuestionnaire=' . (int)$IdQuestionnaire . ' GROUP BY IdCategorie ORDER BY IdCategorie';
         $result = $this->db->query($sql);
         if (!$result) {

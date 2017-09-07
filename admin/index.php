@@ -10,19 +10,25 @@
  */
 
 /**
- * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @author       XOOPS Development Team
  */
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 // Display Admin header
 xoops_cp_header();
+$adminObject = \Xmf\Module\Admin::getInstance();
 
-$indexAdmin = new ModuleAdmin();
 
-echo $indexAdmin->addNavigation(basename(__FILE__));
-echo $indexAdmin->renderIndex();
+$adminObject->displayNavigation(basename(__FILE__));
+//------------- Test Data ----------------------------
+//xoops_loadLanguage('admin/modulesadmin', 'system');
+//require_once __DIR__ . '/../testdata/index.php';
+//$adminObject->addItemButton(_AM_SYSTEM_MODULES_INSTALL_TESTDATA, '__DIR__ . /../../testdata/index.php?op=load', 'add');
+//$adminObject->displayButton('left', '');
+//------------- End Test Data ----------------------------
+$adminObject->displayIndex();
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

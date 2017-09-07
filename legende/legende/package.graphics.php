@@ -316,7 +316,7 @@ class Graphics
     public function __construct()
     {
         $this->clipBounds = null;
-        $this->contexts   = array();
+        $this->contexts   = [];
 
         $this->color         = new Color(0xffffff);
         $this->font          = null;
@@ -611,7 +611,7 @@ class Graphics
         for ($i = 0; $i < count($this->contexts); $i++) {
             $this->contexts[$i]->dispose();
         }
-        $this->contexts = array();
+        $this->contexts = [];
     }
 
     // Rectangle getContexts()
@@ -1107,7 +1107,7 @@ class TextContext extends GraphicsContext
         $previousCaret = 0;
 
         for ($i = 0; $i < count($lines); $i++) {
-            $lines[$i] = array($lines[$i]);
+            $lines[$i] = [$lines[$i]];
 
             for ($n = 0; $n < count($lines[$i]); $n++) {
                 // calcurates string width when founds a space in a line.
@@ -1131,10 +1131,10 @@ class TextContext extends GraphicsContext
 
                         if ($lineWidth >= $this->width) {
                             // divide a line into two with deleting extra spaces at the each side.
-                            array_splice($lines[$i], $n, 1, array(
+                            array_splice($lines[$i], $n, 1, [
                                 trim(substr($lines[$i][$n], 0, $previousCaret)),
                                 trim(substr($lines[$i][$n], $previousCaret))
-                            ));
+                            ]);
                             break;
                         }
                         // cache the current caret position.
@@ -1174,10 +1174,12 @@ class TextContext extends GraphicsContext
         // for garbage detection
         imagealphablending($bufferedSource2, false);
 
-        imagettftext($bufferedSource, // image
+        imagettftext(
+            $bufferedSource, // image
                      $this->font->size, // size
                      0, // angle
-                     0, $this->metrics->getAscent(), // x, y
+                     0,
+            $this->metrics->getAscent(), // x, y
                      min(-1, -$this->color->getRGB()), // color
                      $this->font->name, // font
                      $text // text
@@ -1255,7 +1257,7 @@ class TextContext extends GraphicsContext
                 $words = preg_split("/\s/", $text);
 
                 // store the width of each words.
-                $widths = array();
+                $widths = [];
                 for ($i = 0; $i < count($words); $i++) {
                     $widths[$i] = round($this->metrics->stringWidth($words[$i]) / $this->textAntialias);
                 }

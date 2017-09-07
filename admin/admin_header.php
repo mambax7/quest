@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @author       XOOPS Development Team
@@ -54,4 +54,3 @@ $moduleHelper->loadLanguage('modinfo');
 $moduleHelper->loadLanguage('main');
 
 //xoops_cp_header();
-

@@ -19,7 +19,7 @@
 /**
  * Page charg�e de r�aliser l'export des donn�es pour le client
  */
-include '../../mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 include_once XOOPS_ROOT_PATH . '/header.php';
 $xoopsTpl->assign('xoops_pagetitle', _QUEST_EXPORT_WELCOME);
@@ -33,16 +33,15 @@ if (is_object($xoopsUser)) {
     $uid = $xoopsUser->getVar('uid');
 } else {    // Acc�s r�serv� aux utilisateurs enregistr�s
     redirect_header(XOOPS_URL . '/index.php', 2, _ERRORS);
-    exit();
 }
-$cac_handler            = &xoops_getModuleHandler('cac', 'quest');
-$cac_categories_handler = &xoops_getModuleHandler('cac_categories', 'quest');
-$categories_handler     = &xoops_getModuleHandler('categories', 'quest');
-$enquetes_handler       = &xoops_getModuleHandler('enquetes', 'quest');
-$questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
-$questions_handler      = &xoops_getModuleHandler('questions', 'quest');
-$reponses_handler       = &xoops_getModuleHandler('reponses', 'quest');
-$rubrcomment_handler    = &xoops_getModuleHandler('rubrcomment', 'quest');
+$cacHandler            =  xoops_getModuleHandler('cac', 'quest');
+$cac_categoriesHandler =  xoops_getModuleHandler('cac_categories', 'quest');
+$categoriesHandler     =  xoops_getModuleHandler('categories', 'quest');
+$enquetesHandler       =  xoops_getModuleHandler('enquetes', 'quest');
+$questionnairesHandler =  xoops_getModuleHandler('questionnaires', 'quest');
+$questionsHandler      =  xoops_getModuleHandler('questions', 'quest');
+$reponsesHandler       =  xoops_getModuleHandler('reponses', 'quest');
+$rubrcommentHandler    =  xoops_getModuleHandler('rubrcomment', 'quest');
 
 /*
  * Affichage du formulaire de connexion
@@ -53,13 +52,13 @@ $rubrcomment_handler    = &xoops_getModuleHandler('rubrcomment', 'quest');
  */
 function questform($message = '')
 {
-    global $questionnaires_handler;
+    global $questionnairesHandler;
     $groups              = quest_getUserGroups();
     $lang_submit         = _SUBMIT;
     $lang_enter_password = _QUEST_EXPORT_SELECT_QUEST;
     $lang_fields_sep     = _QUEST_EXPORT_FIELDS_SEP;
     $lang_welcome        = _QUEST_EXPORT_WELCOME;
-    $tbl_questionnaires  = $questionnaires_handler->getObjects($groups);
+    $tbl_questionnaires  = $questionnairesHandler->getObjects($groups);
     foreach ($tbl_questionnaires as $one_questionnaire) {
         $select_options .= '<option value="' . $one_questionnaire->getVar('IdQuestionnaire') . '">' . $one_questionnaire->getVar('LibelleQuestionnaire') . '</option>';
     }
@@ -87,14 +86,14 @@ include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
     $id_qestionnaire = isset($_GET['IdQuestionnaire']) ? (int)$_GET['IdQuestionnaire'] : (int)$_POST['quest'];
     $critere         = new Criteria('IdQuestionnaire', $id_qestionnaire, '=');
-    $quest_count     = $questionnaires_handler->getCount($critere);
+    $quest_count     = $questionnairesHandler->getCount($critere);
     if ($quest_count == 0) {
         loginform(_QUEST_EXPORT_ERROR1);
         exit;
     }
     // Si on est encore l� c'est que tout va bien (ou presque)
     // R�cup�ration du formulaire
-    $tbl_quest     = $questionnaires_handler->getObjects($critere);
+    $tbl_quest     = $questionnairesHandler->getObjects($critere);
     $questionnaire = $tbl_quest[0];
     // Derni�re v�rification, est-ce que l'utilisateur courant appartient bien au groupe du questionnaire ?
     $groups = quest_getUserGroups($uid, false);    // Groupe(s) de l'utilisateur
@@ -104,7 +103,7 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
     }
 
     // R�cup�ration des informations sur l'enqu�t�
-    $enquete = $enquetes_handler->get($questionnaire->getVar('IdEnquete'));
+    $enquete = $enquetesHandler->get($questionnaire->getVar('IdEnquete'));
     if ($enquete == null) {
         exit(_QUEST_EXPORT_ERROR2);
     }
@@ -161,29 +160,29 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
     // Recherche de toutes les cat�gories du questionnaire
     $critere = new Criteria('IdQuestionnaire', $questionnaire->getVar('IdQuestionnaire'), '=');
     $critere->setSort('OrdreCategorie');
-    $tbl_categories = $categories_handler->GetObjects($critere);
+    $tbl_categories = $categoriesHandler->GetObjects($critere);
 
     // R�cup�ration des CAC
     $critere = new Criteria('IdCac', 0, '<>');
     $critere->setSort('IdCAC');
-    $tbl_CAC = $cac_handler->GetObjects($critere, true);
+    $tbl_CAC = $cacHandler->GetObjects($critere, true);
 
     // R�cup�ration des questions par cat�gorie
     $critere = new Criteria('IdQuestionnaire', $questionnaire->getVar('IdQuestionnaire'), '=');
     $critere->setSort('IdCategorie, OrdreQuestion');
-    $tbl_questions    = array();
-    $tbl_tmpquestions = array();
-    $tbl_tmpquestions = $questions_handler->GetObjects($critere);
+    $tbl_questions    = [];
+    $tbl_tmpquestions = [];
+    $tbl_tmpquestions = $questionsHandler->GetObjects($critere);
     if (count($tbl_tmpquestions) > 0) {
         $first_id = $tbl_tmpquestions[0];
         $vold     = $first_id->getVar('IdCategorie');
-        $tbl_tmp  = array();
+        $tbl_tmp  = [];
         foreach ($tbl_tmpquestions as $one_question) {
             if ($one_question->getVar('IdCategorie') == $vold) {
                 $tbl_tmp[] = $one_question;
             } else {
                 $tbl_questions[$vold] = $tbl_tmp;
-                $tbl_tmp              = array();
+                $tbl_tmp              = [];
                 $vold                 = $one_question->getVar('IdCategorie');
             }
         }
@@ -195,16 +194,16 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
     foreach ($tbl_users as $one_user) {    // Boucle sur les utilisateurs
         foreach ($tbl_categories as $one_categorie) {    // Boucle sur les cat�gories
             // R�cup�ration de toutes les r�ponses de cette personne pour cette cat�gorie
-            $tbl_answers = array();
+            $tbl_answers = [];
             $criteria    = new CriteriaCompo();
             $criteria->add(new Criteria('IdQuestionnaire', $questionnaire->getVar('IdQuestionnaire'), '='));
             $criteria->add(new Criteria('IdRespondant', $one_user->getVar('uid'), '='));
             $criteria->add(new Criteria('IdCategorie', $one_categorie->getVar('IdCategorie'), '='));
-            $tbl_reponses = $reponses_handler->getObjects2($criteria, 'IdQuestion');
+            $tbl_reponses = $reponsesHandler->getObjects2($criteria, 'IdQuestion');
 
-            $tbl_tmp_comment = array();
+            $tbl_tmp_comment = [];
             $comment1        = $comment2 = $comment3 = '';
-            $tbl_tmp_comment = $rubrcomment_handler->getObjects($criteria);
+            $tbl_tmp_comment = $rubrcommentHandler->getObjects($criteria);
             if (count($tbl_tmp_comment) == 1) {
                 $tmp_comment = $tbl_tmp_comment[0];
                 $comment1    = nl2br($tmp_comment->getVar('Comment1'));

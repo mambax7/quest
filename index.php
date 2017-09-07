@@ -15,24 +15,23 @@
 //  This program is distributed WITHOUT ANY WARRANTY; without even the       //
 //  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. //
 //  ------------------------------------------------------------------------ //
-include '../../mainfile.php';
-$xoopsOption['template_main'] = 'quest_index.tpl';
+include __DIR__ . '/../../mainfile.php';
+$GLOBALS['xoopsOption']['template_main'] = 'quest_index.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 $uid = 0;
 if (is_object($xoopsUser)) {
     $uid = $xoopsUser->getVar('uid');
 } else {    // Accès réservé aux utilisateurs enregistrés
     redirect_header(XOOPS_URL . '/index.php', 2, _ERRORS);
-    exit();
 }
-$categories_handler     = xoops_getModuleHandler('categories', 'quest');
-$questionnaires_handler = xoops_getModuleHandler('questionnaires', 'quest');
-$questions_handler      = xoops_getModuleHandler('questions', 'quest');
-$reponses_handler       = xoops_getModuleHandler('reponses', 'quest');
+$categoriesHandler     = xoops_getModuleHandler('categories', 'quest');
+$questionnairesHandler = xoops_getModuleHandler('questionnaires', 'quest');
+$questionsHandler      = xoops_getModuleHandler('questions', 'quest');
+$reponsesHandler       = xoops_getModuleHandler('reponses', 'quest');
 // On commence par vérifier le nombre de questionnaires non répondus pour l'utilisateur courant.
-$tbl_questionnaires       = array();
+$tbl_questionnaires       = [];
 $quest_non_answered_count = 0;
-$tbl_questionnaires       = $questionnaires_handler->GetNonAnsweredQuestionnaires($uid);
+$tbl_questionnaires       = $questionnairesHandler->GetNonAnsweredQuestionnaires($uid);
 $quest_non_answered_count = count($tbl_questionnaires);
 if ($quest_non_answered_count == 0) {    // Tous les questionnaires ont été répondus, on dit merci et au revoir ********************************************************************
     $xoopsTpl->assign('action', 1);
@@ -47,8 +46,8 @@ if ($quest_non_answered_count == 0) {    // Tous les questionnaires ont été r�
     $IdQuestionnaire             = $tmp_quest->getVar('IdQuestionnaire');
     $_SESSION['IdQuestionnaire'] = $IdQuestionnaire;
     $tout_repondu                = false;
-    $tbl_categories              = array();
-    $tbl_categories              = $categories_handler->getCategoriesAndState($IdQuestionnaire, $uid, $tout_repondu);
+    $tbl_categories              = [];
+    $tbl_categories              = $categoriesHandler->getCategoriesAndState($IdQuestionnaire, $uid, $tout_repondu);
     $xoopsTpl->assign('tout_repondu', $tout_repondu);
     if (!$tout_repondu) {
         foreach ($tbl_categories as $cle_category => $one_category) {

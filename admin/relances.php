@@ -20,21 +20,21 @@
  * Génération automatique des relances de tous les questionnaires
  */
 
-include '../../../mainfile.php';
+include __DIR__ . '/../../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/quest/include/functions.php';
 include XOOPS_ROOT_PATH . '/class/xoopsmailer.php';
 
 echo "<br>Initialisation of Handlers\n";
 // Initialisation des handlers
-$cac_categories_handler = xoops_getModuleHandler('cac_categories', 'quest');
-$categories_handler     = xoops_getModuleHandler('categories', 'quest');
-$enquetes_handler       = xoops_getModuleHandler('enquetes', 'quest');
-$questionnaires_handler = xoops_getModuleHandler('questionnaires', 'quest');
-$questions_handler      = xoops_getModuleHandler('questions', 'quest');
-$reponses_handler       = xoops_getModuleHandler('reponses', 'quest');
-$rubrcomment_handler    = xoops_getModuleHandler('rubrcomment', 'quest');
+$cac_categoriesHandler = xoops_getModuleHandler('cac_categories', 'quest');
+$categoriesHandler     = xoops_getModuleHandler('categories', 'quest');
+$enquetesHandler       = xoops_getModuleHandler('enquetes', 'quest');
+$questionnairesHandler = xoops_getModuleHandler('questionnaires', 'quest');
+$questionsHandler      = xoops_getModuleHandler('questions', 'quest');
+$reponsesHandler       = xoops_getModuleHandler('reponses', 'quest');
+$rubrcommentHandler    = xoops_getModuleHandler('rubrcomment', 'quest');
 // Handler Xoops
-$member_handler = xoops_getHandler('member');
+$memberHandler = xoops_getHandler('member');
 
 if (function_exists('xoops_getMailer')) {
     $xoopsMailer = xoops_getMailer();
@@ -48,7 +48,7 @@ echo "<br>Retrieving the list of questionnaires\n"; //Récupération de la liste
 $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('DateFermeture', time(), '>='));
 $criteria->add(new Criteria('DateOuverture', time(), '<='));
-$tbl_questionnaires = $questionnaires_handler->getObjects($criteria);
+$tbl_questionnaires = $questionnairesHandler->getObjects($criteria);
 foreach ($tbl_questionnaires as $one_questionnaire) {
     echo '<br>Traitement du questionnaire ' . $one_questionnaire->getVar('LibelleQuestionnaire');
     // On commence par vérifier que les relances sur le questionnaire n'ont pas déjà été faites
@@ -67,11 +67,11 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         // On commence par mettre à jour le questionnaire pour indiquer que les relances ont été faites
         $one_questionnaire->setVar('DerniereRelance', time());
         $one_questionnaire->setVar('NbRelances', $one_questionnaire->getVar('NbRelances') + 1);
-        $questionnaires_handler->insert($one_questionnaire, true);
+        $questionnairesHandler->insert($one_questionnaire, true);
 
         // Ensuite on récupère la liste complète des personnes qui doivent répondre à ce questionnaire
-        $tbl_repondu = $tbl_relances = $tbl_users = $list_users = $tbl_non_repondus = $tbl_users2 = array();
-        $tbl_users   = $member_handler->getUsersByGroup($one_questionnaire->getVar('Groupe'), true);    // En tant qu'objet
+        $tbl_repondu = $tbl_relances = $tbl_users = $list_users = $tbl_non_repondus = $tbl_users2 = [];
+        $tbl_users   = $memberHandler->getUsersByGroup($one_questionnaire->getVar('Groupe'), true);    // En tant qu'objet
 
         foreach ($tbl_users as $one_user) {
             $list_users[]                         = $one_user->getVar('uid');
@@ -79,7 +79,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         }
 
         // Liste des personnes qui ont répondu (partiellement ou totalement)
-        $tbl_repondu = $reponses_handler->getUsersIdPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
+        $tbl_repondu = $reponsesHandler->getUsersIdPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
 
         // Normalement la différence entre la liste des personnes qui doivent répondre et la liste des personnes qui ont répondu
         // est égale à la liste des personnes qui n'ont pas du tout répondu
@@ -88,12 +88,12 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
             $tbl_relances = $tbl_non_repondus;
         } else {    // On relance tout le monde
             $tbl_relances                     = $tbl_non_repondus;
-            $tbl_questions_count_per_category = array();    // Clé=Id Catégorie, Valeur = Nb questions
-            $tbl_questions_count_per_category = $questions_handler->QuestionsCountPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
-            $tbl_categories                   = array();
+            $tbl_questions_count_per_category = [];    // Clé=Id Catégorie, Valeur = Nb questions
+            $tbl_questions_count_per_category = $questionsHandler->QuestionsCountPerQuestionnaire($one_questionnaire->getVar('IdQuestionnaire'));
+            $tbl_categories                   = [];
             $critere                          = new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '=');
             $critere->setSort('OrdreCategorie');
-            $tbl_categories = $categories_handler->GetObjects($critere);
+            $tbl_categories = $categoriesHandler->GetObjects($critere);
             foreach ($tbl_repondu as $one_uid) {
                 $tout_repondu = true;    // On part du postulat que la personne a répondu à tout
                 foreach ($tbl_categories as $one_category) {    // Boucle sur les catégories
@@ -108,7 +108,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
                         if ($one_category->getVar('AfficherGauche')) {
                             $criteria->add(new Criteria('Id_CAC2', 0, '<>'));
                         }
-                        $answers_count = $reponses_handler->getCount($criteria);    // Nombre de réponses de cette personne
+                        $answers_count = $reponsesHandler->getCount($criteria);    // Nombre de réponses de cette personne
                         if ($answers_count != $tbl_questions_count_per_category[$one_category->getVar('IdCategorie')]) {
                             $tout_repondu = false;
                             break;    // Pas la peine de continuer, cette personne n'a pas répondu sur cette catégorie
@@ -129,7 +129,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
                         if (xoops_trim($one_category->getVar('comment3')) != '') {
                             $criteria->add(new Criteria('LENGTH(TRIM(Comment3))', 0, '>'));
                         }
-                        $cnt = $rubrcomment_handler->getCount($criteria);
+                        $cnt = $rubrcommentHandler->getCount($criteria);
                         if ($cnt == 0) {
                             $tout_repondu = false;
                         }

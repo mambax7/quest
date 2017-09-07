@@ -27,7 +27,6 @@ if (is_object($xoopsUser)) {
     $uid = $xoopsUser->getVar('uid');
 } else {    // Acc�s r�serv� aux utilisateurs enregistr�s
     redirect_header(XOOPS_URL . '/index.php', 2, _ERRORS);
-    exit();
 }
 
 // Param�tres recus
@@ -39,28 +38,25 @@ $DG              = (int)$_POST['DG']; // 1=Droite, 2=Gauche
 $IP              = Quest_IP();
 
 // Initialisation des handlers
-$categories_handler     = &xoops_getModuleHandler('categories', 'quest');
-$questionnaires_handler = &xoops_getModuleHandler('questionnaires', 'quest');
-$reponses_handler       = &xoops_getModuleHandler('reponses', 'quest');
+$categoriesHandler     =  xoops_getModuleHandler('categories', 'quest');
+$questionnairesHandler =  xoops_getModuleHandler('questionnaires', 'quest');
+$reponsesHandler       =  xoops_getModuleHandler('reponses', 'quest');
 
 // On commence par les v�rifications
 // Chargement de la cat�gorie et du questionnaire
-$save_categ = $categories_handler->get($IdCategorie);
+$save_categ = $categoriesHandler->get($IdCategorie);
 if (!is_object($save_categ)) {    // Cat�gorie introuvable
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR2);
-    exit();
 }
 
-$save_quest = $questionnaires_handler->get($save_categ->getVar('IdQuestionnaire'));
+$save_quest = $questionnairesHandler->get($save_categ->getVar('IdQuestionnaire'));
 if (!is_object($save_quest)) {
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR6);
-    exit();
 }
 
 // Ensuite on v�rifie que l'utilisateur a le droit de r�pondre � ce questionnaire et donc � cette cat�gorie
-if (!$questionnaires_handler->isVisible($save_quest, $uid)) {
+if (!$questionnairesHandler->isVisible($save_quest, $uid)) {
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR3);    // Pas le droit, on d�gage.
-    exit();
 }
 
 // On peut passer � la sauvegarde des donn�es *************************************************************************
@@ -69,7 +65,7 @@ $criteria->add(new Criteria('IdQuestionnaire', $save_quest->getVar('IdQuestionna
 $criteria->add(new Criteria('IdCategorie', $save_categ->getVar('IdCategorie'), '='));
 $criteria->add(new Criteria('IdQuestion', $IdQuestion, '='));
 $criteria->add(new Criteria('IdRespondant', $uid, '='));
-$tbl_reponse = $reponses_handler->getObjects($criteria);
+$tbl_reponse = $reponsesHandler->getObjects($criteria);
 
 if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut mettre � jour
     $reponse = $tbl_reponse[0];
@@ -80,9 +76,9 @@ if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut 
     }
     $reponse->setVar('DateReponse', time());
     $reponse->setVar('IP', $IP);
-    $reponses_handler->insert($reponse, true);
+    $reponsesHandler->insert($reponse, true);
 } else {    // Nouvelle r�ponse, il faut ajouter ******************************
-    $reponse = $reponses_handler->create(true);
+    $reponse = $reponsesHandler->create(true);
     $reponse->setVar('IdQuestionnaire', $IdQuestionnaire);
     $reponse->setVar('IdCategorie', $IdCategorie);
     $reponse->setVar('IdRespondant', $uid);
@@ -94,7 +90,7 @@ if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut 
     }
     $reponse->setVar('DateReponse', time());
     $reponse->setVar('IP', $IP);
-    $reponses_handler->insert($reponse, true);
+    $reponsesHandler->insert($reponse, true);
 }
 
 // Et au final, on r�affichage des donn�es ****************************************************************************
