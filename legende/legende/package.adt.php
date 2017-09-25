@@ -218,7 +218,7 @@ class FontMetrics
      */
     public function getAscent()
     {
-        if ($this->cornersCache === null) {
+        if (null === $this->cornersCache) {
             $this->_createCornersCache();
         }
 
@@ -232,7 +232,7 @@ class FontMetrics
      */
     public function getDescent()
     {
-        if ($this->cornersCache === null) {
+        if (null === $this->cornersCache) {
             $this->_createCornersCache();
         }
 
@@ -246,7 +246,7 @@ class FontMetrics
      */
     public function getHeight()
     {
-        if ($this->cornersCache === null) {
+        if (null === $this->cornersCache) {
             $this->_createCornersCache();
         }
 
@@ -316,22 +316,22 @@ class Rectangle
     public function __construct($arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null)
     {
         // Rectangle()
-        if (func_num_args() == 0) {
+        if (0 == func_num_args()) {
             $this->Rectangle(0, 0, 0, 0);
         } // Rectangle(Point p)
-        elseif (func_num_args() == 1 && get_class($arg1) == 'point') {
+        elseif (1 == func_num_args() && 'point' == get_class($arg1)) {
             $this->Rectangle($arg1->x, $arg1->y, 0, 0);
         } // Rectangle(Dimension d)
-        elseif (func_num_args() == 1 && get_class($arg1) == 'dimension') {
+        elseif (1 == func_num_args() && 'dimension' == get_class($arg1)) {
             $this->Rectangle(0, 0, $arg1->width, $arg1->height);
         } // Rectangle(Point p, Dimension d)
-        elseif (func_num_args() == 2 && get_class($arg1) == 'point' && get_class($arg2) == 'dimension') {
+        elseif (2 == func_num_args() && 'point' == get_class($arg1) && 'dimension' == get_class($arg2)) {
             $this->Rectangle($arg1->x, $arg1->y, $arg2->width, $arg2->height);
         } // Rectangle(int width, int height)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->Rectangle(0, 0, $arg1, $arg2);
         } // Rectangle(int x, int y, int width, int height)
-        elseif (func_num_args() == 4) {
+        elseif (4 == func_num_args()) {
             $this->x      = $arg1 + 0;
             $this->y      = $arg2 + 0;
             $this->width  = $arg3 + 0;
@@ -378,10 +378,10 @@ class Rectangle
     public function setSize($arg1, $arg2 = null)
     {
         // void setSize(Dimension d)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->setSize($arg1->width, $arg1->height);
         } // void setSize(int width, int height)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->width  = $arg1 + 0;
             $this->height = $arg2 + 0;
         }
@@ -390,10 +390,10 @@ class Rectangle
     public function setLocation($arg1, $arg2 = null)
     {
         // void setLocation(Point p)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->setLocation($arg1->x, $arg1->y);
         } // void setLocation(int x, int y)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->x = $arg1 + 0;
             $this->y = $arg2 + 0;
         }
@@ -440,13 +440,13 @@ class Point
     public function __construct($arg1 = null, $arg2 = null)
     {
         // Point()
-        if (func_num_args() == 0) {
+        if (0 == func_num_args()) {
             $this->Point(0, 0);
         } // Point(Point p)
-        elseif (func_num_args() == 1) {
+        elseif (1 == func_num_args()) {
             $this->Point($arg1->x, $arg1->y);
         } // Point(int x, int y)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->x = $arg1 + 0;
             $this->y = $arg2 + 0;
         }
@@ -480,10 +480,10 @@ class Point
     public function setLocation($arg1, $arg2 = null)
     {
         // void setLocation(Point p)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->setLocation($arg1->x, $arg1->y);
         } // void setLocation(int x, int y)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->x = $arg1 + 0;
             $this->y = $arg2 + 0;
         }
@@ -498,13 +498,13 @@ class Dimension
     public function __construct($arg1 = null, $arg2 = null)
     {
         // Dimension()
-        if (func_num_args() == 0) {
+        if (0 == func_num_args()) {
             $this->Dimension(0, 0);
         } // Dimension(Dimension d)
-        elseif (func_num_args() == 1) {
+        elseif (1 == func_num_args()) {
             $this->Dimension($arg1->width, $arg1->height);
         } // Dimension(int x, int y)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->width  = $arg1 + 0;
             $this->height = $arg2 + 0;
         }
@@ -531,10 +531,10 @@ class Dimension
     public function setSize($arg1, $arg2 = null)
     {
         // setSize(Dimension d)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->setSize($arg1->width, $arg1->height);
         } // setSize(int x, int y)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->width  = $arg1;
             $this->height = $arg2;
         }
@@ -548,16 +548,16 @@ class Color
     public function __construct($arg1, $arg2 = null, $arg3 = null, $arg4 = null)
     {
         // Color(int argb)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->value = $arg1 & 0x7fffffff;
         } // Color(int rgb, int a)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->Color($arg1 >> 16, $arg1 >> 8, $arg1, $arg2);
         } // Color(int r, int g, int b)
-        elseif (func_num_args() == 3) {
+        elseif (3 == func_num_args()) {
             $this->Color($arg1, $arg2, $arg3, 0);
         } // Color(int r, int g, int b, int a)
-        elseif (func_num_args() == 4) {
+        elseif (4 == func_num_args()) {
             $this->Color((((100 - $arg4) * 1.27) & 0x7f) << 24 | ($arg1 & 0xff) << 16 | ($arg2 & 0xff) << 8 | ($arg3 & 0xff) << 0);
         }
     }

@@ -74,13 +74,13 @@ class DefaultFontImagePluggableSet extends GMIPluggableSet
             return $vars['exec'];
         }
 
-        if ($vars['text'] !== null && $vars['font'] !== null && $vars['size'] !== null) {
+        if (null !== $vars['text'] && null !== $vars['font'] && null !== $vars['size']) {
             $font = 'font {font:{font},{size},{leading}};';
 
-            if ($vars['width'] !== null && $vars['height'] !== null) {
+            if (null !== $vars['width'] && null !== $vars['height']) {
                 $string     = 'string {text},0,0,{width},{height},{align},{valign};';
                 $autoResize = 'autoresize width;';
-            } elseif ($vars['width'] !== null) {
+            } elseif (null !== $vars['width']) {
                 $string     = 'string {text},0,0,{width},{align};';
                 $autoResize = 'autoresize both;';
             } else {
@@ -92,23 +92,23 @@ class DefaultFontImagePluggableSet extends GMIPluggableSet
             $string = '';
         }
 
-        if ($vars['bgimage'] !== null) {
+        if (null !== $vars['bgimage']) {
             $pattern = 'pattern {image:{bgimage}};';
         } else {
             $pattern = '';
         }
 
-        if ($vars['type'] == 'jpeg') {
+        if ('jpeg' == $vars['type']) {
             $type = 'type {type},{quality};';
         } else {
-            if ($vars['bgtrans'] == 'false') {
+            if ('false' == $vars['bgtrans']) {
                 $type = 'type {type},{palette};';
             } else {
                 $type = 'type {type},{palette},{color:{bgcolor}};';
             }
         }
 
-        if ($vars['file'] !== null) {
+        if (null !== $vars['file']) {
             $file = 'file {file};';
         } else {
             $file = '';

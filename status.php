@@ -70,7 +70,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
     $tbl_users  = $memberHandler->getUsersByGroup($one_questionnaire->getVar('Groupe'), true);    // En tant qu'objet
 
     foreach ($tbl_users as $one_user) {
-        $list_users[]  = xoops_trim($one_user->getVar('name')) != '' ? $one_user->getVar('name') : $one_user->getVar('uname');
+        $list_users[]  = '' != xoops_trim($one_user->getVar('name')) ? $one_user->getVar('name') : $one_user->getVar('uname');
         $list_users2[] = $one_user->getVar('uid');
     }
 
@@ -124,22 +124,22 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
                 }
             }
             // Vérification des commentaires
-            if ($tout_repondu && (xoops_trim($one_category->getVar('comment1')) != '' || xoops_trim($one_category->getVar('comment2')) != '' || xoops_trim($one_category->getVar('comment3')) != '')) {
+            if ($tout_repondu && ('' != xoops_trim($one_category->getVar('comment1')) || '' != xoops_trim($one_category->getVar('comment2')) || '' != xoops_trim($one_category->getVar('comment3')))) {
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('IdRespondant', $one_uid, '='));
                 $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
                 $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
-                if (xoops_trim($one_category->getVar('comment1')) != '') {
+                if ('' != xoops_trim($one_category->getVar('comment1'))) {
                     $criteria->add(new Criteria('LENGTH(TRIM(Comment1))', 0, '>'));
                 }
-                if (xoops_trim($one_category->getVar('comment2')) != '') {
+                if ('' != xoops_trim($one_category->getVar('comment2'))) {
                     $criteria->add(new Criteria('LENGTH(TRIM(Comment2))', 0, '>'));
                 }
-                if (xoops_trim($one_category->getVar('comment3')) != '') {
+                if ('' != xoops_trim($one_category->getVar('comment3'))) {
                     $criteria->add(new Criteria('LENGTH(TRIM(Comment3))', 0, '>'));
                 }
                 $cnt = $rubrcommentHandler->getCount($criteria);
-                if ($cnt == 0) {
+                if (0 == $cnt) {
                     $tout_repondu = false;
                 }
             }
@@ -179,7 +179,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         $tbl2 = [];
         $tbl2 = $one_category->toArray();
         // Recherche du nombre de commentaires répondus
-        if (xoops_trim($one_category->getVar('comment1')) != '') {
+        if ('' != xoops_trim($one_category->getVar('comment1'))) {
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
             $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
@@ -190,7 +190,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
             $tbl2['Comment1Count'] = 0;
         }
 
-        if (xoops_trim($one_category->getVar('comment2')) != '') {
+        if ('' != xoops_trim($one_category->getVar('comment2'))) {
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
             $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
@@ -201,7 +201,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
             $tbl2['Comment2Count'] = 0;
         }
 
-        if (xoops_trim($one_category->getVar('comment3')) != '') {
+        if ('' != xoops_trim($one_category->getVar('comment3'))) {
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
             $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));

@@ -49,7 +49,7 @@ function b_quest_categories_list_show($options)
             return null;
         }
     } else {    // S'il n'y a pas de questionnaire de s�lectionn� par d�faut, on regarde s'il n'y en aurait pas qu'un seul dans la base (auquel cas on va le prendre)
-        if ($questionnairesHandler->getCount() == 1) {
+        if (1 == $questionnairesHandler->getCount()) {
             $tbl_quest       = $questionnairesHandler->getObjects();
             $tmp_quest       = $tbl_quest[0];
             $IdQuestionnaire = $tmp_quest->getVar('IdQuestionnaire');

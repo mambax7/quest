@@ -59,7 +59,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         $this->table     = $db->prefix($tablename);
         $this->keyName   = $keyname;
         $this->className = $classname;
-        if ($idenfierName !== false) {
+        if (false !== $idenfierName) {
             $this->identifierName = $idenfierName;
         }
     }
@@ -74,7 +74,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     public function create($isNew = true)
     {
         $obj = new $this->className();
-        if ($isNew === true) {
+        if (true === $isNew) {
             $obj->setNew();
         }
 
@@ -101,7 +101,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         }
         $criteria->setLimit(1);
         $obj_array =& $this->getObjects($criteria, false, $as_object);
-        if (count($obj_array) != 1) {
+        if (1 != count($obj_array)) {
             $ret = null;
         } else {
             $ret =& $obj_array[0];
@@ -126,7 +126,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         $sql   = 'SELECT * FROM ' . $this->table;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
             $sql .= ' ' . $criteria->renderWhere();
-            if ($criteria->getSort() != '') {
+            if ('' != $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
             }
             $limit = $criteria->getLimit();
@@ -157,7 +157,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         $sql   = 'SELECT * FROM ' . $this->table;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
             $sql .= ' ' . $criteria->renderWhere();
-            if ($criteria->getSort() != '') {
+            if ('' != $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
             }
             $limit = $criteria->getLimit();
@@ -170,7 +170,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         while ($myrow = $this->db->fetchArray($result)) {
             $obj = $this->create(false);
             $obj->assignVars($myrow);
-            if ($id_key == '') {
+            if ('' == $id_key) {
                 if ($as_object) {
                     $ret[] =& $obj;
                 } else {
@@ -280,11 +280,11 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
     public function getList(CriteriaElement $criteria = null, $limit = 0, $start = 0)
     {
         $ret = [];
-        if ($criteria == null) {
+        if (null == $criteria) {
             $criteria = new CriteriaCompo();
         }
 
-        if ($criteria->getSort() == '') {
+        if ('' == $criteria->getSort()) {
             $criteria->setSort($this->identifierName);
         }
 
@@ -295,7 +295,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         $sql .= ' FROM ' . $this->table;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
             $sql .= ' ' . $criteria->renderWhere();
-            if ($criteria->getSort() != '') {
+            if ('' != $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
             }
             $limit = $criteria->getLimit();
@@ -326,7 +326,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         $field   = '';
         $groupby = false;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
-            if ($criteria->groupby != '') {
+            if ('' != $criteria->groupby) {
                 $groupby = true;
                 $field   = $criteria->groupby . ', '; //Not entirely secure unless you KNOW that no criteria's groupby clause is going to be mis-used
             }
@@ -334,7 +334,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         $sql = 'SELECT ' . $field . 'COUNT(*) FROM ' . $this->table;
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
             $sql .= ' ' . $criteria->renderWhere();
-            if ($criteria->groupby != '') {
+            if ('' != $criteria->groupby) {
                 $sql .= $criteria->getGroupby();
             }
         }
@@ -342,7 +342,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
         if (!$result) {
             return 0;
         }
-        if ($groupby === false) {
+        if (false === $groupby) {
             list($count) = $this->db->fetchRow($result);
 
             return $count;
@@ -416,7 +416,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
 
     public function insert(XoopsObject $obj, $force = false, $checkObject = true)
     {
-        if ($checkObject !== false) {
+        if (false !== $checkObject) {
             if (!is_object($obj)) {
                 echo '<br><h1>Error, not object</h1>';
 
@@ -444,7 +444,7 @@ class MyXoopsPersistableObjectHandler extends XoopsObjectHandler
             return false;
         }
         foreach ($obj->cleanVars as $k => $v) {
-            if ($obj->vars[$k]['data_type'] == XOBJ_DTYPE_INT) {
+            if (XOBJ_DTYPE_INT == $obj->vars[$k]['data_type']) {
                 $cleanvars[$k] = (int)$v;
             } elseif (is_array($v)) {
                 $cleanvars[$k] = $this->db->quoteString(implode(',', $v));

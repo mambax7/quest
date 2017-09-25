@@ -87,7 +87,7 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
     $id_qestionnaire = isset($_GET['IdQuestionnaire']) ? (int)$_GET['IdQuestionnaire'] : (int)$_POST['quest'];
     $critere         = new Criteria('IdQuestionnaire', $id_qestionnaire, '=');
     $quest_count     = $questionnairesHandler->getCount($critere);
-    if ($quest_count == 0) {
+    if (0 == $quest_count) {
         loginform(_QUEST_EXPORT_ERROR1);
         exit;
     }
@@ -104,7 +104,7 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
 
     // R�cup�ration des informations sur l'enqu�t�
     $enquete = $enquetesHandler->get($questionnaire->getVar('IdEnquete'));
-    if ($enquete == null) {
+    if (null == $enquete) {
         exit(_QUEST_EXPORT_ERROR2);
     }
 
@@ -204,7 +204,7 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
             $tbl_tmp_comment = [];
             $comment1        = $comment2 = $comment3 = '';
             $tbl_tmp_comment = $rubrcommentHandler->getObjects($criteria);
-            if (count($tbl_tmp_comment) == 1) {
+            if (1 == count($tbl_tmp_comment)) {
                 $tmp_comment = $tbl_tmp_comment[0];
                 $comment1    = nl2br($tmp_comment->getVar('Comment1'));
                 $comment2    = nl2br($tmp_comment->getVar('Comment2'));
@@ -245,7 +245,7 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
                     $csv->addData($one_user->getVar('name'));
                     $csv->addData($reponse->getVar('Id_CAC1'));
                     $libellecourt = $libellelong = '';
-                    if ($reponse->getVar('Id_CAC1') != 0) {
+                    if (0 != $reponse->getVar('Id_CAC1')) {
                         $cac_tmp      = $tbl_CAC[$reponse->getVar('Id_CAC1')];
                         $libellecourt = $cac_tmp->getVar('LibelleCourtCac');
                         $libellelong  = $cac_tmp->getVar('LibelleCAC');
@@ -255,7 +255,7 @@ if (isset($_POST['btngo']) || isset($_GET['IdQuestionnaire'])) {
 
                     $csv->addData($reponse->getVar('Id_CAC2'));
                     $libellecourt = $libellelong = '';
-                    if ($reponse->getVar('Id_CAC2') != 0) {
+                    if (0 != $reponse->getVar('Id_CAC2')) {
                         $cac_tmp      = $tbl_CAC[$reponse->getVar('Id_CAC2')];
                         $libellecourt = $cac_tmp->getVar('LibelleCourtCac');
                         $libellelong  = $cac_tmp->getVar('LibelleCAC');

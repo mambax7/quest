@@ -28,7 +28,7 @@ defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 function quest_getUserGroups($uid = 0, $asCriteria = true)
 {
     global $xoopsUser;
-    if ($uid == 0) {
+    if (0 == $uid) {
         $uid = $xoopsUser->getVar('uid');
     }
     $memberHandler = xoops_getHandler('member');

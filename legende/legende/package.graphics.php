@@ -66,9 +66,9 @@ class Canvas extends Image
      */
     public function setAutoResizeMode($autoResizeMode)
     {
-        if ($autoResizeMode == 'none' || $autoResizeMode == 'width'
-            || $autoResizeMode == 'height'
-            || $autoResizeMode == 'both') {
+        if ('none' == $autoResizeMode || 'width' == $autoResizeMode
+            || 'height' == $autoResizeMode
+            || 'both' == $autoResizeMode) {
             $this->autoResizeMode = $autoResizeMode;
         }
     }
@@ -85,19 +85,19 @@ class Canvas extends Image
         switch ($type) {
             case 'png':
                 $this->outputType       = $type;
-                $this->outputParameter  = ($parameter !== null) ? $parameter : 256;
-                $this->transparentColor = ($transparentColor !== null) ? $transparentColor : null;
+                $this->outputParameter  = (null !== $parameter) ? $parameter : 256;
+                $this->transparentColor = (null !== $transparentColor) ? $transparentColor : null;
                 break;
 
             case 'jpeg':
                 $this->outputType      = $type;
-                $this->outputParameter = ($parameter !== null) ? $parameter : 100;
+                $this->outputParameter = (null !== $parameter) ? $parameter : 100;
                 break;
 
             case 'gif':
                 $this->outputType       = $type;
-                $this->outputParameter  = ($parameter !== null) ? $parameter : 256;
-                $this->transparentColor = ($transparentColor !== null) ? $transparentColor : null;
+                $this->outputParameter  = (null !== $parameter) ? $parameter : 256;
+                $this->transparentColor = (null !== $transparentColor) ? $transparentColor : null;
                 break;
         }
     }
@@ -140,7 +140,7 @@ class Canvas extends Image
     public function getWidth()
     {
         $padding =& $this->getPadding();
-        if ($this->getAutoResizeMode() == 'both' || $this->getAutoResizeMode() == 'width') {
+        if ('both' == $this->getAutoResizeMode() || 'width' == $this->getAutoResizeMode()) {
             $g          =& $this->getGraphics();
             $clipBounds =& $g->getClipBounds();
 
@@ -158,7 +158,7 @@ class Canvas extends Image
     public function getHeight()
     {
         $padding =& $this->getPadding();
-        if ($this->getAutoResizeMode() == 'both' || $this->getAutoResizeMode() == 'height') {
+        if ('both' == $this->getAutoResizeMode() || 'height' == $this->getAutoResizeMode()) {
             $g          =& $this->getGraphics();
             $clipBounds =& $g->getClipBounds();
 
@@ -175,10 +175,10 @@ class Canvas extends Image
     public function setSize($arg1, $arg2 = null)
     {
         // void setSize(Dimension d)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->setSize($arg1->width, $arg1->height);
         } // void setSize(int width, int height)
-        elseif (func_num_args() == 2) {
+        elseif (2 == func_num_args()) {
             $this->width  = $arg1;
             $this->height = $arg2;
         }
@@ -268,7 +268,7 @@ class Canvas extends Image
         switch ($this->outputType) {
             case 'png':
                 imagetruecolortopalette($this->getSource(), false, $this->outputParameter);
-                if ($this->transparentColor !== null) {
+                if (null !== $this->transparentColor) {
                     $closestRGB = imagecolorclosest($this->getSource(), $this->transparentColor->getRed(), $this->transparentColor->getGreen(), $this->transparentColor->getBlue());
                     imagecolortransparent($this->getSource(), $closestRGB);
                 }
@@ -283,7 +283,7 @@ class Canvas extends Image
 
             case 'gif':
                 imagetruecolortopalette($this->getSource(), false, $this->outputParameter);
-                if ($this->transparentColor !== null) {
+                if (null !== $this->transparentColor) {
                     $closestRGB = imagecolorclosest($this->getSource(), $this->transparentColor->getRed(), $this->transparentColor->getGreen(), $this->transparentColor->getBlue());
                     imagecolortransparent($this->getSource(), $closestRGB);
                 }
@@ -442,7 +442,7 @@ class Graphics
      */
     public function pattern(&$image, $repeat = 'repeat')
     {
-        if ($image === null) {
+        if (null === $image) {
             return;
         }
         $context = new PatternContext($image, $repeat);
@@ -458,10 +458,10 @@ class Graphics
     public function drawRect($arg1, $arg2 = null, $arg3 = null, $arg4 = null)
     {
         // void drawRect(Rectangle rect)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->drawRect($arg1->x, $arg1->y, $arg1->width, $arg1->height);
         } // void drawRect(int x, int y, int widht, int height)
-        elseif (func_num_args() == 4) {
+        elseif (4 == func_num_args()) {
             $context = new RectangleContext($this->offset->x + $arg1, $this->offset->y + $arg2, $arg3, $arg4, $this->getColor());
             $this->addContext($context);
             $this->updateClipBounds($context->getX(), $context->getY(), $context->getWidth(), $context->getHeight());
@@ -477,10 +477,10 @@ class Graphics
     public function fillRect($arg1, $arg2 = null, $arg3 = null, $arg4 = null)
     {
         // void fillRect(Rectangle rect)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $this->fillRect($arg1->x, $arg1->y, $arg1->width, $arg1->height);
         } // void fillRect(int x, int y, int width, int height)
-        elseif (func_num_args() == 4) {
+        elseif (4 == func_num_args()) {
             $context = new FillRectangleContext($this->offset->x + $arg1, $this->offset->y + $arg2, $arg3, $arg4, $this->getColor());
             $this->addContext($context);
             $this->updateClipBounds($context->getX(), $context->getY(), $context->getWidth(), $context->getHeight());
@@ -497,21 +497,21 @@ class Graphics
      */
     public function patternRect(&$arg1, $arg2, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null)
     {
-        if ($arg1 === null) {
+        if (null === $arg1) {
             return;
         }
 
         // void patternRect(Image image, Rectangle rect)
-        if (func_num_args() == 2) {
+        if (2 == func_num_args()) {
             $this->patternRect($arg1, $arg2->x, $arg2->y, $arg2->width, $arg2->height, 'repeat');
         } // void patternRect(Image image, Rectangle rect, string repeat)
-        elseif (func_num_args() == 3) {
+        elseif (3 == func_num_args()) {
             $this->patternRect($arg1, $arg2->x, $arg2->y, $arg2->width, $arg2->height, $arg3);
         } // void patternRect(Image image, int x, int y, int width, int height)
-        elseif (func_num_args() == 5) {
+        elseif (5 == func_num_args()) {
             $this->patternRect($arg1, $arg2, $arg3, $arg4, $arg5, 'repeat');
         } // void patternRect(Image image, int x, int y, int width, int height, string repeat)
-        elseif (func_num_args() == 6) {
+        elseif (6 == func_num_args()) {
             $context = new PatternRectangleContext($arg1, $this->offset->x + $arg2, $this->offset->y + $arg3, $arg4, $arg5, $arg6);
             $this->addContext($context);
             $this->updateClipBounds($context->getX(), $context->getY(), $context->getWidth(), $context->getHeight());
@@ -531,18 +531,18 @@ class Graphics
      */
     public function drawImage(&$arg1, $arg2, $arg3, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null, $arg8 = null, $arg9 = null)
     {
-        if ($arg1 === null) {
+        if (null === $arg1) {
             return;
         }
 
         // void drawImage(Image image, int x, int y)
-        if (func_num_args() == 3) {
+        if (3 == func_num_args()) {
             $this->drawImage($arg1, $arg2, $arg3, $arg2 + $arg1->getWidth(), $arg3 + $arg1->getHeight(), 0, 0, $arg1->getWidth(), $arg1->getHeight());
         } // void drawImage(Image image, int x, int y, int width, int height)
-        elseif (func_num_args() == 5) {
+        elseif (5 == func_num_args()) {
             $this->drawImage($arg1, $arg2, $arg3, $arg2 + $arg4, $arg3 + $arg5, 0, 0, $arg1->getWidth(), $arg1->getHeight());
         } // void drawImage(Image image, int dx1, int dx1, int dx2, int dx2, int sx1, int sx1, int sx2, int sx2)
-        elseif (func_num_args() == 9) {
+        elseif (9 == func_num_args()) {
             $context = new ImageContext($arg1, $this->offset->x + $arg2, $this->offset->y + $arg3, $this->offset->x + $arg4, $this->offset->y + $arg5, $arg6, $arg7, $arg8, $arg9);
 
             $this->addContext($context);
@@ -561,21 +561,21 @@ class Graphics
      */
     public function drawString($arg1, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null)
     {
-        if ($this->getFont() === null) {
+        if (null === $this->getFont()) {
             return;
         }
 
         // void drawString(string text)
-        if (func_num_args() == 1) {
+        if (1 == func_num_args()) {
             $context = new TextContext($arg1, $this->offset->x, $this->offset->y, null, null, 'left', 'top', $this->getColor(), $this->getFont(), $this->getTextAntialias());
         } // void drawString(string text, int x, int y)
-        elseif (func_num_args() == 3) {
+        elseif (3 == func_num_args()) {
             $context = new TextContext($arg1, $this->offset->x + $arg2, $this->offset->y + $arg3, null, null, 'left', 'top', $this->getColor(), $this->getFont(), $this->getTextAntialias());
         } // void drawString(string text, int x, int y, int width, int height)
-        elseif (func_num_args() == 5) {
+        elseif (5 == func_num_args()) {
             $context = new TextContext($arg1, $this->offset->x + $arg2, $this->offset->y + $arg3, $arg4, $arg5, 'left', 'top', $this->getColor(), $this->getFont(), $this->getTextAntialias());
         } // void drawString(string text, int x, int y, int width, int height, string align, string valign)
-        elseif (func_num_args() == 7) {
+        elseif (7 == func_num_args()) {
             $context = new TextContext($arg1, $this->offset->x + $arg2, $this->offset->y + $arg3, $arg4, $arg5, $arg6, $arg7, $this->getColor(), $this->getFont(), $this->getTextAntialias());
         } else {
             return;
@@ -621,7 +621,7 @@ class Graphics
      */
     public function &getClipBounds()
     {
-        return ($this->clipBounds !== null) ? $this->clipBounds : new Rectangle();
+        return (null !== $this->clipBounds) ? $this->clipBounds : new Rectangle();
     }
 
     // void updateClipBounds(int x, int y, int width, int height)
@@ -634,7 +634,7 @@ class Graphics
      */
     public function updateClipBounds($x, $y, $width, $height)
     {
-        if ($this->clipBounds === null) {
+        if (null === $this->clipBounds) {
             $this->clipBounds = new Rectangle($x, $y, $width, $height);
         } else {
             $this->clipBounds->x      = min($this->clipBounds->x, $x);
@@ -1051,8 +1051,8 @@ class TextContext extends GraphicsContext
         $this->text          = $text;
         $this->x             = $x;
         $this->y             = $y;
-        $this->width         = ($width === null) ? 65536 : $width;
-        $this->height        = ($height === null) ? 65536 : $height;
+        $this->width         = (null === $width) ? 65536 : $width;
+        $this->height        = (null === $height) ? 65536 : $height;
         $this->color         = $color;
         $this->align         = $align;
         $this->valign        = $valign;
@@ -1080,7 +1080,7 @@ class TextContext extends GraphicsContext
      */
     public function getWidth()
     {
-        return ($this->width == 65536) ? $this->actualWidth : $this->width;
+        return (65536 == $this->width) ? $this->actualWidth : $this->width;
     }
 
     // int getHeight()
@@ -1090,7 +1090,7 @@ class TextContext extends GraphicsContext
      */
     public function getHeight()
     {
-        return ($this->height == 65536) ? $this->actualHeight : $this->height;
+        return (65536 == $this->height) ? $this->actualHeight : $this->height;
     }
 
     // void prepareDrawing()
@@ -1118,14 +1118,14 @@ class TextContext extends GraphicsContext
 
                     // splice at previous character position
                     // if no space is found before string width is wider than the width.
-                    if ($i == 0 && $previousCaret == 0) {
+                    if (0 == $i && 0 == $previousCaret) {
                         $lineWidth = round($this->metrics->stringWidth(trim(substr($lines[$i][$n], 0, $caret))) / $this->textAntialias);
                         if ($lineWidth >= $this->width) {
                             $previousCaret = max(1, $caret - 1);
                         }
                     }
 
-                    if (substr($lines[$i][$n], $caret, 1) == ' ' || $caret == strlen($lines[$i][$n])) {
+                    if (' ' == substr($lines[$i][$n], $caret, 1) || $caret == strlen($lines[$i][$n])) {
                         $lineWidth         = round($this->metrics->stringWidth(trim(substr($lines[$i][$n], 0, $caret))) / $this->textAntialias);
                         $this->actualWidth = max($lineWidth, $this->actualWidth);
 
@@ -1329,8 +1329,8 @@ class TextContext extends GraphicsContext
                 if (strlen($this->lines[$i][$n]) > 0
                     && $y + $leading * $lineNum < $height) {
                     if (($n < count($this->lines[$i]) - 1
-                         && ($align == 'left-adjust' || $align == 'center-adjust' || $align == 'right-adjust'))
-                        || $align == 'adjust') {
+                         && ('left-adjust' == $align || 'center-adjust' == $align || 'right-adjust' == $align))
+                        || 'adjust' == $align) {
                         $this->alignedString($image, $this->lines[$i][$n], $x, $offsetY + $y + $leading * $lineNum, $width, 'adjust');
                     } else {
                         switch ($align) {

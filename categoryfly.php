@@ -67,9 +67,9 @@ $criteria->add(new Criteria('IdQuestion', $IdQuestion, '='));
 $criteria->add(new Criteria('IdRespondant', $uid, '='));
 $tbl_reponse = $reponsesHandler->getObjects($criteria);
 
-if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut mettre � jour
+if (1 == count($tbl_reponse)) {    // R�ponse d�j� enregistr�e, il faut mettre � jour
     $reponse = $tbl_reponse[0];
-    if ($DG == 1) {
+    if (1 == $DG) {
         $reponse->setVar('Id_CAC1', $IdCAC);
     } else {
         $reponse->setVar('Id_CAC2', $IdCAC);
@@ -83,7 +83,7 @@ if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut 
     $reponse->setVar('IdCategorie', $IdCategorie);
     $reponse->setVar('IdRespondant', $uid);
     $reponse->setVar('IdQuestion', $IdQuestion);
-    if ($DG == 1) {
+    if (1 == $DG) {
         $reponse->setVar('Id_CAC1', $IdCAC);
     } else {
         $reponse->setVar('Id_CAC2', $IdCAC);
@@ -96,7 +96,7 @@ if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut 
 // Et au final, on r�affichage des donn�es ****************************************************************************
 // $tbl_sesCAC[$one_cac_category->getVar('IdCAC')] = array('LibelleCourt' => xoops_trim($libelle_court), '' => xoops_trim($libelle_long));
 $lr = '';
-if ($DG == 1) { // 1=Droite, 2=Gauche
+if (1 == $DG) { // 1=Droite, 2=Gauche
     $tbl_cac = $_SESSION['tbl_sesCAC_D'];
     $lr      = 'd';
     $lr2     = 'r';

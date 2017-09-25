@@ -88,7 +88,7 @@ class GMIExecution
             preg_match_all('/^\s*([\w]+)\s*$/', $name, $matches);
 
             // stop if expression is not valid
-            if (count($matches[0]) == 0) {
+            if (0 == count($matches[0])) {
                 continue;
             }
             $name = $matches[1][0];
@@ -138,7 +138,7 @@ class GMIExecution
         } elseif (preg_match('/^[a-zA-Z][\w\-]+$/', $exp)) {
             $value = new GMIConstant($this, $exp);
         } elseif (preg_match('/^(?:\".*\"|\\\'.*\\\')$/', $exp)) {
-            if (substr($exp, 0, 1) == "'") {
+            if ("'" == substr($exp, 0, 1)) {
                 $exp = preg_replace('/\\\\\'/', "'", substr($exp, 1, -1));
             } else {
                 $exp = preg_replace('/\\\\"/', '"', substr($exp, 1, -1));
@@ -167,13 +167,13 @@ class GMIExecution
         reset($types);
         //while (list($i) = each($types)) {
         foreach ($types as $i) {
-            if ($types[$i] === null) {
+            if (null === $types[$i]) {
                 break;
             }
 
             // constant
             if (is_array($types[$i])) {
-                if ($args[$i]->getType() != 'constant') {
+                if ('constant' != $args[$i]->getType()) {
                     return false;
                 }
                 //reset($types[$i]);
@@ -263,7 +263,7 @@ class GMIExecution
      */
     public function execute($exp = '')
     {
-        if ($this->pluggableSet !== null) {
+        if (null !== $this->pluggableSet) {
             $exp = $this->pluggableSet->getExpression();
         }
 
@@ -278,7 +278,7 @@ class GMIExecution
         //while (list($i) = each($lines)) {
         foreach ($lines as $i) {
             // skip empty line.
-            if ($lines[$i] == '') {
+            if ('' == $lines[$i]) {
                 continue;
             }
             // remove slashes inserted above.
@@ -309,14 +309,14 @@ class GMIExecution
         //while (list($name) = each($this->nameTable)) {
         foreach ($this->nameTable as $name) {
             echo '<tr>';
-            echo '<td style="background:' . ($i % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($i % 2 == 0 ? '#ced4dd' : '#dedede') . ";padding:2px 10px;white-space:nowrap;vertical-align:top;\"><strong>$name</strong></td>";
-            echo '<td style="background:' . ($i % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($i % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;white-space:nowrap;text-align:center;vertical-align:top;">' . $this->nameTable[$name]->getType() . '</td>';
-            echo '<td style="background:' . ($i % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($i % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;color:gray;">';
+            echo '<td style="background:' . (0 == $i % 2 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . (0 == $i % 2 ? '#ced4dd' : '#dedede') . ";padding:2px 10px;white-space:nowrap;vertical-align:top;\"><strong>$name</strong></td>";
+            echo '<td style="background:' . (0 == $i % 2 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . (0 == $i % 2 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;white-space:nowrap;text-align:center;vertical-align:top;">' . $this->nameTable[$name]->getType() . '</td>';
+            echo '<td style="background:' . (0 == $i % 2 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . (0 == $i % 2 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;color:gray;">';
             ob_start();
             var_dump($this->nameTable[$name]->getValue());
             echo preg_replace('/\s\s/m', '&nbsp;&nbsp;&nbsp;&nbsp;', nl2br(ob_get_clean()));
             echo '</td>';
-            echo '<td style="background:' . ($i % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($i % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;">' . $this->nameTable[$name]->expression . '</td>';
+            echo '<td style="background:' . (0 == $i % 2 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . (0 == $i % 2 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;">' . $this->nameTable[$name]->expression . '</td>';
             echo '</tr>';
             $i++;
         }
@@ -340,14 +340,14 @@ class GMIExecution
             //while (list($n) = each($this->commands[$i]->arguments)) {
             foreach ($this->commands[$i]->arguments as $n) {
                 echo '<tr>';
-                echo '<td style="background:' . ($n % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ";padding:2px 10px;white-space:nowrap;vertical-align:top\">Argument $n</td>";
-                echo '<td style="background:' . ($n % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;white-space:nowrap;text-align:center;vertical-align:top">' . $this->commands[$i]->arguments[$n]->getType() . '</td>';
-                echo '<td style="background:' . ($n % 2 == 0 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;color:gray;">';
+                echo '<td style="background:' . (0 == $n % 2 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . (0 == $n % 2 ? '#ced4dd' : '#dedede') . ";padding:2px 10px;white-space:nowrap;vertical-align:top\">Argument $n</td>";
+                echo '<td style="background:' . (0 == $n % 2 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . (0 == $n % 2 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;white-space:nowrap;text-align:center;vertical-align:top">' . $this->commands[$i]->arguments[$n]->getType() . '</td>';
+                echo '<td style="background:' . (0 == $n % 2 ? '#edf3fe' : '#ffffff') . ';border-right: solid 1px ' . (0 == $n % 2 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;color:gray;">';
                 ob_start();
                 var_dump($this->commands[$i]->arguments[$n]->getValue());
                 echo preg_replace('/\s\s/m', '&nbsp;&nbsp;&nbsp;&nbsp;', nl2br(ob_get_clean()));
                 echo '</td>';
-                echo '<td style="background:' . ($n % 2 == 0 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . ($n % 2 == 0 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;">' . $this->commands[$i]->arguments[$n]->expression . '</td>';
+                echo '<td style="background:' . (0 == $n % 2 ? '#e6ebf6' : '#f7f7f7') . ';border-right: solid 1px ' . (0 == $n % 2 ? '#ced4dd' : '#dedede') . ';padding:2px 10px;vertical-align:top;">' . $this->commands[$i]->arguments[$n]->expression . '</td>';
                 echo '</tr>';
             }
             echo '</tr>';
@@ -472,14 +472,14 @@ class GMICommand extends GMIElement
         preg_match_all('/^(\w+)(?:\s+(.*)$|$)/', $expression, $matches);
 
         // stop if expression is not valid
-        if (count($matches[0]) == 0) {
+        if (0 == count($matches[0])) {
             return;
         }
 
         $this->name = $matches[1][0];
 
         // stop if argument is empty
-        if ($matches[2][0] == '') {
+        if ('' == $matches[2][0]) {
             return;
         }
 
@@ -574,7 +574,7 @@ class GMIConstructor extends GMIValue
         preg_match_all('/^\{\s*(\w+)\s*\:(?:\s*(.*)|\s*)\}$/', $expression, $matches);
 
         // stop if expression is not valid
-        if (count($matches[0]) == 0) {
+        if (0 == count($matches[0])) {
             return;
         }
 
@@ -602,7 +602,7 @@ class GMIConstructor extends GMIValue
      */
     public function getValue()
     {
-        if ($this->value === null) {
+        if (null === $this->value) {
             $this->value = $this->execution->construct($this->class, $this->arguments);
         }
 
@@ -615,11 +615,11 @@ class GMIConstructor extends GMIValue
      */
     public function getType()
     {
-        if ($this->value === null) {
+        if (null === $this->value) {
             $this->value = $this->execution->construct($this->class, $this->arguments);
         }
 
-        return ($this->value !== null) ? $this->class : 'null';
+        return (null !== $this->value) ? $this->class : 'null';
     }
 }
 
@@ -647,12 +647,12 @@ class GMIVariable extends GMIValue
         preg_match_all('/^\{\s*((\w+)(?:\.(\w+))?)\s*\}$/', $expression, $matches);
 
         // stop if expression is not valid
-        if (count($matches[0]) == 0) {
+        if (0 == count($matches[0])) {
             return;
         }
 
         $this->variableName = $matches[2][0];
-        $this->propertyName = ($matches[3][0] != '') ? $matches[3][0] : null;
+        $this->propertyName = ('' != $matches[3][0]) ? $matches[3][0] : null;
     }
     // mixed getValue()
 
@@ -661,18 +661,18 @@ class GMIVariable extends GMIValue
      */
     public function getValue()
     {
-        if ($this->value === null) {
+        if (null === $this->value) {
             $this->value =& $this->execution->getVariable($this->variableName);
 
             // acquire property of the variable
-            if ($this->value !== null && $this->propertyName !== null) {
+            if (null !== $this->value && null !== $this->propertyName) {
                 $value =& $this->value;
                 unset($this->value);
                 $this->value = $this->execution->getProperty($value, $this->propertyName);
             }
         }
 
-        return ($this->value !== null) ? $this->value->getValue() : null;
+        return (null !== $this->value) ? $this->value->getValue() : null;
     }
     // string getType()
 
@@ -681,18 +681,18 @@ class GMIVariable extends GMIValue
      */
     public function getType()
     {
-        if ($this->value === null) {
+        if (null === $this->value) {
             $this->value =& $this->execution->getVariable($this->variableName);
 
             // acquire property of the variable
-            if ($this->value !== null && $this->propertyName !== null) {
+            if (null !== $this->value && null !== $this->propertyName) {
                 $value =& $this->value;
                 unset($this->value);
                 $this->value = $this->execution->getProperty($value, $this->propertyName);
             }
         }
 
-        return ($this->value !== null) ? $this->value->getType() : 'null';
+        return (null !== $this->value) ? $this->value->getType() : 'null';
     }
 }
 
@@ -744,7 +744,7 @@ class GMINumber extends GMIValue
      */
     public function getValue()
     {
-        if ($this->value === null) {
+        if (null === $this->value) {
             $this->value = $this->decode($this->expression);
         }
 

@@ -106,7 +106,7 @@ class QuestQuestionnairesHandler extends MyXoopsPersistableObjectHandler
             foreach ($tbl_categories as $one_categorie) {    // Boucle sur les cat�gories
                 // Si le questionnaire n'est pas termin� :
                 $etat = $categoriesHandler->getCategoryState($one_categorie, $uid);
-                if ($etat != 1) {
+                if (1 != $etat) {
                     $ret[$one_categorie->getVar('IdCategorie')] = $questionnaire;
                     break;    // Pas la peine de boucler sur les cat�gories
                 }

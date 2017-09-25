@@ -52,7 +52,7 @@ $tbl_questionnaires = $questionnairesHandler->getObjects($criteria);
 foreach ($tbl_questionnaires as $one_questionnaire) {
     echo '<br>Traitement du questionnaire ' . $one_questionnaire->getVar('LibelleQuestionnaire');
     // On commence par vérifier que les relances sur le questionnaire n'ont pas déjà été faites
-    if ($one_questionnaire->getVar('DerniereRelance') != 0) {
+    if (0 != $one_questionnaire->getVar('DerniereRelance')) {
         $date_reference = $one_questionnaire->getVar('DerniereRelance');
     } else {
         $date_reference = $one_questionnaire->getVar('DateOuverture');
@@ -84,7 +84,7 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
         // Normalement la différence entre la liste des personnes qui doivent répondre et la liste des personnes qui ont répondu
         // est égale à la liste des personnes qui n'ont pas du tout répondu
         $tbl_non_repondus = array_diff($list_users, $tbl_repondu);
-        if ($one_questionnaire->getVar('RelancesOption') == 2) {        // On ne doit relancer que ceux qui n'ont pas du tout répondu
+        if (2 == $one_questionnaire->getVar('RelancesOption')) {        // On ne doit relancer que ceux qui n'ont pas du tout répondu
             $tbl_relances = $tbl_non_repondus;
         } else {    // On relance tout le monde
             $tbl_relances                     = $tbl_non_repondus;
@@ -115,22 +115,22 @@ foreach ($tbl_questionnaires as $one_questionnaire) {
                         }
                     }
                     // Vérification des commentaires
-                    if ($tout_repondu && (xoops_trim($one_category->getVar('comment1')) != '' || xoops_trim($one_category->getVar('comment2')) != '' || xoops_trim($one_category->getVar('comment3')) != '')) {
+                    if ($tout_repondu && ('' != xoops_trim($one_category->getVar('comment1')) || '' != xoops_trim($one_category->getVar('comment2')) || '' != xoops_trim($one_category->getVar('comment3')))) {
                         $criteria = new CriteriaCompo();
                         $criteria->add(new Criteria('IdRespondant', $one_uid, '='));
                         $criteria->add(new Criteria('IdQuestionnaire', $one_questionnaire->getVar('IdQuestionnaire'), '='));
                         $criteria->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
-                        if (xoops_trim($one_category->getVar('comment1')) != '') {
+                        if ('' != xoops_trim($one_category->getVar('comment1'))) {
                             $criteria->add(new Criteria('LENGTH(TRIM(Comment1))', 0, '>'));
                         }
-                        if (xoops_trim($one_category->getVar('comment2')) != '') {
+                        if ('' != xoops_trim($one_category->getVar('comment2'))) {
                             $criteria->add(new Criteria('LENGTH(TRIM(Comment2))', 0, '>'));
                         }
-                        if (xoops_trim($one_category->getVar('comment3')) != '') {
+                        if ('' != xoops_trim($one_category->getVar('comment3'))) {
                             $criteria->add(new Criteria('LENGTH(TRIM(Comment3))', 0, '>'));
                         }
                         $cnt = $rubrcommentHandler->getCount($criteria);
-                        if ($cnt == 0) {
+                        if (0 == $cnt) {
                             $tout_repondu = false;
                         }
                     }

@@ -170,7 +170,7 @@ class FontImageGenerator extends GMIExecution
                 else {
                     $insets = $this->construct('insets', $args);
 
-                    if ($insets != null) {
+                    if (null != $insets) {
                         $this->canvas->setPadding($insets);
                         break;
                     }
@@ -211,7 +211,7 @@ class FontImageGenerator extends GMIExecution
                 else {
                     $color = $this->construct('color', $args);
 
-                    if ($color != null) {
+                    if (null != $color) {
                         $this->g->setColor($color);
                         break;
                     }
@@ -228,7 +228,7 @@ class FontImageGenerator extends GMIExecution
                 // font <string> <number> <number>
                 $font = $this->construct('font', $args);
 
-                if ($font != null) {
+                if (null != $font) {
                     $this->g->setFont($font);
                     break;
                 }
@@ -261,7 +261,7 @@ class FontImageGenerator extends GMIExecution
 
                 $image = $this->construct('image', $this->extractArguments(0, 0, $args));
 
-                if ($image != null) {
+                if (null != $image) {
                     // pattern <string>
                     if ($this->validateArguments([null], $args)) {
                         $this->g->pattern($image);
@@ -325,7 +325,7 @@ class FontImageGenerator extends GMIExecution
 
                 $image = $this->construct('image', $this->extractArguments(0, 0, $args));
 
-                if ($image != null) {
+                if (null != $image) {
                     // patternrect <string> <rectangle>
                     if ($this->validateArguments([null, 'rectangle'], $args)) {
                         $this->g->patternRect($image, $args[1]->getValue());
@@ -368,7 +368,7 @@ class FontImageGenerator extends GMIExecution
 
                 $image = $this->construct('image', $this->extractArguments(0, 0, $args));
 
-                if ($image != null) {
+                if (null != $image) {
                     // image <string> <number> <number>
                     if ($this->validateArguments([null, 'number', 'number'], $args)) {
                         $this->g->drawImage($image, $args[1]->getValue(), $args[2]->getValue());
@@ -567,7 +567,7 @@ class FontImageGenerator extends GMIExecution
             $value = new GMINumber($this, $this->canvas->getHeight());
         }
 
-        return ($value !== null) ? $value : parent::createValue($exp);
+        return (null !== $value) ? $value : parent::createValue($exp);
     }
 
     // GMIValue getProperty(GMIVariable variable, string property)

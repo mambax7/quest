@@ -33,9 +33,9 @@ $tbl_questionnaires       = [];
 $quest_non_answered_count = 0;
 $tbl_questionnaires       = $questionnairesHandler->GetNonAnsweredQuestionnaires($uid);
 $quest_non_answered_count = count($tbl_questionnaires);
-if ($quest_non_answered_count == 0) {    // Tous les questionnaires ont été répondus, on dit merci et au revoir ********************************************************************
+if (0 == $quest_non_answered_count) {    // Tous les questionnaires ont été répondus, on dit merci et au revoir ********************************************************************
     $xoopsTpl->assign('action', 1);
-} elseif ($quest_non_answered_count == 1) {    // Il ne reste qu'un seul questionnaire à ne pas avoir été totalement répondu, on affiche les catégories du questionnaire *************
+} elseif (1 == $quest_non_answered_count) {    // Il ne reste qu'un seul questionnaire à ne pas avoir été totalement répondu, on affiche les catégories du questionnaire *************
     $xoopsTpl->assign('action', 2);
     reset($tbl_questionnaires);
     $id_category           = key($tbl_questionnaires);

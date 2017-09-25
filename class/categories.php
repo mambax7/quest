@@ -84,7 +84,7 @@ class QuestCategoriesHandler extends MyXoopsPersistableObjectHandler
         $tbl_categories =& $this->getObjects($crit_categ);
         foreach ($tbl_categories as $one_category) {
             $etat = $this->getCategoryState($one_category, $uid);
-            if ($etat == 0 || $etat == 2) {
+            if (0 == $etat || 2 == $etat) {
                 $tout_repondu = false;
             }
             $ret[$one_category->getVar('IdCategorie') . '-' . $etat] = $one_category;
@@ -121,7 +121,7 @@ class QuestCategoriesHandler extends MyXoopsPersistableObjectHandler
         $criteria3->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
         $criteria3->add(new Criteria('IdRespondant', $uid, '='));
         $answers_count = $quest_reponsesHandler->getCount($criteria3);
-        if ($answers_count == 0 && $quest_count > 0) {    // Aucune r�ponse mais il y a des questions
+        if (0 == $answers_count && $quest_count > 0) {    // Aucune r�ponse mais il y a des questions
             $etat = 0;
         } elseif ($answers_count == $quest_count) {    // Le nombre de r�ponses correspond au nombre de questions
             // Il faut v�rifier que toutes les questions ont bien �t� r�pondues
@@ -129,10 +129,10 @@ class QuestCategoriesHandler extends MyXoopsPersistableObjectHandler
             $criteria4->add(new Criteria('IdQuestionnaire', $one_category->getVar('IdQuestionnaire'), '='));
             $criteria4->add(new Criteria('IdCategorie', $one_category->getVar('IdCategorie'), '='));
             $criteria4->add(new Criteria('IdRespondant', $uid, '='));
-            if ($one_category->getVar('AfficherDroite') == 1) {
+            if (1 == $one_category->getVar('AfficherDroite')) {
                 $criteria4->add(new Criteria('Id_CAC1', 0, '<>'));
             }
-            if ($one_category->getVar('AfficherGauche') == 1) {
+            if (1 == $one_category->getVar('AfficherGauche')) {
                 $criteria4->add(new Criteria('Id_CAC2', 0, '<>'));
             }
             $answers_count2 = $quest_reponsesHandler->getCount($criteria4);
@@ -150,21 +150,21 @@ class QuestCategoriesHandler extends MyXoopsPersistableObjectHandler
 
                 if (count($tbl_rubr_comment) > 0) {    // Ca se pr�sente bien, il y a un enregistrement
                     $rubrcomment = $tbl_rubr_comment[0];
-                    if ($one_category->getVar('comment1mandatory') && xoops_trim($rubrcomment->getVar('Comment1')) == '') {
+                    if ($one_category->getVar('comment1mandatory') && '' == xoops_trim($rubrcomment->getVar('Comment1'))) {
                         $etat = 2;
                     }
-                    if ($one_category->getVar('comment2mandatory') && xoops_trim($rubrcomment->getVar('Comment2')) == '') {
+                    if ($one_category->getVar('comment2mandatory') && '' == xoops_trim($rubrcomment->getVar('Comment2'))) {
                         $etat = 2;
                     }
-                    if ($one_category->getVar('comment3mandatory') && xoops_trim($rubrcomment->getVar('Comment3')) == '') {
+                    if ($one_category->getVar('comment3mandatory') && '' == xoops_trim($rubrcomment->getVar('Comment3'))) {
                         $etat = 2;
                     }
                 } else {    // Il n'y a pas d'enregistrement pour les commentaires, reste � v�rifier qu'on attendait un ou des commentaires
-                    if (xoops_trim($one_category->getVar('comment1')) != '') {    // On devait avoir un commentaire et il n'y en a pas eu
+                    if ('' != xoops_trim($one_category->getVar('comment1'))) {    // On devait avoir un commentaire et il n'y en a pas eu
                         $etat = 2;
-                    } elseif (xoops_trim($one_category->getVar('comment2')) != '') {    // On devait avoir un commentaire et il n'y en a pas eu
+                    } elseif ('' != xoops_trim($one_category->getVar('comment2'))) {    // On devait avoir un commentaire et il n'y en a pas eu
                         $etat = 2;
-                    } elseif (xoops_trim($one_category->getVar('comment3')) != '') {    // On devait avoir un commentaire et il n'y en a pas eu
+                    } elseif ('' != xoops_trim($one_category->getVar('comment3'))) {    // On devait avoir un commentaire et il n'y en a pas eu
                         $etat = 2;
                     }
                 }

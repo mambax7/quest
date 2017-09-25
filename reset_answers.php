@@ -49,7 +49,7 @@ if (!$questionnairesHandler->isVisible($questionnaire, $uid)) {
 }
 
 // On temine en v�rifiant que le param�trage du questionnaire autorise la suppression de toutes les r�ponses d'une personne
-if (xoops_trim($questionnaire->getVar('ResetButton')) != '') {
+if ('' != xoops_trim($questionnaire->getVar('ResetButton'))) {
     $reponsesHandler    =  xoops_getModuleHandler('reponses', 'quest');
     $rubrcommentHandler =  xoops_getModuleHandler('rubrcomment', 'quest');
     // Suppression des r�ponses

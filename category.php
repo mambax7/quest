@@ -41,14 +41,14 @@ $tbl_questionnaires       = $questionnairesHandler->GetNonAnsweredQuestionnaires
 $quest_non_answered_count = 0;
 $quest_non_answered_count = count($tbl_questionnaires);
 
-if ($quest_non_answered_count == 0) {    // Tous les questionnaires ont été répondus, merci et au revoir
+if (0 == $quest_non_answered_count) {    // Tous les questionnaires ont été répondus, merci et au revoir
     redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ALL_REPLYED);
 }
 
 // ********************************************************************************************************************
 // Sauvegarde des données *********************************************************************************************
 // ********************************************************************************************************************
-if (isset($_POST['action']) && $_POST['action'] == 'save') {
+if (isset($_POST['action']) && 'save' == $_POST['action']) {
     $categoryid      = (int)$_POST['category'];    // On compare la catégorie provenant du formulaire avec celle enregistrée en session
     $questionnaireid = (int)$_POST['quest'];
     // Chargement de la catégorie et du questionnaire
@@ -191,7 +191,7 @@ if (isset($_GET['categoryid'])) {
 } elseif (isset($_POST['categoryid'])) {
     $categoryid = (int)$_POST['categoryid'];
 } else {    // Rien n'a été spécifié
-    if ($next_categoryid == 0) {
+    if (0 == $next_categoryid) {
         redirect_header(XOOPS_URL . '/index.php', 2, _QUEST_ERROR1);
     } else {
         if ($next_categoryid != -1) {
@@ -227,7 +227,7 @@ $xoopsTpl->assign('xoops_module_header', $url_prototype);
 // On assigne les données du questionnaire ****************************************************************************
 $xoopsTpl->assign('questionnaire', $current_quest->toArray());
 // Mise en place du lien permettant à l'utilisateur de supprimer toutes ses réponses du questionnaire en cours
-if (xoops_trim($current_quest->getVar('ResetButton')) != '') {
+if ('' != xoops_trim($current_quest->getVar('ResetButton'))) {
     $xoopsTpl->assign('confirmation_to_delete_answers', quest_JavascriptLinkConfirm(_QUEST_DELETE_ANSWERS_MESSAGE));
     $xoopsTpl->assign('text_to_delete_answers', $current_quest->getVar('ResetButton'));
 }
@@ -305,7 +305,7 @@ $tbl_cac_droite     = [];
 $tbl_legende_droite = [];
 if ($current_categ->getVar('AfficherDroite')) {
     foreach ($tbl_cac_categories as $one_cac_category) {    // Boucle sur toutes les cac_categories
-        if ($one_cac_category->getVar('DroiteGauche') == 1) {
+        if (1 == $one_cac_category->getVar('DroiteGauche')) {
             $id                                               = $one_cac_category->getVar('IdCAC');    // On récupère l'ID de la cac
             $cac_courante                                     = $tbl_libelles_cac[$id];        // Renvoie un objet de type quest_cac
             $libelle_long                                     = $cac_courante->getVar('LibelleCAC');
@@ -328,7 +328,7 @@ $tbl_cac_gauche     = [];
 $tbl_legende_gauche = [];
 if ($current_categ->getVar('AfficherGauche')) {
     foreach ($tbl_cac_categories as $one_cac_category) {    // Boucle sur toutes les cac_categories
-        if ($one_cac_category->getVar('DroiteGauche') == 2) {
+        if (2 == $one_cac_category->getVar('DroiteGauche')) {
             $id                                               = $one_cac_category->getVar('IdCAC');    // On récupère l'ID de la cac
             $cac_courante                                     = $tbl_libelles_cac[$id];        // Renvoie un objet de type quest_cac
             $libelle_long                                     = $cac_courante->getVar('LibelleCAC');
@@ -380,14 +380,14 @@ $xoopsTpl->assign('questions_reponses', $tbl_questions_reponses);
 // Les commentaires
 $comment_lines  = 21;
 $comments_count = 0;
-if (xoops_trim($current_categ->getVar('comment1')) != '') {
+if ('' != xoops_trim($current_categ->getVar('comment1'))) {
     ++$comments_count;
 }
-if (xoops_trim($current_categ->getVar('comment2')) != '') {
+if ('' != xoops_trim($current_categ->getVar('comment2'))) {
     $comment_lines -= 7;
     ++$comments_count;
 }
-if (xoops_trim($current_categ->getVar('comment3')) != '') {
+if ('' != xoops_trim($current_categ->getVar('comment3'))) {
     $comment_lines -= 7;
     ++$comments_count;
 }
@@ -411,7 +411,7 @@ if ($pos + 1 != count($tbl_categories)) {
     $btn_suiv = XOOPS_URL . '/modules/quest/category.php?IdQuestionnaire=' . $current_quest->getVar('IdQuestionnaire') . '&categoryid=' . $categid;
 }
 // Bouton précédent
-if ($pos != 0) {
+if (0 != $pos) {
     $categid  = $tbl_categories[$pos - 1];
     $btn_prev = XOOPS_URL . '/modules/quest/category.php?IdQuestionnaire=' . $current_quest->getVar('IdQuestionnaire') . '&categoryid=' . $categid;
 }

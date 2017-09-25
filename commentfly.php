@@ -66,11 +66,11 @@ $criteria->add(new Criteria('IdQuestionnaire', $save_quest->getVar('IdQuestionna
 $criteria->add(new Criteria('IdCategorie', $save_categ->getVar('IdCategorie'), '='));
 $tbl_reponse = $rubrcommentHandler->getObjects($criteria);
 
-if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut mettre � jour
+if (1 == count($tbl_reponse)) {    // R�ponse d�j� enregistr�e, il faut mettre � jour
     $reponse = $tbl_reponse[0];
-    if ($area == 1) {
+    if (1 == $area) {
         $reponse->setVar('Comment1', $areavalue);
-    } elseif ($area == 2) {
+    } elseif (2 == $area) {
         $reponse->setVar('Comment2', $areavalue);
     } else {
         $reponse->setVar('Comment3', $areavalue);
@@ -83,9 +83,9 @@ if (count($tbl_reponse) == 1) {    // R�ponse d�j� enregistr�e, il faut 
     $reponse->setVar('IdRespondant', $uid);
     $reponse->setVar('IdQuestionnaire', $IdQuestionnaire);
     $reponse->setVar('IdCategorie', $IdCategorie);
-    if ($area == 1) {
+    if (1 == $area) {
         $reponse->setVar('Comment1', $areavalue);
-    } elseif ($area == 2) {
+    } elseif (2 == $area) {
         $reponse->setVar('Comment2', $areavalue);
     } else {
         $reponse->setVar('Comment3', $areavalue);
